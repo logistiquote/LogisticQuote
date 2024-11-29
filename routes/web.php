@@ -3,28 +3,6 @@
 use App\Proposal;
 use Illuminate\Support\Facades\Route;
 
-Route::get('test', function () 
-{
-
-    
-    $proposals = Proposal::where('user_id', 4)
-    ->where('status', 'active')
-    ->where('quotation_id', 7)->with('vendor')->get()->toArray();
-
-    dd($proposals[0]['vendor']['name']);
-
-
-});
-
-Route::get('clear', function () {
-    // // app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
-    \Artisan::call('view:clear');
-    \Artisan::call('config:clear');
-    \Artisan::call('route:clear');
-    \Artisan::call('cache:clear');
-    print "Cache has been cleared successfully!";
-});
-
 // CronJob Controller
 Route::get('/cron', 'CronJobController@index')->name('cronjob');
 
