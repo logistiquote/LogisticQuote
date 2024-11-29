@@ -1,0 +1,875 @@
+footer {
+    display: none !important
+}
+
+.main-content {
+    padding-bottom: 0
+}
+
+.section-login {
+    position: relative;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: start
+}
+
+.section-login .content {
+    max-width: 1200px;
+    width: 100%;
+    min-height: 510px;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 30px
+}
+
+@media (max-width: 768px) {
+    .section-login .content {
+        flex-direction: column;
+        padding: 0 17px;
+        align-items: center
+    }
+}
+
+.sign-img {
+    position: relative;
+    top: -240px;
+    max-width: 600px;
+    max-height: 830px;
+    bottom: 0;
+    width: 100%
+}
+
+@media (max-width: 1000px) {
+    .sign-img {
+        top: -140px
+    }
+}
+
+@media (max-width: 768px) {
+    .sign-img {
+        max-width: 300px;
+        top: -30px;
+        top: -80px;
+        max-height: 350px
+    }
+}
+
+@media (max-width: 500px) {
+    .sign-img {
+        display: none
+    }
+}
+
+.sign-img img {
+    display: block;
+    width: 100%
+}
+
+.bottom-links,
+.section-login-bottom-links {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    bottom: 25px;
+    padding: 0 17px;
+    width: 320px
+}
+
+@media (min-width: 400px) {
+
+    .bottom-links,
+    .section-login-bottom-links {
+        width: 350px
+    }
+}
+
+.bottom-links a,
+.section-login-bottom-links a {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 25px;
+    color: #CBD8E3;
+    text-align: center;
+    transition: .2s ease
+}
+
+.bottom-links a:hover,
+.section-login-bottom-links a:hover {
+    text-decoration: none;
+    color: #F39C12;
+    transition: .2s ease
+}
+
+.section-cerrier-descrp {
+    padding-top: 200px;
+    max-width: 540px;
+    width: 100%
+}
+
+@media (max-width: 768px) {
+    .section-cerrier-descrp {
+        order: 1;
+        padding-top: 0;
+        text-align: center;
+        max-width: 450px;
+        margin-bottom: 80px
+    }
+}
+
+.section-cerrier-descrp-title {
+    max-width: 455px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 36px;
+    margin-bottom: 23px;
+    letter-spacing: 0.3px
+}
+
+.section-cerrier-descrp-title span {
+    color: #F39C12
+}
+
+@media (max-width: 768px) {
+    .section-cerrier-descrp-title {
+        font-size: 23px;
+        line-height: 29px;
+        margin-bottom: 10px
+    }
+}
+
+.section-cerrier-descrp p {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+    margin-bottom: 5px
+}
+
+@media (max-width: 768px) {
+    .section-cerrier-descrp p {
+        font-size: 14px
+    }
+}
+
+.section-cerrier-descrp b {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0em
+}
+
+@media (max-width: 768px) {
+    .section-cerrier-descrp b {
+        font-size: 14px
+    }
+}
+
+.sign-form {
+    max-width: 360px;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    margin: 60px 0 80px 20px
+}
+
+@media (max-width: 768px) {
+    .sign-form {
+        margin: 30px 0 80px
+    }
+}
+
+.sign-form p {
+    color: #15354E
+}
+
+.sign-form_content {
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    flex-direction: column
+}
+
+.sign-form_content-title {
+    color: #15354E;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 28px;
+    margin-bottom: 20px;
+    cursor: default
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-title {
+        text-align: center;
+        font-size: 23px
+    }
+}
+
+.sign-form_content-title span {
+    color: #F39C12
+}
+
+.sign-form_content-sub-title p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: -5px;
+    margin-bottom: 8px
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-sub-title p {
+        text-align: center
+    }
+}
+
+.sign-form_content-input-part input:-webkit-autofill,
+.sign-form_content-input-part input:-webkit-autofill:hover,
+.sign-form_content-input-part input:-webkit-autofill:focus,
+.sign-form_content-input-part input:-webkit-autofill:active,
+.sign-form_content-input-part select:-webkit-autofill,
+.sign-form_content-input-part select:-webkit-autofill:hover,
+.sign-form_content-input-part select:-webkit-autofill:focus,
+.sign-form_content-input-part select:-webkit-autofill:active {
+    font-family: inherit !important;
+    background: white !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    font-size: 14px !important;
+    color: #15354E !important;
+    -webkit-text-fill-color: #15354E !important;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-animation-name: autofill
+}
+
+.sign-form_content-input-part input:-webkit-autofill::placeholder,
+.sign-form_content-input-part input:-webkit-autofill:placeholder,
+.sign-form_content-input-part input:-webkit-autofill:hover::placeholder,
+.sign-form_content-input-part input:-webkit-autofill:hover:placeholder,
+.sign-form_content-input-part input:-webkit-autofill:focus::placeholder,
+.sign-form_content-input-part input:-webkit-autofill:focus:placeholder,
+.sign-form_content-input-part input:-webkit-autofill:active::placeholder,
+.sign-form_content-input-part input:-webkit-autofill:active:placeholder,
+.sign-form_content-input-part select:-webkit-autofill::placeholder,
+.sign-form_content-input-part select:-webkit-autofill:placeholder,
+.sign-form_content-input-part select:-webkit-autofill:hover::placeholder,
+.sign-form_content-input-part select:-webkit-autofill:hover:placeholder,
+.sign-form_content-input-part select:-webkit-autofill:focus::placeholder,
+.sign-form_content-input-part select:-webkit-autofill:focus:placeholder,
+.sign-form_content-input-part select:-webkit-autofill:active::placeholder,
+.sign-form_content-input-part select:-webkit-autofill:active:placeholder {
+    color: #15354E !important;
+    -webkit-text-fill-color: #15354E !important;
+    font-size: 14px !important
+}
+
+@-webkit-keyframes autofill {
+
+    0%,
+    100% {
+        font-size: 14px !important;
+        color: #15354E !important
+    }
+}
+
+.sign-form_content-input-part input::placeholder,
+.sign-form_content-input-part input:placeholder,
+.sign-form_content-input-part input:-ms-input-placeholder,
+.sign-form_content-input-part input::-ms-input-placeholder {
+    color: #15354E !important;
+    -webkit-text-fill-color: #15354E !important;
+    font-size: 14px !important;
+    -webkit-appearance: none;
+    appearance: none
+}
+
+.sign-form_content-input-part .select-wrapper {
+    margin-bottom: 10px
+}
+
+.sign-form_content-input-part select {
+    display: block;
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    border: 1px solid #CBD8E3;
+    padding: 12px 15px 9px 15px;
+    background: #fff;
+    color: #15354E;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.02em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    background-image: url("https://www.LogistiQuote.com/design/images/apps/login/icon_down.svg");
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 12px);
+    background-position-y: calc(100% - 46%);
+    box-shadow: none
+}
+
+.sign-form_content-input-part .errorInputMsg {
+    transition: .3s ease;
+    margin: 5px 0 5px 5px;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.02em;
+    color: #F52C5C;
+    position: relative;
+    padding-left: 10px
+}
+
+.sign-form_content-input-part .errorInputMsg:before {
+    content: "";
+    background-image: url(https://www.LogistiQuote.com/design/images/apps/login/icon_error.svg);
+    display: inline-block;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-size: contain;
+    background-position: center;
+    top: .8px;
+    left: -5px;
+    min-width: 10px;
+    max-width: 10px;
+    height: 10px
+}
+
+.sign-form_content-input-part .resendMail {
+    transition: .3s ease;
+    padding: 12px 15px;
+    margin-bottom: 0;
+    background-color: rgba(203, 216, 227, 0.2);
+    font-size: 12px;
+    line-height: 17px;
+    border-radius: 5px;
+    margin-top: 10px;
+    color: #15354E
+}
+
+.sign-form_content-input-part .resendMailLink {
+    margin-left: 3px;
+    cursor: pointer;
+    color: #F39C12
+}
+
+.sign-form_content-input-part-dual-input {
+    display: flex
+}
+
+.sign-form_content-input-part-dual-input .input-wrapper:first-child {
+    margin-right: 6px
+}
+
+.sign-form_content-input-part-dual-input .input-wrapper:last-child {
+    margin-bottom: 5px
+}
+
+.sign-form_content-input-part .input-wrapper {
+    max-width: 360px;
+    width: 100%;
+    position: relative;
+    margin-bottom: 10px;
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-shadow: none !important;
+    height: 50px;
+    font-size: 14px;
+    padding: 11px 15px;
+    border-radius: 4px;
+    border: 1px solid #CBD8E3;
+    width: 100%;
+    outline: none;
+    box-sizing: border-box;
+    color: #15354E !important;
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .placeholder {
+    pointer-events: none;
+    position: absolute;
+    font-weight: 400;
+    font-size: 14px;
+    top: 15px;
+    left: 8px;
+    padding: 0 8px;
+    background-color: white;
+    border-radius: 5px;
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1), opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    color: #15354E
+}
+
+.sign-form_content-input-part .input:not(:placeholder-shown)+.placeholder {
+    transform: scale(0.75) translateY(-33px) translateX(-15%);
+    color: #15354E;
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .input:focus {
+    transition: .2s ease;
+    border-color: #F39C12
+}
+
+.sign-form_content-input-part .input:focus+.placeholder {
+    transform: scale(0.75) translateY(-33px) translateX(-15%);
+    color: #F39C12;
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .input:invalid:not(:placeholder-shown),
+.sign-form_content-input-part .input:invalid:not(:placeholder-shown)+.placeholder,
+.sign-form_content-input-part .input:invalid.input:focus+.placeholder {
+    transition: .2s ease;
+    border-color: #F52C5C;
+    color: #F52C5C
+}
+
+.sign-form_content-input-part .input:invalid:not(:placeholder-shown).input:not(:focus)+.placeholder {
+    transform: scale(0.75) translateY(-33px) translateX(-15%);
+    color: #F52C5C;
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .error {
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .error .input:focus+.placeholder,
+.sign-form_content-input-part .error .placeholder,
+.sign-form_content-input-part .error .input+.placeholder,
+.sign-form_content-input-part .error .input:invalid:not(:placeholder-shown)+.placeholder {
+    color: #F52C5C;
+    transition: .2s ease
+}
+
+.sign-form_content-input-part .error input,
+.sign-form_content-input-part .error input:focus {
+    border: 1px solid #F52C5C;
+    transition: .2s ease;
+    box-shadow: none
+}
+
+.sign-form_content-input-part .error select {
+    border: 1px solid #F52C5C;
+    color: #F52C5C;
+    background-image: url("data:image/svg+xml,%3Csvg width='9' height='6' viewBox='0 0 9 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 1L4.5 5L1 1' stroke='%23F52C5C'/%3E%3C/svg%3E%0A")
+}
+
+.sign-form_content-input-part .sign-form_content-main-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #F39C12;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.01em;
+    color: #fff;
+    padding: 11px 0 9px;
+    border-radius: 5px;
+    transition: .3s ease;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    min-height: 50px
+}
+
+.sign-form_content-input-part .sign-form_content-main-btn .spinner:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    margin-left: -35px;
+    margin-top: -5px;
+    border-radius: 50%;
+    border-top: 2px solid #ffffff;
+    border-right: 2px solid transparent;
+    animation: spinner 1s linear infinite
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg)
+    }
+}
+
+.sign-form_content-input-part .loading-main-btn {
+    pointer-events: none
+}
+
+.sign-form_content-payment {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px
+}
+
+.sign-form_content-payment span {
+    display: inline-block;
+    min-width: 65px;
+    max-width: 65px;
+    height: 25px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    transition: .5s ease
+}
+
+.sign-form_content-payment a:hover {
+    transform: translateY(-3px);
+    transition: .5s ease
+}
+
+.sign-form_content-payment-card {
+    background-image: url("https://www.LogistiQuote.com/design/images/apps/login/img_btn-pay-by-card.png")
+}
+
+.sign-form_content-reg-part {
+    text-align: center;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-reg-part {
+        font-size: 14px;
+        line-height: 20px
+    }
+}
+
+.sign-form_content-reg-part p {
+    margin-right: 5px;
+    cursor: default;
+    margin-bottom: 0
+}
+
+.sign-form_content-reg-part a {
+    color: #F39C12;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none
+}
+
+.sign-form_content-reg-part a:hover {
+    color: #F39C12
+}
+
+.sign-form_content-recaptcha {
+    display: block;
+    margin: 20px auto 0
+}
+
+@media (max-width: 335px) {
+    .sign-form_content-recaptcha {
+        margin-left: -5px
+    }
+}
+
+.sign-form_content-addtnl-sign {
+    text-align: center;
+    margin-bottom: 10px
+}
+
+.sign-form_content-addtnl-sign:before {
+    content: "";
+    display: inline-block;
+    width: 255px;
+    height: 1px;
+    line-height: 18px;
+    background-color: #E9F0F7;
+    position: relative;
+    top: -6px
+}
+
+.sign-form_content-addtnl-sign_title {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 18px;
+    margin-bottom: 10px;
+    cursor: default
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-addtnl-sign_title {
+        font-size: 14px;
+        line-height: 25px
+    }
+}
+
+.sign-form_content-addtnl-sign_social-net-btn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    width: 110px;
+    height: 30px;
+    border: 1px solid #DEE4EC;
+    background-color: #fff;
+    border-radius: 5px;
+    position: relative;
+    margin: 0 5px;
+    letter-spacing: .5px
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-addtnl-sign_social-net-btn {
+        height: 40px;
+        font-size: 12px;
+        width: 130px
+    }
+}
+
+.sign-form_content-addtnl-sign_social-net-btn-icon-part {
+    margin-left: 8px;
+    margin-right: 20px
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-addtnl-sign_social-net-btn-icon-part {
+        margin-right: 27px
+    }
+}
+
+.sign-form_content-addtnl-sign_social-net-btn-icon-part img {
+    width: 15px;
+    height: 15px
+}
+
+.sign-form_content-addtnl-sign_social-net-btn-text-part {
+    width: 55px;
+    display: block
+}
+
+.sign-form_content-addtnl-sign_social-net-btn-text-part p {
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 12px;
+    color: #F39C12 !important;
+    margin-bottom: 0;
+    text-align: center
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-addtnl-sign_social-net-btn-text-part p {
+        font-size: 12px
+    }
+}
+
+.sign-form_content-addtnl-sign_social-net-btn:before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    height: 18px;
+    width: 1px;
+    border-radius: 2px;
+    left: 30px;
+    background-color: #DEE4EC
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-addtnl-sign_social-net-btn:before {
+        height: 23px
+    }
+}
+
+.sign-form_content-bussines-acc {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    display: flex;
+    width: 100%;
+    justify-content: center
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-bussines-acc {
+        font-size: 13px
+    }
+}
+
+.sign-form_content-bussines-acc p {
+    margin-right: 4px;
+    cursor: default;
+    margin-bottom: 0
+}
+
+.sign-form_content-bussines-acc a {
+    color: #F39C12;
+    cursor: pointer;
+    text-decoration: none
+}
+
+.sign-form_content-bussines-acc a:hover {
+    color: #F39C12
+}
+
+.sign-form_content-frgt-psw a {
+    text-align: center;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 15px;
+    display: block;
+    color: #F39C12 !important;
+    text-decoration: none;
+    cursor: pointer;
+    margin: 10px 0 5px
+}
+
+@media (max-width: 768px) {
+    .sign-form_content-frgt-psw a {
+        font-size: 13px
+    }
+}
+
+.sign-form_content-agree-terms {
+    max-width: 280px;
+    text-align: center;
+    display: block;
+    margin: 10px auto 0;
+    width: 100%
+}
+
+.sign-form_content-agree-terms p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center
+}
+
+.sign-form_content-agree-terms p a {
+    margin-left: 3px
+}
+
+.sign-form_content-agree-terms a:hover {
+    color: #F39C12
+}
+
+.section__confirm-mail {
+    position: relative;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    z-index: 100
+}
+
+.section__confirm-mail .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    max-width: 570px;
+    margin: 0 auto;
+    padding: 0 15px
+}
+
+@media (min-width: 500px) {
+    .section__confirm-mail .content .img-part {
+        min-height: 423px
+    }
+}
+
+.section__confirm-mail .content .img-part img {
+    width: 100%
+}
+
+.section__confirm-mail .content .text-part .title {
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 22px;
+    color: #15354E;
+    margin-bottom: 20px
+}
+
+@media (max-width: 520px) {
+    .section__confirm-mail .content .text-part .title {
+        font-size: 24px
+    }
+}
+
+.section__confirm-mail .content .text-part .subtitle {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: 0.01em;
+    color: #15354E;
+    margin-bottom: 26px
+}
+
+@media (max-width: 520px) {
+    .section__confirm-mail .content .text-part .subtitle {
+        font-size: 14px
+    }
+}
+
+.section__confirm-mail .content .btn-part {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 80px
+}
+
+@media (max-width: 520px) {
+    .section__confirm-mail .content .btn-part {
+        flex-direction: column
+    }
+}
+
+.section__confirm-mail .content .btn-part_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 18px 30px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 5px;
+    transition: .5s ease;
+    text-decoration: none
+}
+
+@media (max-width: 520px) {
+    .section__confirm-mail .content .btn-part_btn {
+        max-width: 100%;
+        font-size: 14px
+    }
+}
+
+.section__confirm-mail .content .btn-part_btn:hover {
+    transition: .5s ease;
+    transform: translateY(-5px)
+}
+
+.section__confirm-mail .content .btn-part .btn-full {
+    background: #F39C12;
+    color: #fff
+}
+
+@media (max-width: 520px) {
+    .section__confirm-mail .content .btn-part .btn-full {
+        margin-right: 0
+    }
+}
