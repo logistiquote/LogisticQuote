@@ -137,7 +137,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const nextStepButton = document.querySelector('.step');
+        const nextStepButton = document.querySelector('.step1');
 
         if (nextStepButton) {
             nextStepButton.addEventListener('click', function (event) {
