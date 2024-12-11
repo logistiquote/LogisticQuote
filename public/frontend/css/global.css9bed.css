@@ -26275,7 +26275,7 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 .navbar-brand::before {
     content: '';
     margin-right: 5px;
-    background-image: url('/public/frontend/images/site/logo.png');
+    background-image: url('./../images/site/logo.png');
     background-position: center;
     background-size: cover;
     width: 144px;
