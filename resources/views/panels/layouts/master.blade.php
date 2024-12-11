@@ -12,6 +12,8 @@
 
     @include('panels.includes.top_includes')
 
+    <script src="{{ asset('js/wizard.js') }}" defer></script>
+
 </head>
 
 <body id="page-top">
@@ -119,7 +121,7 @@
                     <i class="fad fa-user-alt"></i>
                     <span>Profile</span></a>
             </li>
-            
+
             @elseif(Auth::user()->role == 'admin')
 
             <!-- Nav Item - Dashboard -->
@@ -144,14 +146,14 @@
                     <i class="fas fa-fw fa-table"></i>
                     <span>Quotations</span></a>
             </li>
-            
+
             <!-- Nav Item - My proposals -->
             <li class="nav-item <?php echo ($page_name == 'proposals') ? 'active' : ''; ?>">
                 <a class="nav-link" href="{{ route('proposals.view_all') }}">
                     <i class="fad fa-file-signature"></i>
                     <span>Proposals</span></a>
             </li>
-            
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -175,7 +177,7 @@
                     <i class="far fa-users-crown"></i>
                     <span>Vendors</span></a>
             </li>
-            
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -196,7 +198,7 @@
 
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); 
+                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">
                     <i class="fal fa-sign-out"></i>
                     <span>Logout</span></a>
@@ -276,7 +278,7 @@
                                 <span
                                     class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="{{ asset('public/uploads/profile_pic/avatar.png') }}">
+                                    src="{{ asset('uploads/profile_pic/avatar.png') }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

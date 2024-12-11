@@ -22,8 +22,8 @@
                     @guest
                         <a class="rootLink item-dashboard colorize" href="{{ route('login') }}">Sign in
                     @else
-                        <div id="nav-prof"> 
-                            <a class="dropdown-toggle rootLink colorize" href="javascript:;" data-toggle="dropdown"> 
+                        <div id="nav-prof">
+                            <a class="dropdown-toggle rootLink colorize" href="javascript:;" data-toggle="dropdown">
                                 <!-- <i class="fa fa-user"></i>  -->
                                 {{ Auth::user()->name }}
                             </a>
@@ -31,7 +31,7 @@
                                 <div class="country-lang-pointer"></div>
                                 <li class="clearfix dropdown-header dropdown-stop">
                                     <div class="user-mini-pic">
-                                        <img src="{{ asset('public/uploads/profile_pic/avatar.png') }}" alt="logo">
+                                        <img src="{{ asset('uploads/profile_pic/avatar.png') }}" alt="logo">
                                     </div>
                                     <div class="user-info">
                                         <div class="user-name"> {{ Auth::user()->name }} </div>
@@ -76,19 +76,19 @@
 
                                         <ul>
                                             <li>
-                                            <a class="linkContainer item-atlas" href="#"> 
+                                            <a class="linkContainer item-atlas" href="#">
                                                 <i class="fas fa-circle"></i>
                                                 Mobile URL1
                                             </a>
                                             </li>
                                             <li>
-                                                <a class="linkContainer item-atlas" href="#"> 
+                                                <a class="linkContainer item-atlas" href="#">
                                                     <i class="fas fa-circle"></i>
                                                     Mobile URL2
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="linkContainer item-atlas" href="#"> 
+                                                <a class="linkContainer item-atlas" href="#">
                                                     <i class="fas fa-circle"></i>
                                                     Mobile URL3
                                                 </a>
@@ -97,7 +97,7 @@
                                         </ul>
                                     </div> -->
 
-                                    <!--                                     
+                                    <!--
                                     <div class="mobileSecondaryNav">
                                         <ul>
                                             <li><a href="#">Pricing</a></li>
@@ -204,7 +204,7 @@
                             <a class="linkContainer withIcon item-documentation" href="{{ route('contact_us') }}">
                                 <h3 class="linkTitle linkIcon"> <i class="fad fa-phone"></i> Contact us </h3>
                             </a>
-                            
+
                         </div>
                     </div>
                 </div>

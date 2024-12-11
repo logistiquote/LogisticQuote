@@ -52,16 +52,16 @@ function send_proposal_mail($user_id, $quotation_id)
     $proposals = Proposal::where('user_id', $user_id)
     ->where('status', 'active')
     ->where('quotation_id', $quotation_id)->with('vendor')->get()->toArray();
-     
+
     $quotation = Quotation::findOrFail($quotation_id);
 
     // dd($proposals);
-    
+
     $data = array(
             "proposals" => $proposals,
         );
 
-    Mail::send('emails.proposal', $data, function($message) use ($to_name, $to_email, $quotation) 
+    Mail::send('emails.proposal', $data, function($message) use ($to_name, $to_email, $quotation)
     {
         $message->to($to_email, $to_name)
         ->subject('Proposals received related to Quotation#: '.$quotation['quotation_id']);
@@ -81,17 +81,17 @@ function send_accept_proposal_mail($user_id, $partner_id, $quotation_id)
     // $to_email = 'malickateeq@gmail.com';
     $quotation = Quotation::findOrFail($quotation_id)->toArray();
 
-    
+
     $data = array(
                 "user" => $user,
-            // "company_name" => "LogistiQuote", 
-            // "email"=> "test@sdf.com", 
-            // "additional_email" => "asd@ad.com", 
-            // "phone" => "12345678", 
+            // "company_name" => "LogistiQuote",
+            // "email"=> "test@sdf.com",
+            // "additional_email" => "asd@ad.com",
+            // "phone" => "12345678",
             // "body" => "Blah blah blah!"
         );
 
-    Mail::send('emails.accept_proposal', $data, function($message) use ($to_name, $to_email, $quotation) 
+    Mail::send('emails.accept_proposal', $data, function($message) use ($to_name, $to_email, $quotation)
     {
         $message->to($to_email, $to_name)
         ->subject('Proposals accepted of Quotation#: '.$quotation['quotation_id']);
@@ -111,17 +111,17 @@ function send_notify_user_mail($user_id, $partner_id, $quotation_id)
     // $to_email = 'malickateeq@gmail.com';
     $quotation = Quotation::findOrFail($quotation_id)->toArray();
 
-    
+
     $data = array(
                 "partner" => $partner,
-            // "company_name" => "LogistiQuote", 
-            // "email"=> "test@sdf.com", 
-            // "additional_email" => "asd@ad.com", 
-            // "phone" => "12345678", 
+            // "company_name" => "LogistiQuote",
+            // "email"=> "test@sdf.com",
+            // "additional_email" => "asd@ad.com",
+            // "phone" => "12345678",
             // "body" => "Blah blah blah!"
         );
 
-    Mail::send('emails.notify_user', $data, function($message) use ($to_name, $to_email, $quotation) 
+    Mail::send('emails.notify_user', $data, function($message) use ($to_name, $to_email, $quotation)
     {
         $message->to($to_email, $to_name)
         ->subject('Quotation#: '.$quotation['quotation_id'].' completion.');
@@ -130,37 +130,4 @@ function send_notify_user_mail($user_id, $partner_id, $quotation_id)
             'Quotation#'.$quotation['quotation_id'].'\'s completed | LogistiQuote'   // Title, Subject
         );
     });
-}
-
-function notify_vendor_for_new_quotation($user_id, $quotation_id)
-{
-    $user = User::findOrFail($user_id)->toArray();
-
-    $partners = User::where('role', 'vendor')->get()->toArray();
-    $quotation = Quotation::findOrFail($quotation_id)->toArray();
-
-    foreach($partners as $partner)
-    {
-        $to_name = $partner['name'];
-        $to_email = $partner['email'];
-        
-        $data = array(
-                    "quotation" => $quotation,
-                // "company_name" => "LogistiQuote", 
-                // "email"=> "test@sdf.com", 
-                // "additional_email" => "asd@ad.com", 
-                // "phone" => "12345678", 
-                // "body" => "Blah blah blah!"
-            );
-    
-        Mail::send('emails.quote_requested', $data, function($message) use ($to_name, $to_email, $quotation) 
-        {
-            $message->to($to_email, $to_name)
-            ->subject( $quotation['quotation_id'].': a user has just posted a quote.');
-            $message->from(
-                env("MAIL_FROM_ADDRESS", "cs@logistiquote.com"),   // Mail from email address
-                'New quote requested by LogistiQuote user | LogistiQuote'   // Title, Subject
-            );
-        });
-    }
 }

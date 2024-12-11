@@ -66,7 +66,7 @@
 
                                                         <div class="input-icon">
                                                             <span class="top-title">DESTINATION OF SHIPMENT</span>
-                                                            
+
                                                             <input type="text" placeholder="Port, Country, City, Zip"
                                                                 value="" name="destination" id="addr_to" autocomplete="off" required>
                                                         </div>
@@ -77,7 +77,7 @@
                                                             <span class="top-title">Ready to load</span>
                                                             <input class="date-day" name="date" type="text"
                                                                 data-date-format="dd-mm-yyyy" autocomplete="off"
-                                                                readonly required id="ready_to_load_date"> 
+                                                                readonly required id="ready_to_load_date">
                                                         </div>
                                                     </div>
 
@@ -109,7 +109,7 @@
                                                                 <span class="transcript">AIR DELIVERY</span>
                                                             </li>
                                                         </ul>
-                                                    </div> 
+                                                    </div>
                                                     <input type="hidden" name="type" value="fcl">
                                                 </div>
 
@@ -118,14 +118,14 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        
+
                                         <div class="wrapper-form">
                                             <form class="filter-tracking" method="GET"
                                                 action="https://touch.track-trace.com/container" target="_blank">
                                                 <div class="wrapper-box-shadow">
-                                                    <div class="container-number"> 
+                                                    <div class="container-number">
                                                         <span class="top-title">TRACKING
-                                                            NUMBER</span> 
+                                                            NUMBER</span>
                                                             <input pattern="[A-Za-z0-9\-]{5,}"
                                                             title="Container number or code" type="text"
                                                             name="container" placeholder="Container Number/Code"
@@ -168,15 +168,15 @@
                 </div>
             </div>
         </section>
-        
-        
+
+
         <section class="wrapper-vo">
             <div class="wrapper-container">
                 <h2>Section I</h2>
                 <div class="section-block">
-                    <div class="img-block"> 
+                    <div class="img-block">
                         <img
-                            src="{{ asset('public/frontend/images/homepage/1.jpg') }}"
+                            src="{{ asset('frontend/images/homepage/1.jpg') }}"
                             class="background" alt="profile">
 
                     </div>
@@ -189,7 +189,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="wrapper-freight-marketplace">
             <h2>Section II</h2>
             <p>sub-lines</p>
@@ -222,7 +222,7 @@
                     <h2>Why <span>LogistiQuote</span></h2>
                     <div class="benefits">
                         <div class="item">
-                            <div class="ico"> 
+                            <div class="ico">
                                 <i class="fad fa-circle fa-2x"></i>
                             </div>
                             <div class="content">
@@ -231,7 +231,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="ico"> 
+                            <div class="ico">
                                 <img src="#" alt=""> </div>
                             <div class="content">
                                 <h3>Benifit 2</h3>
@@ -239,7 +239,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="ico"> 
+                            <div class="ico">
                                 <i class="fad fa-circle fa-2x"></i>
                              </div>
                             <div class="content">
@@ -248,7 +248,7 @@
                             </div>
                         </div>
                         <div class="item">
-                            <div class="ico"> <img src="{{ asset('public/frontend/images/index/icons/ben-ico5.svg') }}"
+                            <div class="ico"> <img src="{{ asset('frontend/images/index/icons/ben-ico5.svg') }}"
                                     alt=""> </div>
                             <div class="content">
                                 <h3>Benifit 4</h3>
@@ -269,7 +269,7 @@
         </div>
 
     </div>
-    
+
 </div>
 
 @endsection
