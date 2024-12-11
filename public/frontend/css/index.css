@@ -4696,7 +4696,7 @@ body .main-content {
     padding: .25em 0 .325em;
     margin: 0 auto;
     background-color: #15354e;
-    background-image: url(../../images/index/background-text.svg);
+    background-image: url(./../images/index/background-text.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 300px;
@@ -4982,7 +4982,7 @@ body .main-content {
 }
 
 .wrapper-home-pages .wrapper-vo {
-    background: url(../../images/index/waves/bg-vo.svg) left center no-repeat;
+    background: url(./../images/index/waves/bg-vo.svg) left center no-repeat;
     background-size: 36%
 }
 
@@ -5124,7 +5124,7 @@ body .main-content {
 }
 
 .wrapper-home-pages .wrapper-vo .vo-animation .button-img {
-    background: url(../../images/index/vo-svg/button.svg);
+    background: url(./../images/index/vo-svg/button.svg);
     background-size: 100% 200%;
     width: 10%;
     height: 4.9%;
@@ -5504,7 +5504,7 @@ body .main-content {
 .wrapper-home-pages .wrapper-freight-marketplace {
     padding: 260px 0 0;
     text-align: center;
-    background: url(../../images/index/waves/bg-ofm.svg) no-repeat;
+    background: url(./../images/index/waves/bg-ofm.svg) no-repeat;
     background-size: 74%;
     background-position: 17% 0
 }
@@ -5813,7 +5813,7 @@ body .main-content {
     top: 0;
     width: 100%;
     height: 200%;
-    background: url(../../images/index/waves/bg-load-calculator.svg) 0 90% no-repeat;
+    background: url(./../images/index/waves/bg-load-calculator.svg) 0 90% no-repeat;
     background-size: 92%;
     z-index: -1
 }
@@ -6065,7 +6065,7 @@ body .main-content {
 .wrapper-home-pages .wrapper-documents-solutions {
     position: relative;
     padding-bottom: 100px;
-    background: url(../../images/index/waves/bg-shipping-document.svg) 0 40% no-repeat;
+    background: url(./../images/index/waves/bg-shipping-document.svg) 0 40% no-repeat;
     background-size: 67%;
     z-index: 100
 }
@@ -7082,7 +7082,7 @@ body .main-content {
     margin-bottom: 250px;
     position: relative;
     z-index: 5;
-    background: url(../../images/index/waves/bg-benefits.svg) center no-repeat;
+    background: url(./../images/index/waves/bg-benefits.svg) center no-repeat;
     background-size: 75%;
     padding-top: 80px
 }

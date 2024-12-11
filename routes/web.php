@@ -58,17 +58,7 @@ Route::get('/mail_view_proposal/{token}', 'SiteController@mail_view_proposal')->
 // Merging translated file scripts
 Route::get('merge_them', function () {
 
-    $arabic="";
-    foreach(file( url('public/trans/variables.json') ) as $line) 
-    {
-        $arabic=$arabic.$line.'+<br>';
-    }
-    foreach(file( url('public/trans/arabic_translation.json') ) as $line) 
-    {
-        $from = '/'.preg_quote('+', '/').'/';
-        $arabic = preg_replace($from, $line, $arabic, 1);
-        // print_r( $arabic);
-        // return;
-    }
-    print_r( $arabic);
+
 });
+Route::get('/merge_them', 'SiteController@merge_them')->name('merge_them');
+

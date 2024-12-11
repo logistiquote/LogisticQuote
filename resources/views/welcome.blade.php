@@ -39,20 +39,20 @@
     <meta name="description" content="&amp;#9875;International digital freight broker with the most powerful network of independent freight agents all over the World. Digital provider of logistics services for transport companies. Calculation of distances and cost of transportation of goods">
     <meta name="keywords" content="international freight exchange,sea fright rates,online container tracking,container shipping,sea freight rates,international freight shipping company">
     <title>International container shipping | Online freight marketplace</title>
-    <link href="{{ asset('public/css/index.css') }}" media="screen" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('public/css/partial-mp-filter.css0cdb.css') }}" media="screen" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('public/css/global.css9bed.css') }}" media="screen" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="{{ asset('public/js/main.min.jse003.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/jquery-ui-custom.mine23c.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/bootstrap-datepicker.mine23c.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/select2.min489b.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/slick.mine23c.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/gsap.min8347.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/TweenMax.min8347.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/ScrollMagic.min8347.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/animation.gsap.min8347.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/libs/debug.addIndicators.min8347.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('public/js/index5493.js') }}"></script>
+    <link href="{{ asset('css/index.css') }}" media="screen" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/partial-mp-filter.css0cdb.css') }}" media="screen" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/global.css9bed.css') }}" media="screen" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{{ asset('js/main.min.jse003.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/jquery-ui-custom.mine23c.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/bootstrap-datepicker.mine23c.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/select2.min489b.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/slick.mine23c.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/gsap.min8347.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/TweenMax.min8347.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/ScrollMagic.min8347.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/animation.gsap.min8347.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('libs/debug.addIndicators.min8347.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/index5493.js') }}"></script>
     <script type="text/javascript">
         /*<![CDATA[*/
         var G_LANG = '';
@@ -830,7 +830,7 @@
                                 </script>
                             </div>
                         </div>
-                        <div class="waves"> <img src="{{ asset('public/frontend/images/index/new-wave.svg') }}" alt="background waves"> </div>
+                        <div class="waves"> <img src="{{ asset('frontend/images/index/new-wave.svg') }}" alt="background waves"> </div>
                     </div>
                     <div class="services-block index-section-item">
                         <div class="wrapper-list-item">
@@ -838,25 +838,25 @@
                                 <div class="row">
                                     <div class="col-md-3 col-sm-6 col-12">
                                         <div class="item"> <a href="reference/load-calc-about/index.html" title="Load Calculator">
-                                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/mugs/LogistiQuote-load-calculatorc4ca.svg?1') }}" alt="Load Calculator"> </div>
+                                                <div class="ico"> <img src="{{ asset('frontend/images/index/mugs/LogistiQuote-load-calculatorc4ca.svg?1') }}" alt="Load Calculator"> </div>
                                                 <p>Load Calculator</p>
                                             </a> </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-12">
                                         <div class="item"> <a href="services/logistics-explorer/index.html" title="Logistics Explorer">
-                                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/mugs/LogistiQuote-logisticsc4ca.svg?1') }}" alt="Logistics Explorer"> <span class="new-info"> <span class="bg-1"></span> <span class="bg-2"></span> <span class="text">NEW</span> </span> </div>
+                                                <div class="ico"> <img src="{{ asset('frontend/images/index/mugs/LogistiQuote-logisticsc4ca.svg?1') }}" alt="Logistics Explorer"> <span class="new-info"> <span class="bg-1"></span> <span class="bg-2"></span> <span class="text">NEW</span> </span> </div>
                                                 <p>Logistics Explorer</p>
                                             </a> </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-12">
                                         <div class="item"> <a href="services/learn-more/index.html" title="Container Tracking">
-                                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/mugs/LogistiQuote-trackingc4ca.svg?1') }}" alt="Container Tracking"> </div>
+                                                <div class="ico"> <img src="{{ asset('frontend/images/index/mugs/LogistiQuote-trackingc4ca.svg?1') }}" alt="Container Tracking"> </div>
                                                 <p>Container Tracking</p>
                                             </a> </div>
                                     </div>
                                     <div class="col-md-3 col-sm-6 col-12">
                                         <div class="item"> <a href="services/schedules/index.html" title="Ship schedules">
-                                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/mugs/LogistiQuote-schedulec4ca.svg?1') }}" alt="Ship schedules"> </div>
+                                                <div class="ico"> <img src="{{ asset('frontend/images/index/mugs/LogistiQuote-schedulec4ca.svg?1') }}" alt="Ship schedules"> </div>
                                                 <p>Ship schedules</p>
                                             </a> </div>
                                     </div>
@@ -1355,13 +1355,13 @@
                 <div class="wrapper-container">
                     <h2>Simplify how you work</h2>
                     <div class="section-block">
-                        <div class="img-block"> <img src="{{ asset('public/frontend/images/index/profile/home_profile-background.png') }}" class="background" alt="profile">
-                            <div class="maps map-profile_wrapper"> <img src="{{ asset('public/frontend/images/index/profile/map-profile-one.png') }}" class="map-profile-one" alt="map"> <img src="{{ asset('public/frontend/images/index/profile/map-profile-two.png') }}" class="map-profile-two" alt="map"> </div> <img src="{{ asset('public/frontend/images/index/profile/map-profile-headline.png') }}" class="map-profile-headline" alt="map headline">
+                        <div class="img-block"> <img src="{{ asset('frontend/images/index/profile/home_profile-background.png') }}" class="background" alt="profile">
+                            <div class="maps map-profile_wrapper"> <img src="{{ asset('frontend/images/index/profile/map-profile-one.png') }}" class="map-profile-one" alt="map"> <img src="{{ asset('frontend/images/index/profile/map-profile-two.png') }}" class="map-profile-two" alt="map"> </div> <img src="{{ asset('frontend/images/index/profile/map-profile-headline.png') }}" class="map-profile-headline" alt="map headline">
                             <div class="card">
-                                <div class="card-elem_wrapper"> <img src="{{ asset('public/frontend/images/index/profile/card-kiev.png') }}" class="profile-card-elem" alt="card"> </div>
-                                <div class="card-elem_wrapper"> <img src="{{ asset('public/frontend/images/index/profile/card-odessa.png') }}" class="profile-card-elem" alt="card"> </div>
-                                <div class="card-elem_wrapper"> <img src="{{ asset('public/frontend/images/index/profile/card-dubaic4ca.png?1') }}" class="profile-card-elem" alt="card"> </div>
-                                <div class="card-elem_wrapper"> <img src="{{ asset('public/frontend/images/index/profile/card-shanghai.png') }}" class="profile-card-elem" alt="card"> </div>
+                                <div class="card-elem_wrapper"> <img src="{{ asset('frontend/images/index/profile/card-kiev.png') }}" class="profile-card-elem" alt="card"> </div>
+                                <div class="card-elem_wrapper"> <img src="{{ asset('frontend/images/index/profile/card-odessa.png') }}" class="profile-card-elem" alt="card"> </div>
+                                <div class="card-elem_wrapper"> <img src="{{ asset('frontend/images/index/profile/card-dubaic4ca.png?1') }}" class="profile-card-elem" alt="card"> </div>
+                                <div class="card-elem_wrapper"> <img src="{{ asset('frontend/images/index/profile/card-shanghai.png') }}" class="profile-card-elem" alt="card"> </div>
                             </div>
                         </div>
                         <div class="content">
@@ -1377,8 +1377,8 @@
                 <p>We integrate B2B shippers to all-inclusive rates</p>
                 <div class="wrapper-container">
                     <div class="section-block-columns">
-                        <div class="img-block"> <img src="{{ asset('public/frontend/images/index/le-svg/backgroundc4ca.svg?1') }}" alt="" class="background"> <img src="{{ asset('public/frontend/images/index/le-svg/browser.png') }}" alt="" class="browser"> <img src="{{ asset('public/frontend/images/index/le-svg/girl.png') }}" alt="" class="girl"> <img src="{{ asset('public/frontend/images/index/le-svg/mail.png') }}" alt="" class="mail"> <img src="{{ asset('public/frontend/images/index/le-svg/map.png') }}" alt="" class="map"> <img src="{{ asset('public/frontend/images/index/le-svg/monitor.png') }}" alt="" class="monitor"> <img src="{{ asset('public/frontend/images/index/le-svg/rate1c4ca.png?1') }}" alt="" class="rate1"> <img src="{{ asset('public/frontend/images/index/le-svg/rate2c4ca.png?1') }}" alt="" class="rate2"> <img src="{{ asset('public/frontend/images/index/le-svg/rate-price.png') }}" alt="" class="price"> </div>
-                        <div class="img-block mobile"> <img src="{{ asset('public/frontend/images/index/mobile/home_market-place.png') }}" class="mobile-img" alt="market-place"> </div>
+                        <div class="img-block"> <img src="{{ asset('frontend/images/index/le-svg/backgroundc4ca.svg?1') }}" alt="" class="background"> <img src="{{ asset('frontend/images/index/le-svg/browser.png') }}" alt="" class="browser"> <img src="{{ asset('frontend/images/index/le-svg/girl.png') }}" alt="" class="girl"> <img src="{{ asset('frontend/images/index/le-svg/mail.png') }}" alt="" class="mail"> <img src="{{ asset('frontend/images/index/le-svg/map.png') }}" alt="" class="map"> <img src="{{ asset('frontend/images/index/le-svg/monitor.png') }}" alt="" class="monitor"> <img src="{{ asset('frontend/images/index/le-svg/rate1c4ca.png?1') }}" alt="" class="rate1"> <img src="{{ asset('frontend/images/index/le-svg/rate2c4ca.png?1') }}" alt="" class="rate2"> <img src="{{ asset('frontend/images/index/le-svg/rate-price.png') }}" alt="" class="price"> </div>
+                        <div class="img-block mobile"> <img src="{{ asset('frontend/images/index/mobile/home_market-place.png') }}" class="mobile-img" alt="market-place"> </div>
                         <div class="content">
                             <ul class="list">
                                 <li class="item">
@@ -1402,8 +1402,8 @@
             <section class="wrapper-load-calculator">
                 <div class="wrapper-container">
                     <div class="section-block-video">
-                        <div class="video-block"> <img src="{{ asset('public/frontend/images/index/lc-svg/container.svg') }}" alt="" class="container"> <img src="{{ asset('public/frontend/images/index/lc-svg/select_box_type.svg') }}" alt="" class="select_box_type"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_blue.svg') }}" alt="" class="box box_blue_1"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_blue.svg') }}" alt="" class="box box_blue_2"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_1"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_2"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_3"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_4"> <img src="{{ asset('public/frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_5"> <img src="{{ asset('public/frontend/images/index/lc-svg/formulas.svg') }}" alt="" class="formulas"> <img src="{{ asset('public/frontend/images/index/lc-svg/table.svg') }}" alt="" class="table"> </div>
-                        <div class="img-block mobile"> <img src="{{ asset('public/frontend/images/index/mobile/home_load-calculator.png') }}" class="mobile-img" alt="load-calculator"> </div>
+                        <div class="video-block"> <img src="{{ asset('frontend/images/index/lc-svg/container.svg') }}" alt="" class="container"> <img src="{{ asset('frontend/images/index/lc-svg/select_box_type.svg') }}" alt="" class="select_box_type"> <img src="{{ asset('frontend/images/index/lc-svg/box_blue.svg') }}" alt="" class="box box_blue_1"> <img src="{{ asset('frontend/images/index/lc-svg/box_blue.svg') }}" alt="" class="box box_blue_2"> <img src="{{ asset('frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_1"> <img src="{{ asset('frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_2"> <img src="{{ asset('frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_3"> <img src="{{ asset('frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_4"> <img src="{{ asset('frontend/images/index/lc-svg/box_dark.svg') }}" alt="" class="box box_dark_5"> <img src="{{ asset('frontend/images/index/lc-svg/formulas.svg') }}" alt="" class="formulas"> <img src="{{ asset('frontend/images/index/lc-svg/table.svg') }}" alt="" class="table"> </div>
+                        <div class="img-block mobile"> <img src="{{ asset('frontend/images/index/mobile/home_load-calculator.png') }}" class="mobile-img" alt="load-calculator"> </div>
                         <div class="content">
                             <h3>Load Calculator</h3>
                             <p>Stuffing optimization for packages with diverse sizes has never been so easy! Any square or round objects are schematically shown in 3D model loaded inside container or truck - just in seconds.</p>
@@ -1420,8 +1420,8 @@
                             <p>Track your shipment by Container number or Bill Of Lading number. The tracking system allows to locate the current position of your container on the world map and determines time spent in port of transshipment</p>
                             <div class="buttons"> <a href="container/tracking/index.html" class="link">Get Started</a> <a href="services/plans/index.html#tracking" class="link-transparent">API or IFRAME integration</a> </div>
                         </div>
-                        <div class="video-block"> <img src="{{ asset('public/frontend/images/index/ct-svg/computer.svg') }}" alt="" class="computer"> <img src="{{ asset('public/frontend/images/index/ct-svg/monitor.svg') }}" alt="" class="monitor"> <img src="{{ asset('public/frontend/images/index/ct-svg/keyboard.svg') }}" alt="" class="keyboard"> <img src="{{ asset('public/frontend/images/index/ct-svg/panel.svg') }}" alt="" class="panel"> <img src="{{ asset('public/frontend/images/index/ct-svg/container_info.svg') }}" alt="" class="container_info"> <img src="{{ asset('public/frontend/images/index/ct-svg/circle_small.svg') }}" alt="" class="circle_small"> <img src="{{ asset('public/frontend/images/index/ct-svg/grey-line.svg') }}" alt="" class="grey-line"> <img src="{{ asset('public/frontend/images/index/ct-svg/folder-icon.svg') }}" alt="" class="folder-icon"> <img src="{{ asset('public/frontend/images/index/ct-svg/folder-name-box.svg') }}" alt="" class="folder-name-box"> <img src="{{ asset('public/frontend/images/index/ct-svg/folder-name.svg') }}" alt="" class="folder-name"> </div>
-                        <div class="img-block mobile"> <img src="{{ asset('public/frontend/images/index/mobile/home_container-tracking.png') }}" class="mobile-img" alt="container-tracking"> </div>
+                        <div class="video-block"> <img src="{{ asset('frontend/images/index/ct-svg/computer.svg') }}" alt="" class="computer"> <img src="{{ asset('frontend/images/index/ct-svg/monitor.svg') }}" alt="" class="monitor"> <img src="{{ asset('frontend/images/index/ct-svg/keyboard.svg') }}" alt="" class="keyboard"> <img src="{{ asset('frontend/images/index/ct-svg/panel.svg') }}" alt="" class="panel"> <img src="{{ asset('frontend/images/index/ct-svg/container_info.svg') }}" alt="" class="container_info"> <img src="{{ asset('frontend/images/index/ct-svg/circle_small.svg') }}" alt="" class="circle_small"> <img src="{{ asset('frontend/images/index/ct-svg/grey-line.svg') }}" alt="" class="grey-line"> <img src="{{ asset('frontend/images/index/ct-svg/folder-icon.svg') }}" alt="" class="folder-icon"> <img src="{{ asset('frontend/images/index/ct-svg/folder-name-box.svg') }}" alt="" class="folder-name-box"> <img src="{{ asset('frontend/images/index/ct-svg/folder-name.svg') }}" alt="" class="folder-name"> </div>
+                        <div class="img-block mobile"> <img src="{{ asset('frontend/images/index/mobile/home_container-tracking.png') }}" class="mobile-img" alt="container-tracking"> </div>
                     </div>
                 </div>
             </section>
@@ -1429,8 +1429,8 @@
                 <div class="wrapper-container">
                     <div class="section-block-video">
                         <div class="video-block document_one">
-                            <div class="document document_open document_images"> <img src="{{ asset('public/frontend/images/index/doc-svg/document.png') }}" alt="" class="back_doc document_images"> </div>
-                            <div class="document document_images"> <img src="{{ asset('public/frontend/images/index/doc-svg/document-rtg.png') }}" alt="" class="back_doc document_images"> </div>
+                            <div class="document document_open document_images"> <img src="{{ asset('frontend/images/index/doc-svg/document.png') }}" alt="" class="back_doc document_images"> </div>
+                            <div class="document document_images"> <img src="{{ asset('frontend/images/index/doc-svg/document-rtg.png') }}" alt="" class="back_doc document_images"> </div>
                         </div>
                         <div class="content">
                             <h3>Shipping Documents</h3>
@@ -1475,28 +1475,28 @@
                         <h2>Why <span>LogistiQuote</span></h2>
                         <div class="benefits">
                             <div class="item">
-                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/icons/ben-ico1.svg') }}" alt=""> </div>
+                                <div class="ico"> <img src="{{ asset('frontend/images/index/icons/ben-ico1.svg') }}" alt=""> </div>
                                 <div class="content">
                                     <h3>The greatest portfolio of shipping services</h3>
                                     <p>Would you like to ship cargo by ship? FCL or LCL? Bulk or Break Bulk? There is everything you need for shipping on LogistiQuote.com. We have gathered the shipping services and put them all in one place to facilitate your search. Instantly compare ocean and trucking freight quotes from the most popular logistics providers. Book everything on one site!</p>
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/icons/ben-ico3.svg') }}" alt=""> </div>
+                                <div class="ico"> <img src="{{ asset('frontend/images/index/icons/ben-ico3.svg') }}" alt=""> </div>
                                 <div class="content">
                                     <h3>We help you find the cheapest rate</h3>
                                     <p>Affordable pricing of shipping services is what we constantly strive for. At LogistiQuote.com you will find cheap rates to any country, from world's top Freight Forwarders, allowing you to save your time and money. Why do you need to spend a lot of resources and energy on negotiations to get the best shipping rate? Find and book them online! It is much more convenient and advantageous.</p>
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/icons/ben-ico4.svg') }}" alt=""> </div>
+                                <div class="ico"> <img src="{{ asset('frontend/images/index/icons/ben-ico4.svg') }}" alt=""> </div>
                                 <div class="content">
                                     <h3>Client support at all stages of shipping</h3>
                                     <p>24 hours a day, 7 days a week, 365 days a year! We understand how important it is to support our customers while organizing their cargo movement, delivery and customs clearance. Our Customer Care Service is always ready to support you day and night on all issues relating to freight, weight, routing, rates, inland haulage and documentation.</p>
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="ico"> <img src="{{ asset('public/frontend/images/index/icons/ben-ico5.svg') }}" alt=""> </div>
+                                <div class="ico"> <img src="{{ asset('frontend/images/index/icons/ben-ico5.svg') }}" alt=""> </div>
                                 <div class="content">
                                     <h3>Bonus program for frequent customers</h3>
                                     <p>We value our customers, so they have an opportunity to get shipping rates with discounts. Promos depend on your orders & routes. We provide special promotions in the form of promotional codes.When you proceed to payment, you will be able to use a promo code. If you do that, the price will lower. To get a promo code, fill out the quotation request form and get in touch with us.</p>
@@ -1582,7 +1582,7 @@
     </footer>
     <div class="modal" id="langModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="wrapper-lang-modal">
-            <div class="header-lang-modal"> <img src="{{ asset('public/frontend/images/LogistiQuote-logo8f14.svg?7" alt="logo LogistiQuote"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"><i class="far fa-times"></i></span> </button> </div>
+            <div class="header-lang-modal"> <img src="{{ asset('frontend/images/LogistiQuote-logo8f14.svg?7" alt="logo LogistiQuote"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true"><i class="far fa-times"></i></span> </button> </div>
             <div class="content-lang-modal">
                 <h4 class="title-lang-modal">Choose language:</h4>
                 <div class="body-lang-modal">

@@ -62,14 +62,14 @@ class SiteController extends Controller
             'transportation_type' => $request->transportation_type
         ]);
         session()->save();
-        
+
         return redirect(route('get_quote_step2'));
     }
     public function get_quote_step2()
     {
         $fileContents = Storage::disk('public')->get('store_pending_form.json');
         $fileContents = json_decode($fileContents);
-        
+
         if($fileContents->ready_to_load_date == null)
         {
             return redirect(route('index'));
@@ -98,14 +98,14 @@ class SiteController extends Controller
             $request->merge(['attachment_file' => $file_name]);
             $isStore = Storage::disk('public')->putFileAs('temp/', $request->file('attachment'), $file_name);
         }
-        
+
         $fileContents = Storage::disk('public')->get('store_pending_form.json');
         $fileContents = json_decode($fileContents, true);
         $merge = array_merge($fileContents, $request->all());
-        
+
         $isDelete = Storage::disk('public')->delete('store_pending_form.json');
         Storage::disk('public')->put('store_pending_form.json', json_encode($merge));
-        
+
         if($fileContents['origin'] == "")
         {
             return redirect(route('index'));
@@ -139,5 +139,22 @@ class SiteController extends Controller
     {
         $quotation = Quotation::where('quotation_id', $token)->first();
         return redirect(route('quotation.show', $quotation->id));
+    }
+
+    public function merge_them()
+    {
+        $arabic="";
+        foreach(file( url('public/trans/variables.json') ) as $line)
+        {
+            $arabic=$arabic.$line.'+<br>';
+        }
+        foreach(file( url('public/trans/arabic_translation.json') ) as $line)
+        {
+            $from = '/'.preg_quote('+', '/').'/';
+            $arabic = preg_replace($from, $line, $arabic, 1);
+            // print_r( $arabic);
+            // return;
+        }
+        print_r( $arabic);
     }
 }
