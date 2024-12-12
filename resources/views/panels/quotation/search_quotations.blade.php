@@ -162,8 +162,6 @@
     $(document).ready(function () {
         $('#quotations_table').DataTable();
 
-
-
         $("#transportation_type").change(function () {
             if ($(this).find(':selected').val() == 'ocean') {
                 $('#type_of_shipment').empty();
@@ -174,8 +172,6 @@
                 $("#type_of_shipment").append(new Option("AIR", "air"));
             }
         });
-
-
     });
 
 </script>

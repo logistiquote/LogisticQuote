@@ -3,7 +3,11 @@
 namespace Illuminate\Container;
 
 use Closure;
+use ReflectionNamedType;
 
+/**
+ * @internal
+ */
 class Util
 {
     /**
@@ -29,11 +33,12 @@ class Util
      * From global value() helper in Illuminate\Support.
      *
      * @param  mixed  $value
+     * @param  mixed  ...$args
      * @return mixed
      */
-    public static function unwrapIfClosure($value)
+    public static function unwrapIfClosure($value, ...$args)
     {
-        return $value instanceof Closure ? $value() : $value;
+        return $value instanceof Closure ? $value(...$args) : $value;
     }
 
     /**
@@ -48,6 +53,22 @@ class Util
     {
         $type = $parameter->getType();
 
-        return ($type && ! $type->isBuiltin()) ? $type->getName() : null;
+        if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
+            return null;
+        }
+
+        $name = $type->getName();
+
+        if (! is_null($class = $parameter->getDeclaringClass())) {
+            if ($name === 'self') {
+                return $class->getName();
+            }
+
+            if ($name === 'parent' && $parent = $class->getParentClass()) {
+                return $parent->getName();
+            }
+        }
+
+        return $name;
     }
 }

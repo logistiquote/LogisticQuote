@@ -42,10 +42,13 @@ Route::resource('/quotation', 'QuotationController');
 Route::get('/quotations', 'QuotationController@view_all')->name('quotations.view_all');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
 Route::get('/store_pending_form', 'QuotationController@store_pending_form')->name('store_pending_form');
-
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
 Route::get('/mail_view_quotation/{token}', 'SiteController@mail_view_quotation')->name('quotation.mail_view');
 
+// Location Routes
+Route::resource('/location', 'LocationController');
+Route::get('/location-import', 'LocationController@importLocationsView')->name('location.import.view');
+Route::post('/location/import', 'ImportController@importLocations')->name('location.import');
 
 // Proposal Routes
 Route::resource('/proposal', 'ProposalController');

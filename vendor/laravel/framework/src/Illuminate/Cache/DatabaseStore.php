@@ -3,15 +3,16 @@
 namespace Illuminate\Cache;
 
 use Closure;
-use Exception;
+use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\PostgresConnection;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\SqlServerConnection;
 use Illuminate\Support\InteractsWithTime;
 use Illuminate\Support\Str;
 
-class DatabaseStore implements Store
+class DatabaseStore implements LockProvider, Store
 {
     use InteractsWithTime, RetrievesMultipleKeys;
 
@@ -21,6 +22,13 @@ class DatabaseStore implements Store
      * @var \Illuminate\Database\ConnectionInterface
      */
     protected $connection;
+
+    /**
+     * The database connection instance that should be used to manage locks.
+     *
+     * @var \Illuminate\Database\ConnectionInterface
+     */
+    protected $lockConnection;
 
     /**
      * The name of the cache table.
@@ -44,11 +52,18 @@ class DatabaseStore implements Store
     protected $lockTable;
 
     /**
-     * A array representation of the lock lottery odds.
+     * An array representation of the lock lottery odds.
      *
      * @var array
      */
     protected $lockLottery;
+
+    /**
+     * The default number of seconds that a lock should be held.
+     *
+     * @var int
+     */
+    protected $defaultLockTimeoutInSeconds;
 
     /**
      * Create a new database store.
@@ -61,16 +76,18 @@ class DatabaseStore implements Store
      * @return void
      */
     public function __construct(ConnectionInterface $connection,
-                                $table,
-                                $prefix = '',
-                                $lockTable = 'cache_locks',
-                                $lockLottery = [2, 100])
+                                                    $table,
+                                                    $prefix = '',
+                                                    $lockTable = 'cache_locks',
+                                                    $lockLottery = [2, 100],
+                                                    $defaultLockTimeoutInSeconds = 86400)
     {
         $this->table = $table;
         $this->prefix = $prefix;
         $this->connection = $connection;
         $this->lockTable = $lockTable;
         $this->lockLottery = $lockLottery;
+        $this->defaultLockTimeoutInSeconds = $defaultLockTimeoutInSeconds;
     }
 
     /**
@@ -98,7 +115,7 @@ class DatabaseStore implements Store
         // item from the cache. Then we will return a null value since the cache is
         // expired. We will use "Carbon" to make this comparison with the column.
         if ($this->currentTime() >= $cache->expiration) {
-            $this->forget($key);
+            $this->forgetIfExpired($key);
 
             return;
         }
@@ -120,13 +137,7 @@ class DatabaseStore implements Store
         $value = $this->serialize($value);
         $expiration = $this->getTime() + $seconds;
 
-        try {
-            return $this->table()->insert(compact('key', 'value', 'expiration'));
-        } catch (Exception $e) {
-            $result = $this->table()->where('key', $key)->update(compact('value', 'expiration'));
-
-            return $result > 0;
-        }
+        return $this->table()->upsert(compact('key', 'value', 'expiration'), 'key') > 0;
     }
 
     /**
@@ -139,20 +150,22 @@ class DatabaseStore implements Store
      */
     public function add($key, $value, $seconds)
     {
+        if (! is_null($this->get($key))) {
+            return false;
+        }
+
         $key = $this->prefix.$key;
         $value = $this->serialize($value);
         $expiration = $this->getTime() + $seconds;
 
+        if (! $this->getConnection() instanceof SqlServerConnection) {
+            return $this->table()->insertOrIgnore(compact('key', 'value', 'expiration')) > 0;
+        }
+
         try {
             return $this->table()->insert(compact('key', 'value', 'expiration'));
-        } catch (QueryException $e) {
-            return $this->table()
-                ->where('key', $key)
-                ->where('expiration', '<=', $this->getTime())
-                ->update([
-                    'value' => $value,
-                    'expiration' => $expiration,
-                ]) >= 1;
+        } catch (QueryException) {
+            // ...
         }
 
         return false;
@@ -266,12 +279,13 @@ class DatabaseStore implements Store
     public function lock($name, $seconds = 0, $owner = null)
     {
         return new DatabaseLock(
-            $this->connection,
+            $this->lockConnection ?? $this->connection,
             $this->lockTable,
             $this->prefix.$name,
             $seconds,
             $owner,
-            $this->lockLottery
+            $this->lockLottery,
+            $this->defaultLockTimeoutInSeconds
         );
     }
 
@@ -296,6 +310,22 @@ class DatabaseStore implements Store
     public function forget($key)
     {
         $this->table()->where('key', '=', $this->prefix.$key)->delete();
+
+        return true;
+    }
+
+    /**
+     * Remove an item from the cache if it is expired.
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    public function forgetIfExpired($key)
+    {
+        $this->table()
+            ->where('key', '=', $this->prefix.$key)
+            ->where('expiration', '<=', $this->getTime())
+            ->delete();
 
         return true;
     }
@@ -333,6 +363,19 @@ class DatabaseStore implements Store
     }
 
     /**
+     * Specify the name of the connection that should be used to manage locks.
+     *
+     * @param  \Illuminate\Database\ConnectionInterface  $connection
+     * @return $this
+     */
+    public function setLockConnection($connection)
+    {
+        $this->lockConnection = $connection;
+
+        return $this;
+    }
+
+    /**
      * Get the cache key prefix.
      *
      * @return string
@@ -352,7 +395,7 @@ class DatabaseStore implements Store
     {
         $result = serialize($value);
 
-        if ($this->connection instanceof PostgresConnection && Str::contains($result, "\0")) {
+        if ($this->connection instanceof PostgresConnection && str_contains($result, "\0")) {
             $result = base64_encode($result);
         }
 

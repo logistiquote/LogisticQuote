@@ -29,7 +29,7 @@
             <h2>Description Of Goods</h2>
             <div class="shipment-form">
 
-            
+
                 <div class="request-select large">
                     <p class="label">Incoterms</p>
                     <div class="select-wrap  blue">
@@ -76,13 +76,13 @@
                     </div>
                 </div>
 
-                
+
                 <div class="from-row">
                     <div class="request-input large">
                         <p class="name">Description of goods</p>
                         <div class="input-wrap">
-                            <textarea name="description_of_goods" id="" cols="45" rows="3"
-                                style="border-radius: 5px; border: 1px lite gray;"></textarea>
+                            <textarea name="description_of_goods" id="" cols="45" rows="5"
+                                style="border-radius: 5px; border: 1px lite gray; resize: none;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
                                     <p class="name">Dimensions</p>
                                     <div class="input-wrap">
                                         <input type="number" title="Dimensions" name="l[]" class="require dimension" placeholder="L"
-                                            step="any" 
+                                            step="any"
                                             id="length_1" autocomplete="off" value="">
                                     </div>
                                 </div>
@@ -202,7 +202,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-row" id="dynamic_buttons">
                         <button type="button" class="request-btn btn-sm" id="add-button"
                             style="background: #F39C12; padding: 0px 15px; height: 40px; margin: 0px 0px 20px 20px; font-size: 12px; border-radius: 10px;">
@@ -231,7 +231,7 @@
                     <div class="request-input large">
                         <p class="name">Attach a file</p>
                         <div class="input-wrap  ">
-                            <input type="file" style="border: 1px solid grey;" name="attachment">    
+                            <input type="file" style="border: 1px solid grey;" name="attachment">
                         </div>
                     </div>
                 </div>
@@ -240,7 +240,7 @@
                     <div class="request-input large">
                         <p class="name">Remarks</p>
                         <div class="input-wrap  ">
-                            <textarea name="remarks" id="" cols="45" rows="3" style="border-radius: 5px; border: 1px lite gray;"></textarea>
+                            <textarea name="remarks" id="" cols="45" rows="5" style="border-radius: 5px; border: 1px lite gray; resize: none;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -297,16 +297,16 @@
 </div>
 
 <script>
-    $(document).ready(function () 
+    $(document).ready(function ()
     {
         // Dynamic changes
-        $(document).on('keyup', "input[name^='l'], input[name^='w'], input[name^='h']", function() 
+        $(document).on('keyup', "input[name^='l'], input[name^='w'], input[name^='h']", function()
         {
             $el = $(this);
             $unit_num = $el.parent().parent().parent().parent();
             if($unit_num.find("input[name^='l']").val() && $unit_num.find("input[name^='w']").val()
             && $unit_num.find("input[name^='h']").val())
-            {   
+            {
                 var l = $unit_num.find("input[name^='l']").val();
                 var w = $unit_num.find("input[name^='w']").val();
                 var h = $unit_num.find("input[name^='h']").val();

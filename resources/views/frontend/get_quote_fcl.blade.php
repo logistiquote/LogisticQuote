@@ -72,8 +72,8 @@
                     <div class="request-input large">
                         <p class="name">Description of goods</p>
                         <div class="input-wrap">
-                            <textarea name="description_of_goods" id="" cols="45" rows="3"
-                                style="border-radius: 5px; border: 1px lite gray;"></textarea>
+                            <textarea name="description_of_goods" id="" cols="45" rows="5"
+                                style="border-radius: 5px; border: 1px lite gray; resize: none;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
                                                     <option value="20f-gar">40' Garmentainer</option>
                                                 </select>
                                             </div>
-                                        </div>  
+                                        </div>
                                     </div>
                                     <div class="request-input medium">
                                         <p class="name">Weight (Kg)</p>
@@ -291,8 +291,8 @@
                     <div class="request-input large">
                         <p class="name">Remarks</p>
                         <div class="input-wrap  ">
-                            <textarea name="remarks" id="" cols="45" rows="3"
-                                style="border-radius: 5px; border: 1px lite gray;"></textarea>
+                            <textarea name="remarks" id="" cols="45" rows="5"
+                                style="border-radius: 5px; border: 1px lite gray; resize: none;"></textarea>
                         </div>
                     </div>
                 </div>

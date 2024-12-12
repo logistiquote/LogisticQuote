@@ -61,7 +61,7 @@ class SortedMiddleware extends Collection
             }
         }
 
-        return array_values(array_unique($middlewares, SORT_REGULAR));
+        return Router::uniqueMiddleware($middlewares);
     }
 
     /**
@@ -99,6 +99,14 @@ class SortedMiddleware extends Collection
         if ($interfaces !== false) {
             foreach ($interfaces as $interface) {
                 yield $interface;
+            }
+        }
+
+        $parents = @class_parents($stripped);
+
+        if ($parents !== false) {
+            foreach ($parents as $parent) {
+                yield $parent;
             }
         }
     }

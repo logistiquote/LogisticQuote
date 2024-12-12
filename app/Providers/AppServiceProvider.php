@@ -14,8 +14,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            \App\Services\LocationImport\ImportStrategyBuilderInterface::class,
+            \App\Services\LocationImport\ImportStrategyBuilder::class
+        );
     }
+
 
     /**
      * Bootstrap any application services.
