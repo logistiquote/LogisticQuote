@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.2-fpm
 
 # Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev \
     supervisor \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip gd \
-    && pecl install xdebug-3.1.6 && docker-php-ext-enable xdebug
+    && docker-php-ext-install pdo pdo_mysql mbstring zip gd
 
 # Set working directory
 WORKDIR /var/www/html

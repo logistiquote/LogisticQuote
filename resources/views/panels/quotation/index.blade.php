@@ -38,9 +38,9 @@
                         @foreach($quotations as $quotation)
                         <tr>
                             <td> <b>{{ $quotation->quotation_id }} </b> </td>
-                            <td> 
-                                <span class="text-success">{{ $quotation->origin }}</span>  
-                                to 
+                            <td>
+                                <span class="text-success">{{ $quotation->origin }}</span>
+                                to
                                 <span class="text-danger">{{ $quotation->destination }}</span>
                             </td>
                             <td>
@@ -74,7 +74,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('quotation.show', $quotation->id) }}">View</a>
                                     <a class="dropdown-item" href="{{ route('quotation.edit', $quotation->id) }}">Edit</a>
-                                    
+
                                     @if( $quotation->status != 'withdrawn')
                                         <form action="{{ route('quotation.destroy', $quotation->id ) }}" method="POST">
                                             @csrf
