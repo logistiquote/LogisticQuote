@@ -71,8 +71,11 @@
                         </button>
 
                         <div class="form-row mt-4">
-                            <div class="col-md-12 text-left">
+                            <div class="text-left ml-1">
                                 <button type="submit" class="btn btn-success">Create Route</button>
+                            </div>
+                            <div class="text-left ml-1">
+                                <a href="{{ route('route.index') }}" class="btn btn-secondary">Back to Routes</a>
                             </div>
                         </div>
                     </form>
