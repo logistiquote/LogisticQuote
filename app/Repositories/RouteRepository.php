@@ -6,6 +6,11 @@ use App\Models\Route;
 
 class RouteRepository
 {
+    public function create(array $data)
+    {
+        return Route::create($data);
+    }
+
     public function createOrUpdate(array $data)
     {
         return Route::updateOrCreate(

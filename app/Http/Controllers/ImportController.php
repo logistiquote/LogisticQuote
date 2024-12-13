@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LocationImportRequest;
 use App\Services\LocationImportService;
-use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ImportController extends Controller
 {
@@ -13,21 +13,23 @@ class ImportController extends Controller
         $this->middleware(['auth', 'verified']);
     }
 
-    /**
-     * @throws Exception
-     */
     public function importLocations(LocationImportRequest $request)
     {
         $validatedData = $request->validated();
 
-        $filePath = $request->file('file')->getRealPath();
-        $type = $request->get('type');
+        try {
+            $filePath = $request->file('file')->getRealPath();
 
-        $this->importService->setStrategy($type);
+            $this->importService->setStrategy($validatedData['type']);
 
-        $results = $this->importService->import($filePath);
+            $this->importService->import($filePath);
 
-        return redirect()->route('location.index')
-            ->with('success', 'File imported successfully!');
+            return redirect()->route('location.index')
+                ->with('success', 'File imported successfully!');
+        } catch (\Exception $e) {
+            Log::error('ImportController(importLocations). Error: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Failed to create the route. Please try again.');
+        }
     }
 }

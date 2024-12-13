@@ -2,13 +2,19 @@
 
 namespace App\Services\LocationImport;
 
+use App\Enums\WaterContainerType;
 use App\Repositories\LocationRepository;
+use App\Repositories\RouteContainerRepository;
 use App\Repositories\RouteRepository;
 
 class WaterImportStrategy implements ImportStrategyInterface
 {
 
-    public function __construct(protected LocationRepository $locationRepository, protected RouteRepository $routeRepository)
+    public function __construct(
+        protected LocationRepository $locationRepository,
+        protected RouteRepository $routeRepository,
+        protected RouteContainerRepository $routeContainerRepository
+    )
     {
     }
 
@@ -40,13 +46,24 @@ class WaterImportStrategy implements ImportStrategyInterface
             ]);
 
             // Add route
-//            $route = $this->routeRepository->createOrUpdate([
-//                'origin_id' => $origin->id,
-//                'destination_id' => $destination->id,
-//                'type' => 'water',
-//            ]);
+            $route = $this->routeRepository->createOrUpdate([
+                'origin_id' => $origin->id,
+                'destination_id' => $destination->id,
+                'type' => 'water',
+            ]);
 
-//            $results[] = $route;
+            foreach (WaterContainerType::all() as $containerType) {
+                $priceField = strtolower($containerType); // Map "20DV" to "20dv"
+                if (isset($record[$priceField])) {
+                    $this->routeContainerRepository->createOrUpdate([
+                        'route_id' => $route->id,
+                        'container_type' => $containerType,
+                        'price' => (float)$record[$priceField],
+                    ]);
+                }
+            }
+
+            $results[] = $route;
         }
 
         return $results;
