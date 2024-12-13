@@ -23,14 +23,12 @@ class LocationImportRequest extends FormRequest
      */
     public function rules()
     {
-        switch ($this->route()->getActionMethod()) {
-            case 'importLocations':
-                return [
-                    'type' => ['required', 'string', 'in:water'],
-                    'file' => ['required', 'file', 'mimes:csv,txt', 'max:10240'],
-                ];
-            default:
-                return [];
-        }
+        return match ($this->route()->getActionMethod()) {
+            'importLocations' => [
+                'type' => ['required', 'string', 'in:water'],
+                'file' => ['required', 'file', 'mimes:csv,txt', 'max:10240'],
+            ],
+            default => [],
+        };
     }
 }

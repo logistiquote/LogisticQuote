@@ -128,6 +128,12 @@
                 Routes
             </div>
             <li
+                class="nav-item <?php echo ($page_name == 'routes') ? 'active' : ''; ?>">
+                <a class="nav-link" href="{{ route('route.index') }}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Route</span></a>
+            </li>
+            <li
                 class="nav-item <?php echo ($page_name == 'locations') ? 'active' : ''; ?>">
                 <a class="nav-link" href="{{ route('location.index') }}">
                     <i class="fas fa-fw fa-table"></i>

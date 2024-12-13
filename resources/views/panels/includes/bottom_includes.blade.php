@@ -18,7 +18,7 @@
 
   @if(isset($page_name))
 
-    @if($page_name == 'quotations' || $page_name == 'locations')
+    @if($page_name == 'quotations' || $page_name == 'locations' || $page_name == 'routes')
       <!-- Page level plugins -->
       <script src="{{ asset('panel/vendor/datatables/jquery.dataTables.min.js') }}"></script>
       <script src="{{ asset('panel/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
