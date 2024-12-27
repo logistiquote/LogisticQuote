@@ -25,7 +25,7 @@
                     <div class="col-auto my-1">
                         <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" id="customControlAutosizing"
-                                name="isStockable" value="Yes">
+                                name="is_stockable" value="Yes">
                             <label class="custom-control-label" for="customControlAutosizing">Is
                                 Stockable</label>
                         </div>
@@ -35,7 +35,7 @@
                     <div class="col-auto my-1">
                         <div class="custom-control custom-checkbox mr-sm-2">
                             <input type="checkbox" class="custom-control-input" id="customControlAutosizing2"
-                                name="isDGR" value="Yes">
+                                name="is_dgr" value="Yes">
                             <label class="custom-control-label" for="customControlAutosizing2">Is DGR</label>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                     <label for="">Customs clearance?</label>
                     <div class="custom-control custom-checkbox mr-sm-2">
                         <input type="checkbox" class="custom-control-input" id="customControlAutosizing3"
-                            name="isClearanceReq" value="Yes">
+                            name="is_clearance_req" value="Yes">
                         <label class="custom-control-label" for="customControlAutosizing3">Required Customs
                             Clearance?</label>
                     </div>
@@ -98,7 +98,6 @@
                                 <th width="5%">ID</th>
                                 <th width="20%">Route</th>
                                 <th>Status</th>
-                                <th>Proposals Received</th>
                                 <th width="10%">Transportation</th>
                                 <th width="13%">Ready to load</th>
                                 <th>Worth</th>
@@ -125,9 +124,6 @@
                                     @elseif($quotation->status == 'done')
                                     <span class="badge badge-warning">{{ $quotation->status }}</span>
                                     @endif
-                                </td>
-                                <td>
-                                    <span class="badge badge-pill badge-danger">{{ $quotation->proposals_received }}</span>
                                 </td>
                                 <td>{{ $quotation->transportation_type }} ({{ $quotation->type }})</td>
                                 <td>

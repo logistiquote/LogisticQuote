@@ -16,9 +16,7 @@
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
                 @if($page_name == 'all_users')
-                    Users 
-                @else
-                    Vendors
+                    Users
                 @endif
             </h6>
         </div>
@@ -30,9 +28,6 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Email</th>
-                            @if($page_name == 'all_vendors')
-                            <th>Additional Email</th>
-                            @endif
                             <th>Phone</th>
                             <th>Company</th>
                             <th>Actions</th>
@@ -44,9 +39,6 @@
                             <td> <b>{{ $user->id }} </b> </td>
                             <td> <b>{{ $user->name }} </b> </td>
                             <td> <b>{{ $user->email }} </b> </td>
-                            @if($page_name == 'all_vendors')
-                            <td> <b>{{ $user->additional_email }} </b> </td>
-                            @endif
                             <td> <b>{{ $user->phone }} </b> </td>
                             <td> <b>{{ $user->company_name }} </b> </td>
                             <td>

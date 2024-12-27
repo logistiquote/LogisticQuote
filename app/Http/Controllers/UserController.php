@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quotation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use App\Quotation;
-use App\User;
-use App\Proposal;
-use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -17,12 +14,11 @@ class UserController extends Controller
     public function __construct()
     {
         //Specify required role for this controller here in checkRole:xyz
-        $this->middleware(['auth', 'checkRole:user', 'verified']); 
+        $this->middleware(['auth', 'checkRole:user', 'verified']);
     }
     public function index()
     {
         $data['my_quotations'] = Quotation::where('user_id', Auth::user()->id)->count();
-        $data['received_proposals'] = Proposal::where('user_id', Auth::user()->id)->count();
         $data['completed_quotations'] = Quotation::where('user_id', Auth::user()->id)
         ->where('status', 'completed')->count();
         $data['active_quotations'] = Quotation::where('user_id', Auth::user()->id)

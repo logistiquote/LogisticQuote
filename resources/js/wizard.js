@@ -1,35 +1,58 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const navTabs = document.querySelector(".nav-tabs");
+    const tabs = document.querySelectorAll('.nav-tabs > li a[title]');
     const nextButtons = document.querySelectorAll(".next-step");
     const prevButtons = document.querySelectorAll(".prev-step");
 
-    function showTab(tabId) {
-        const tabLink = document.querySelector(`[href="${tabId}"]`);
-        if (tabLink) {
-            const tabEvent = new bootstrap.Tab(tabLink);
-            tabEvent.show();
-        }
-    }
+    // Initialize tooltips
+    tabs.forEach(tab => {
+        tab.setAttribute("data-bs-toggle", "tooltip");
+        new bootstrap.Tooltip(tab);
+    });
 
-    nextButtons.forEach((button) => {
+    // Handle tab clicks
+    navTabs.addEventListener("click", function (e) {
+        const clickedTab = e.target.closest("a[data-toggle='tab']");
+        if (!clickedTab) return;
+
+        const clickedLi = clickedTab.closest("li");
+        if (clickedLi && clickedLi.classList.contains("disabled")) {
+            e.preventDefault();
+        }
+
+        // Update active state
+        document.querySelectorAll(".nav-tabs li").forEach(li => li.classList.remove("active"));
+        if (clickedLi) clickedLi.classList.add("active");
+    });
+
+    // Next button click
+    nextButtons.forEach(button => {
         button.addEventListener("click", function () {
-            const currentTab = document.querySelector(".tab-panel.active");
-            const nextTab = currentTab.nextElementSibling;
-            if (nextTab && nextTab.classList.contains("tab-panel")) {
-                currentTab.classList.remove("active");
-                nextTab.classList.add("active");
-                showTab(`#${nextTab.id}`);
+            const activeLi = document.querySelector(".wizard .nav-tabs li.active");
+            if (!activeLi) return;
+
+            const nextLi = activeLi.nextElementSibling;
+            if (nextLi && nextLi.classList.contains("disabled")) {
+                nextLi.classList.remove("disabled");
+            }
+
+            if (nextLi) {
+                const nextTab = nextLi.querySelector('a[data-toggle="tab"]');
+                if (nextTab) nextTab.click();
             }
         });
     });
 
-    prevButtons.forEach((button) => {
+    // Previous button click
+    prevButtons.forEach(button => {
         button.addEventListener("click", function () {
-            const currentTab = document.querySelector(".tab-panel.active");
-            const prevTab = currentTab.previousElementSibling;
-            if (prevTab && prevTab.classList.contains("tab-panel")) {
-                currentTab.classList.remove("active");
-                prevTab.classList.add("active");
-                showTab(`#${prevTab.id}`);
+            const activeLi = document.querySelector(".wizard .nav-tabs li.active");
+            if (!activeLi) return;
+
+            const prevLi = activeLi.previousElementSibling;
+            if (prevLi) {
+                const prevTab = prevLi.querySelector('a[data-toggle="tab"]');
+                if (prevTab) prevTab.click();
             }
         });
     });

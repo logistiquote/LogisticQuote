@@ -18,16 +18,18 @@
         <div class="row">
             <div class="col-md-4 mb-3">
                 <div class="custom-control custom-checkbox">
+                    <input type="hidden" name="is_clearance_req" value="0">
                     <input type="checkbox" class="custom-control-input"
-                           id="customControlAutosizing3" name="isClearanceReq" value="Yes">
+                           id="customControlAutosizing3" name="is_clearance_req" value="1">
                     <label class="custom-control-label" for="customControlAutosizing3">
                         Customs Clearance?</label>
                 </div>
             </div>
             <div class="col-md-4 mb-3">
                 <div class="custom-control custom-checkbox">
+                    <input type="hidden" name="insurance" value="0">
                     <input type="checkbox" class="custom-control-input"
-                           id="customControlAutosizing4" name="insurance" value="Yes">
+                           id="customControlAutosizing4" name="insurance" value="1">
                     <label class="custom-control-label" for="customControlAutosizing4">
                         Goods Isurance</label>
                 </div>

@@ -4,48 +4,32 @@
     <div class="row">
 
         <div class="col-md-6">
-            <label>Origin *</label>
+            <label>Route *</label>
         </div>
         <div class="col-md-12 form-row">
-            <div class="col-md-3 mb-3">
-                <input type="text"
-                       class="form-control @error('origin_city') is-invalid @enderror"
-                       id="validationServer03" placeholder="City"
-                       value="{{ old('origin_city') }}" name="origin_city" required>
-                @error('origin_city')
+            <div class="col-md-6 mb-3">
+                <label for="origin_id">Origin</label>
+                <select class="form-control @error('origin_id') is-invalid @enderror" id="origin_id" name="origin_id" onchange="setDestination()">
+                    <option value="" disabled selected>Select Origin</option>
+                    @foreach($origins as $origin)
+                        <option value="{{ $origin['id'] }}" data-destination="{{ $origin['destination_id'] }}">{{ $origin['full_location'] }}</option>
+                    @endforeach
+                </select>
+                @error('origin_id')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
                 @enderror
             </div>
-            <div class="col-md-3 mb-3">
-                <input type="text"
-                       class="form-control @error('origin_state') is-invalid @enderror"
-                       id="validationServer04" placeholder="State" name="origin_state"
-                       value="{{ old('origin_state') }}">
-                @error('origin_state')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="col-md-3 mb-3">
-                <input type="text"
-                       class="form-control @error('origin_country') is-invalid @enderror"
-                       id="validationServer03" placeholder="Country" name="origin_country" required
-                       value="{{ old('origin_country') }}">
-                @error('origin_country')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="col-md-2 mb-3">
-                <input type="text"
-                       class="form-control @error('origin_zip') is-invalid @enderror"
-                       id="validationServer05" placeholder="Zip" name="origin_zip" required
-                       value="{{ old('origin_zip') }}">
-                @error('origin_zip')
+            <div class="col-md-6 mb-3">
+                <label for="destination_id">Destination</label>
+                <select class="form-control @error('destination_id') is-invalid @enderror" id="destination_id" name="destination_id" onchange="setOrigin()">
+                    <option value="" disabled selected>Select Destination</option>
+                    @foreach($destinations as $destination)
+                        <option value="{{ $destination['id'] }}" data-origin="{{ $destination['origin_id'] }}">{{ $destination['full_location'] }}</option>
+                    @endforeach
+                </select>
+                @error('destination_id')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
@@ -53,55 +37,6 @@
             </div>
         </div>
 
-        <div class="col-md-6">
-            <label>Destination *</label>
-        </div>
-        <div class="col-md-12 form-row">
-            <div class="col-md-3 mb-3">
-                <input type="text"
-                       class="form-control @error('destination_city') is-invalid @enderror"
-                       id="validationServer03" placeholder="City" name="destination_city" required
-                       value="{{ old('destination_city') }}">
-                @error('destination_city')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="col-md-3 mb-3">
-                <input type="text"
-                       class="form-control @error('destination_state') is-invalid @enderror"
-                       id="validationServer04" placeholder="State" name="destination_state"
-                       value="{{ old('destination_state') }}">
-                @error('destination_state')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="col-md-3 mb-3">
-                <input type="text"
-                       class="form-control @error('destination_country') is-invalid @enderror"
-                       id="validationServer03" placeholder="Country" name="destination_country" required
-                       value="{{ old('destination_country') }}">
-                @error('destination_country')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="col-md-2 mb-3">
-                <input type="text"
-                       class="form-control @error('destination_zip') is-invalid @enderror"
-                       id="validationServer05" placeholder="Zip" name="destination_zip" required
-                       value="{{ old('destination_zip') }}">
-                @error('destination_zip')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-        </div>
 
         <div class="col-md-4 mb-3">
             <label for="validationServer01">Ready to load date *</label>
@@ -209,5 +144,32 @@
             }, true); // Use the "capture" phase to give this handler higher priority
         }
     });
+
+    function setDestination() {
+        const originSelect = document.getElementById('origin_id');
+        const destinationSelect = document.getElementById('destination_id');
+        const selectedOrigin = originSelect.options[originSelect.selectedIndex];
+
+        if (selectedOrigin && selectedOrigin.dataset.destination) {
+            const destinationValue = selectedOrigin.dataset.destination;
+            Array.from(destinationSelect.options).forEach(option => {
+                option.selected = option.value === destinationValue;
+            });
+        }
+    }
+
+    function setOrigin() {
+        const destinationSelect = document.getElementById('destination_id');
+        const originSelect = document.getElementById('origin_id');
+        const selectedDestination = destinationSelect.options[destinationSelect.selectedIndex];
+
+        if (selectedDestination && selectedDestination.dataset.origin) {
+            const originValue = selectedDestination.dataset.origin;
+            Array.from(originSelect.options).forEach(option => {
+                option.selected = option.value === originValue;
+            });
+        }
+    }
+
 </script>
 

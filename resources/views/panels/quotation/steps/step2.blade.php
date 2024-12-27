@@ -33,8 +33,8 @@
 
             <div class="col-md-6">
                 <label for="validationServer01">Final destination address</label>
-                <input type="text" class="form-control" name="final_destination_address"
-                       value="{{ old('final_destination_address') }}" />
+                <input type="text" class="form-control" name="destination_address"
+                       value="{{ old('destination_address') }}" />
             </div>
         </div>
     </div>
@@ -154,8 +154,8 @@
         <div class="col-md-3 mb-3">
             <div class="col-auto my-1">
                 <div class="custom-control custom-checkbox mr-sm-2">
-                    <input type="checkbox" class="custom-control-input"
-                           id="customControlAutosizing" name="isStockable" value="Yes">
+                    <input type="hidden" name="is_stockable" value="0">
+                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing" name="is_stockable" value="1">
                     <label class="custom-control-label" for="customControlAutosizing">Is
                         Stockable</label>
                 </div>
@@ -164,8 +164,9 @@
         <div class="col-md-3 mb-3">
             <div class="col-auto my-1">
                 <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="hidden" name="is_dgr" value="0">
                     <input type="checkbox" class="custom-control-input"
-                           id="customControlAutosizing2" name="isDGR" value="Yes">
+                           id="customControlAutosizing2" name="is_dgr" value="1">
                     <label class="custom-control-label" for="customControlAutosizing2">Is
                         DGR</label>
                 </div>

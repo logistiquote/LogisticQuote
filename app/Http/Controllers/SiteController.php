@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Proposal;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Quotation;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
-
 use App\Mail\ContactUs;
+use App\Models\Quotation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
 {
@@ -127,12 +124,6 @@ class SiteController extends Controller
         {
             return redirect(route('login'));
         }
-    }
-
-    public function mail_view_proposal($token)
-    {
-        $proposal = Proposal::where('url', $token)->first();
-        return redirect(route('proposal.show', $proposal->id));
     }
 
     public function mail_view_quotation($token)

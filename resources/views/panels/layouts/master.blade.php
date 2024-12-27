@@ -60,14 +60,6 @@
                     <span>Quotations</span></a>
             </li>
 
-            <!-- Nav Item - proposals -->
-            <li class="nav-item <?php echo ($page_name == 'proposals') ? 'active' : ''; ?>">
-                <a class="nav-link" href="{{ route('proposals.received') }}">
-                    <i class="fad fa-file-signature"></i>
-                    <span>Proposals Received</span>
-                </a>
-            </li>
-
             <!-- Nav Item - Profile -->
             <li class="nav-item <?php echo ($page_name == 'profile') ? 'active' : ''; ?>">
                 <a class="nav-link" href="{{ route('user.profile') }}">
@@ -98,13 +90,6 @@
                 <a class="nav-link" href="{{ route('quotations.view_all') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Quotations</span></a>
-            </li>
-
-            <!-- Nav Item - My proposals -->
-            <li class="nav-item <?php echo ($page_name == 'proposals') ? 'active' : ''; ?>">
-                <a class="nav-link" href="{{ route('proposals.view_all') }}">
-                    <i class="fad fa-file-signature"></i>
-                    <span>Proposals</span></a>
             </li>
 
             <!-- Divider -->
@@ -244,13 +229,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-
-                            @if(Auth::user()->role == 'vendor')
-                                <a class="dropdown-item" href="{{ route('vendor.profile') }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                            @elseif(Auth::user()->role == 'user')
+                            @if(Auth::user()->role == 'user')
                                 <a class="dropdown-item" href="{{ route('user.profile') }}">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile

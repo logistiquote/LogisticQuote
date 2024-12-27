@@ -2,29 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Quotation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use App\Quotation;
-use App\User;
-use App\Proposal;
-use Carbon\Carbon;
 
 class AdminController extends Controller
 {
     public function __construct()
     {
         //Specify required role for this controller here in checkRole:xyz
-        $this->middleware(['auth', 'checkRole:admin', 'verified']); 
+        $this->middleware(['auth', 'checkRole:admin', 'verified']);
     }
     public function index()
     {
-        $data['total_proposals'] = Proposal::count();
         $data['total_quotations'] = Quotation::count();
         $data['total_users'] = User::where('role', 'user')->count();
-        $data['total_vendors'] = User::where('role', 'vendor')->count();
-        $data['accepted_proposals'] = Proposal::where('status', 'completed')->count();
         $data['page_title'] = 'Dashboard | LogistiQuote';
         $data['page_name'] = 'dashboard';
         return view('panels.admin.dashboard', $data);
@@ -70,13 +64,6 @@ class AdminController extends Controller
         $data['users'] = User::where('role', 'user')->get();
         return view('panels.admin.users', $data);
     }
-    public function all_vendors()
-    {
-        $data['page_title'] = 'All Vendors | LogistiQuote';
-        $data['page_name'] = 'all_vendors';
-        $data['users'] = User::where('role', 'vendor')->get();
-        return view('panels.admin.users', $data);
-    }
     public function view_user($id)
     {
         $data['page_title'] = 'View User | LogistiQuote';
@@ -84,7 +71,7 @@ class AdminController extends Controller
         $data['profile'] = User::where('id', $id)->first();
         return view('panels.admin.user_profile', $data);
     }
-    
+
     public function update_user_profile(Request $request)
     {
         //Validate data

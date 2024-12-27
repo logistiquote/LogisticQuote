@@ -26,7 +26,6 @@
                             <th width="5%">ID</th>
                             <th width="20%">Route</th>
                             <th>Status</th>
-                            <th>Proposals Received</th>
                             <th width="10%">Transportation</th>
                             <th width="13%">Ready to load</th>
                             <th>Worth</th>
@@ -39,9 +38,9 @@
                         <tr>
                             <td> <b>{{ $quotation->quotation_id }} </b> </td>
                             <td>
-                                <span class="text-success">{{ $quotation->origin }}</span>
+                                <span class="text-success">{{ $quotation->route?->full_origin_location }}</span>
                                 to
-                                <span class="text-danger">{{ $quotation->destination }}</span>
+                                <span class="text-danger">{{ $quotation->route?->full_destination_location }}</span>
                             </td>
                             <td>
                                 @if($quotation->status == 'active')
@@ -53,9 +52,6 @@
                                 @elseif($quotation->status == 'done')
                                     <span class="badge badge-warning">{{ $quotation->status }}</span>
                                 @endif
-                            </td>
-                            <td>
-                                <span class="badge badge-pill badge-danger">{{ $quotation->proposals_received }}</span>
                             </td>
                             <td>{{ $quotation->transportation_type }} ({{ $quotation->type }})</td>
                             <td>
