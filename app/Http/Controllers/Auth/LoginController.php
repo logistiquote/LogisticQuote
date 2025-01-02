@@ -50,10 +50,10 @@ class LoginController extends Controller
             if(isset($fileContents->incoterms) != null)
             {
                 return redirect(route('store_pending_form'));
-            } 
+            }
         }
     }
-    
+
     protected function redirectTo()
     {
         if(Auth::user()->role == 'admin')
@@ -63,10 +63,6 @@ class LoginController extends Controller
         else if(Auth::user()->role == 'user')
         {
             return '/user';
-        }
-        else if(Auth::user()->role == 'vendor')
-        {
-            return '/ven';
         }
     }
 }

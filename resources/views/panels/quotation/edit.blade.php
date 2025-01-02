@@ -398,7 +398,7 @@
         </div>
 
         <div class="row d-flex justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="wizard">
                     <div class="wizard-inner">
                         <div class="connecting-line"></div>
@@ -619,7 +619,7 @@
                                                     </div>
                                                     @enderror
                                                 </div>
-                                                
+
                                                 <div class="col-md-3">
                                                     <input type="number"
                                                         class="form-control @error('container_weight') is-invalid @enderror"
@@ -657,8 +657,8 @@
                                     <div class="col-md-3 mb-3">
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input" <?php if($quotation->isStockable == 'Yes') echo 'checked="checked"'; ?>
-                                                    id="customControlAutosizing" name="isStockable" value="Yes">
+                                                <input type="checkbox" class="custom-control-input" <?php if($quotation->is_stockable == 'Yes') echo 'checked="checked"'; ?>
+                                                    id="customControlAutosizing" name="is_stockable" value="Yes">
                                                 <label class="custom-control-label" for="customControlAutosizing">Is
                                                     Stockable</label>
                                             </div>
@@ -667,8 +667,8 @@
                                     <div class="col-md-3 mb-3">
                                         <div class="col-auto my-1">
                                             <div class="custom-control custom-checkbox mr-sm-2">
-                                                <input type="checkbox" class="custom-control-input" <?php if($quotation->isDGR == 'Yes') echo 'checked="checked"'; ?>
-                                                    id="customControlAutosizing2" name="isDGR" value="Yes">
+                                                <input type="checkbox" class="custom-control-input" <?php if($quotation->is_dgr == 'Yes') echo 'checked="checked"'; ?>
+                                                    id="customControlAutosizing2" name="is_dgr" value="Yes">
                                                 <label class="custom-control-label" for="customControlAutosizing2">Is
                                                     DGR</label>
                                             </div>
@@ -854,9 +854,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <div class="custom-control custom-checkbox"> 
-                                                <input type="checkbox" class="custom-control-input" <?php if($quotation->isClearanceReq == 'Yes') echo 'checked="checked"'; ?>
-                                                    id="customControlAutosizing3" name="isClearanceReq" value="Yes">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" <?php if($quotation->is_clearance_req == 'Yes') echo 'checked="checked"'; ?>
+                                                    id="customControlAutosizing3" name="is_clearance_req" value="Yes">
                                                 <label class="custom-control-label" for="customControlAutosizing3">
                                                     Customs Clearance?</label>
                                             </div>
@@ -955,9 +955,9 @@
         });
 
         $('#exw').hide();
-        
 
-    
+
+
         $("#transportation_type").change(function () {
             if ($(this).find(':selected').val() == 'ocean') {
                 $('#if_not_air').show();
@@ -970,7 +970,7 @@
                 $("#type_of_shipment").append(new Option("AIR", "air"));
                 $('#for_flc').hide();
             }
-        }); 
+        });
 
         // FCL options
         $("#type_of_shipment").change(function () {

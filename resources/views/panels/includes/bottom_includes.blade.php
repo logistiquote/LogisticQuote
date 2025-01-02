@@ -28,7 +28,7 @@
 
 
     @if($page_name == 'add_quotation' || $page_name == 'edit_quotation' || $page_name == 'create_quotation'
-    || $page_name == 'make_proposal' || $page_name == 'edit_proposal' || $page_name == 'all_users' || $page_name == 'all_vendors')
+     || $page_name == 'all_users')
       <script type="text/javascript" src="{{ asset('vendor/datepicker/moment.min.js') }}"></script>
       <script type="text/javascript" src="{{ asset('vendor/datepicker/daterangepicker.js') }}"></script>
       <link rel="stylesheet" type="text/css" href="{{ asset('vendor/datepicker/daterangepicker.css') }}" >

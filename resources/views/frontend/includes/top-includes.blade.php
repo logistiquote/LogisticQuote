@@ -8,14 +8,9 @@
     <script type="text/javascript" src="{{ asset('frontend/libs/select2.min489b.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/libs/slick.mine23c.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/libs/gsap.min8347.js') }}"></script>
-    <!-- <script type="text/javascript" src="{{ asset('frontend/libs/TweenMax.min8347.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('frontend/libs/ScrollMagic.min8347.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('frontend/libs/animation.gsap.min8347.js') }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ asset('frontend/libs/debug.addIndicators.min8347.js') }}"></script> -->
 
-    @if( isset($page_name) )
+    @if(isset($page_name))
         @if($page_name == 'homepage')
-        <script type="text/javascript" src="{{ asset('frontend/js/index5493.js') }}"></script>
         <link href="{{ asset('frontend/css/index.css') }}" media="screen" rel="stylesheet" type="text/css" />
         @elseif($page_name == 'get_quote_step2')
         <!-- Request quote includes -->
@@ -26,11 +21,10 @@
         @endif
     @endif
 
-    @if( ! isset($page_name) )
+    @if(!isset($page_name))
         <!-- Login page css -->
         <link href="{{ asset('frontend/css/auth.css') }}" media="screen" rel="stylesheet" type="text/css" />
     @endif
 
     <!-- Font awesome includes -->
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.css') }}">
-    <!-- <script type="text/javascript" src="{{ asset('fontawesome/js/all.js') }}"></script> -->

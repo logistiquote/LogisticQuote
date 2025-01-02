@@ -58,10 +58,10 @@
         color: #555555;
     }
 
-    .tab-panel {
+    .tab-pane {
         display: none;
     }
-    .tab-panel.active {
+    .tab-pane.active {
         display: block;
     }
 
@@ -71,7 +71,6 @@
         padding: 8px 24px;
         border: none;
         border-radius: 4px;
-        margin-top: 30px;
         background-color: #6c757d;
         color: #fff;
     }
@@ -283,13 +282,11 @@
         @include('panels.includes.errors')
 
         <div class="row d-flex justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="wizard">
                     @component('components.wizard', ['steps' => [
                         ['id' => 'step1', 'title' => 'Basic'],
                         ['id' => 'step2', 'title' => 'Description'],
-                        ['id' => 'step3', 'title' => 'Calculation'],
-                        ['id' => 'step4', 'title' => 'Other'],
                     ]])
                     @endcomponent
 
@@ -298,8 +295,6 @@
                         <div class="tab-content mb-3" id="main_form">
                             @include('panels.quotation.steps.step1')
                             @include('panels.quotation.steps.step2')
-                            @include('panels.quotation.steps.step3')
-                            @include('panels.quotation.steps.step4')
                         </div>
                     </form>
                 </div>
@@ -336,7 +331,6 @@
         $('#shipment').hide();
         $("input[name=quantity]").prop('', false);
         $("input[name=total_weight]").prop('', false);
-        $('#for_flc').hide();
 
         // On load
         if ($("#transportation_type").find(':selected').val() === 'ocean') {
@@ -347,33 +341,6 @@
             $('#type_of_shipment').empty();
             $("#type_of_shipment").append(new Option("AIR", "air"));
         }
-
-        if ($("#type_of_shipment").find(':selected').val() === 'fcl') {
-            $('#for_flc').show();
-        }
-
-        $("#transportation_type").change(function () {
-            if ($(this).find(':selected').val() == 'ocean') {
-                $('#if_not_air').show();
-                $('#type_of_shipment').empty();
-                $("#type_of_shipment").append(new Option("LCL", "lcl"));
-                $("#type_of_shipment").append(new Option("FCL", "fcl"));
-            } else if ($(this).find(':selected').val() == 'air') {
-                $('#type_of_shipment').empty();
-                $('#if_not_air').hide();
-                $("#type_of_shipment").append(new Option("AIR", "air"));
-                $('#for_flc').hide();
-            }
-        });
-
-        // FCL options
-        $("#type_of_shipment").change(function () {
-            if ($(this).find(':selected').val() === 'fcl') {
-                $('#for_flc').show();
-            } else {
-                $('#for_flc').hide();
-            }
-        });
 
         // On calculation radio button clicks
         $('input:radio').change(function () {

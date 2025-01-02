@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Quotation;
-use App\User;
-use App\Proposal;
+use App\Models\Quotation;
 use Carbon\Carbon;
 
 class CronJobController extends Controller
@@ -53,13 +50,6 @@ class CronJobController extends Controller
             {
                 $quotation->status = 'done';
                 $quotation->save();
-                foreach($quotation->proposals as $proposal)
-                {
-                    // dd($proposal);
-                    $prop = Proposal::find($proposal->id);
-                    $prop->status = 'done';
-                    $prop->save();
-                }
             }
         }
     }

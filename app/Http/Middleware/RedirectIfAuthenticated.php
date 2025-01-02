@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
         //     return redirect(RouteServiceProvider::HOME);
         // }
 
-        if (Auth::guard($guard)->check()) 
+        if (Auth::guard($guard)->check())
         {
             if(Storage::disk('public')->exists('store_pending_form.json'))
             {
@@ -32,7 +32,7 @@ class RedirectIfAuthenticated
                 if(isset($fileContents->incoterms) != null)
                 {
                     return redirect(route('store_pending_form'));
-                } 
+                }
             }
             if(Auth::user()->role == 'admin')
             {
@@ -41,10 +41,6 @@ class RedirectIfAuthenticated
             else if(Auth::user()->role == 'user')
             {
                 return redirect('/user');
-            }
-            else if(Auth::user()->role == 'vendor')
-            {
-                return redirect('/ven');
             }
         }
         return $next($request);

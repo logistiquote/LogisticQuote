@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\WaterContainerType;
 use App\Http\Requests\QuotationRequest;
+use App\Models\Quotation;
+use App\Models\Route;
+use App\Services\QuotationService;
+use App\Services\RouteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Quotation;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class QuotationController extends Controller
 {
-    public function __construct()
+    public function __construct(private QuotationService $quotationService, private RouteService $routeService)
     {
         $this->middleware(['auth', 'verified']);
     }
@@ -31,94 +34,30 @@ class QuotationController extends Controller
     {
         $data['page_name'] = 'create_quotation';
         $data['page_title'] = 'Create quotation | LogistiQuote';
+        $data['containerTypes'] = WaterContainerType::all();
+
+        $allRoutes = $this->routeService->getAllRoutes();
+        $data['origins'] = $this->routeService->getUniqueOrigins($allRoutes);
+        $data['destinations'] = $this->routeService->getUniqueDestinations($allRoutes);
+
         return view('panels.quotation.create', $data);
     }
 
     public function store(QuotationRequest $request)
     {
-        $validatedData = $request->validated();
+        dd($request->validated());
+        DB::beginTransaction();
 
-        $quotation = new Quotation;
-        $quotation->user_id = Auth::user()->id;
-        $quotation->quotation_id = mt_rand();
-        $quotation->origin = $request->origin_city.', '.$request->origin_state.', '.$request->origin_country.'. '.$request->origin_zip;
-        $quotation->destination = $request->destination_city.', '.$request->destination_state.', '.$request->destination_country.'. '.$request->destination_zip;
-        $quotation->origin_zip = $request->origin_zip;
-        $quotation->destination_zip = $request->destination_zip;
-        $quotation->transportation_type = $request->transportation_type;
-        $quotation->type = $request->type;
-        $ready_to_load_date = Carbon::createFromFormat('Y-m-d', $request->ready_to_load_date );
-        $quotation->ready_to_load_date = $ready_to_load_date->addMinutes(1);
-        $quotation->incoterms = $request->incoterms;
-        if($request->incoterms == 'EXW')
-        {
-            $quotation->pickup_address = $request->pickup_address;
-            $quotation->destination_address = $request->final_destination_address;
+        try {
+            $this->quotationService->createQuotation($request->validated());
+            DB::commit();
+
+            return redirect()->route('quotation.index')->with('success', 'Quotation created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-
-        $quotation->value_of_goods = $request->value_of_goods;
-        $quotation->description_of_goods = $request->description_of_goods;
-        $quotation->isStockable = $request->isStockable ? $request->isStockable : 'No';
-        $quotation->isDGR = $request->isDGR ? $request->isDGR : 'No';
-        $quotation->calculate_by = $request->calculate_by;
-        $quotation->remarks = $request->remarks;
-        $quotation->isClearanceReq = $request->isClearanceReq ? $request->isClearanceReq : 'No';
-        $quotation->insurance = $request->insurance ? $request->insurance : 'No';
-
-        // Store file
-        if($request->file('attachment'))
-        {
-            $file_name = rand().'.'.$request->file('attachment')->getClientOriginalExtension();
-            $request->merge(['attachment_file' => $file_name]);
-            Storage::disk('public')->putFileAs('files/', $request->file('attachment'), $file_name);
-            $quotation->attachment = $file_name;
-        }
-
-        if($request->transportation_type == 'ocean' && $request->type == 'fcl')
-        {
-            $total_containers = count($request->container_size);
-            for($c=0 ;$c<count($request->container_size); $c++)
-            {
-                $container_size[] = [
-                    'container_no' => $c+1,
-                    'size' => $request->container_size[$c],
-                    'weight' => $request->container_weight[$c],
-                ];
-            }
-            $quotation->containers = $container_size;
-            $quotation->total_containers = $total_containers;
-        }
-
-        if($request->calculate_by == 'units')
-        {
-            $pallets = [];
-            $quantity = count($request->l);
-            $total_weight = 0;
-            for($i=0; $i<count($request->l); $i++)
-            {
-                $volumetric_weight =
-                ( (float)$request->l[$i] * (float)$request->w[$i] * (float)$request->h[$i] ) / 6000;
-                $pallets[] = [
-                    'length' => $request->l[$i],
-                    'width' => $request->w[$i],
-                    'height' => $request->h[$i],
-                    'volumetric_weight' => $volumetric_weight,
-                    'gross_weight' => $request->gross_weight[$i],
-                ];
-                $total_weight += $volumetric_weight;
-            }
-            $quotation->pallets = $pallets;
-            $quotation->quantity = $quantity;
-            $quotation->total_weight = number_format($total_weight, 2);
-        }
-        else
-        {
-            $quotation->quantity = $request->quantity;
-            $quotation->total_weight = $request->total_weight;
-        }
-        $quotation->save();
-
-        return redirect(route('quotation.index'));
     }
 
     public function show($id)
@@ -149,93 +88,34 @@ class QuotationController extends Controller
 
     public function update(QuotationRequest $request, $id)
     {
-        $validatedData = $request->validated();
+        DB::beginTransaction();
 
-        $quotation = Quotation::findOrFail($request->id);
-        $quotation->origin = $request->origin;
-        $quotation->destination = $request->destination;
-        $quotation->transportation_type = $request->transportation_type;
-        $quotation->type = $request->type;
-        $ready_to_load_date = Carbon::createFromFormat('d-m-Y', $request->ready_to_load_date );
-        $quotation->ready_to_load_date = $ready_to_load_date->addMinutes(1);
-        $quotation->incoterms = $request->incoterms;
-        if($request->incoterms == 'EXW')
-        {
-            $quotation->pickup_address = $request->pickup_address;
-            $quotation->destination_address = $request->final_destination_address;
-        }
+        try {
+            $this->quotationService->updateQuotation($id, $request->validated());
+            DB::commit();
 
-        // Store file
-        if($request->file('attachment'))
-        {
-            $file_name = rand().'.'.$request->file('attachment')->getClientOriginalExtension();
-            $request->merge(['attachment_file' => $file_name]);
-            $isStore = Storage::disk('public')->putFileAs('files/', $request->file('attachment'), $file_name);
-            $quotation->attachment = $file_name;
-        }
+            return redirect()->route('quotation.index')->with('success', 'Quotation updated successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-        $quotation->value_of_goods = $request->value_of_goods;
-        $quotation->description_of_goods = $request->description_of_goods;
-        $quotation->isStockable = $request->isStockable ? $request->isStockable : 'No';
-        $quotation->isDGR = $request->isDGR ? $request->isDGR : 'No';
-        $quotation->calculate_by = $request->calculate_by;
-        $quotation->remarks = $request->remarks;
-        $quotation->isClearanceReq = $request->isClearanceReq ? $request->isClearanceReq : 'No';
-        $quotation->insurance = $request->insurance ? $request->insurance : 'No';
-
-        $quotation->total_weight = $request->total_weight;
-
-        if($request->transportation_type == 'sea' && $request->type == 'fcl')
-        {
-            $total_containers = count($request->container_size);
-            for($c=0 ;$c<count($request->container_size); $c++)
-            {
-                $container_size[] = [
-                    'container_no' => $c+1,
-                    'size' => $request->container_size[$c],
-                    'weight' => $request->container_weight[$c],
-                ];
-            }
-            $quotation->containers = $container_size;
-            $quotation->total_containers = $total_containers;
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
-        if($request->calculate_by == 'units')
-        {
-            $pallets = [];
-            $quantity = count($request->l);
-            $total_weight = 0;
-            for($i=0; $i<count($request->l); $i++)
-            {
-                $volumetric_weight =
-                ( (float)$request->l[$i] * (float)$request->w[$i] * (float)$request->h[$i] ) / 6000;
-                $pallets[] = [
-                    'length' => $request->l[$i],
-                    'width' => $request->w[$i],
-                    'height' => $request->h[$i],
-                    'volumetric_weight' => $volumetric_weight,
-                    'gross_weight' => $request->gross_weight[$i],
-                ];
-                $total_weight += $volumetric_weight;
-            }
-            $quotation->pallets = $pallets;
-            $quotation->quantity = $quantity;
-            $quotation->total_weight = number_format($total_weight, 2);
-        }
-        else
-        {
-            $quotation->total_weight = $request->total_weight;
-            $quotation->quantity = $request->quantity;
-        }
-        $quotation->save();
-        return redirect(route('quotation.index'));
     }
 
     public function destroy($id)
     {
-        $quotation = Quotation::findOrFail($id);
-        $quotation->status = 'withdrawn';
-        $quotation->save();
-        return redirect(route('quotation.index'));
+        DB::beginTransaction();
+
+        try {
+            $this->quotationService->withdrawQuotation($id);
+            DB::commit();
+
+            return redirect()->route('quotation.index')->with('success', 'Quotation withdrawn successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     public function view_all()
@@ -300,99 +180,5 @@ class QuotationController extends Controller
         $data['page_name'] = 'quotations';
         $data['page_title'] = 'View quotations | LogistiQuote';
         return view('panels.quotation.search_quotations', $data);
-    }
-
-    public function store_pending_form()
-    {
-        if(Auth::user()->role != 'user')
-        {
-            Storage::disk('public')->delete('store_pending_form.json');
-            return redirect(route('quotations.view_all'));
-        }
-
-        $fileContents = Storage::disk('public')->get('store_pending_form.json');
-        $fileContents = json_decode($fileContents);
-
-        $quotation = new Quotation;
-        $quotation->user_id = Auth::user()->id;
-        $quotation->quotation_id = mt_rand();
-        $quotation->origin = $fileContents->origin;
-        $quotation->destination = $fileContents->destination;
-        $quotation->transportation_type = $fileContents->transportation_type;
-        $quotation->type = $fileContents->type;
-        $quotation->incoterms = $fileContents->incoterms;
-
-        // Store file
-        if(isset($fileContents->attachment_file))
-        {
-            Storage::disk('public')->move( 'temp/'.$fileContents->attachment_file, 'files/'.$fileContents->attachment_file );
-
-            $quotation->attachment = $fileContents->attachment_file;
-        }
-
-        if($fileContents->incoterms == 'EXW')
-        {
-            $quotation->pickup_address = $fileContents->pickup_address;
-            $quotation->destination_address = $fileContents->final_destination_address;
-        }
-
-        $ready_to_load_date = Carbon::createFromFormat('d-m-Y', $fileContents->ready_to_load_date );
-        $quotation->ready_to_load_date = $ready_to_load_date->addMinutes(1);
-
-        $quotation->value_of_goods = $fileContents->value_of_goods;
-        $quotation->description_of_goods = $fileContents->description_of_goods;
-        $quotation->isStockable = isset($fileContents->isStockable) ? $fileContents->isStockable : 'No';
-        $quotation->isDGR = isset($fileContents->isDGR) ? $fileContents->isDGR : 'No';
-        $quotation->calculate_by = $fileContents->calculate_by;
-        $quotation->remarks = $fileContents->remarks;
-        $quotation->isClearanceReq = isset($fileContents->isClearanceReq) ? $fileContents->isClearanceReq : 'No';
-        $quotation->insurance = isset($fileContents->insurance) ? $fileContents->insurance : 'No';
-
-
-        if($fileContents->transportation_type == 'sea' && $fileContents->type == 'fcl')
-        {
-            $total_containers = count($fileContents->container_size);
-            for($c=0 ;$c<count($fileContents->container_size); $c++)
-            {
-                $container_size[] = [
-                    'container_no' => $c+1,
-                    'size' => $fileContents->container_size[$c],
-                    'weight' => $fileContents->container_weight[$c],
-                ];
-            }
-            $quotation->containers = $container_size;
-            $quotation->total_containers = $total_containers;
-        }
-        if($fileContents->calculate_by == 'units')
-        {
-            $pallets = [];
-            $quantity = count($fileContents->l);
-            $total_weight = 0;
-            for($i=0; $i<count($fileContents->l); $i++)
-            {
-                $volumetric_weight =
-                ( (float)$fileContents->l[$i] * (float)$fileContents->w[$i] * (float)$fileContents->h[$i] ) / 6000 ;
-                $pallets[] = [
-                    'length' => $fileContents->l[$i],
-                    'width' => $fileContents->w[$i],
-                    'height' => $fileContents->h[$i],
-                    'volumetric_weight' => $volumetric_weight,
-                    'gross_weight' => $fileContents->gross_weight[$i],
-                ];
-                $total_weight += $volumetric_weight;
-            }
-            $quotation->pallets = $pallets;
-            $quotation->quantity = $quantity;
-            $quotation->total_weight = number_format($total_weight, 2);
-        }
-        else
-        {
-            $quotation->quantity = $fileContents->quantity;
-            $quotation->total_weight = $fileContents->total_weight;
-        }
-        $quotation->save();
-        Storage::disk('public')->delete('store_pending_form.json');
-
-        return redirect(route('quotation.index'));
     }
 }

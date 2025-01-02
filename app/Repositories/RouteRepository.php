@@ -6,6 +6,11 @@ use App\Models\Route;
 
 class RouteRepository
 {
+    public function getAll()
+    {
+        return Route::with(['origin', 'destination','containers'])->get();
+    }
+
     public function create(array $data)
     {
         return Route::create($data);

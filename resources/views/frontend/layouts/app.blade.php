@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="design/images/favicon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="design/images/favicon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="design/images/favicon/favicon-16x16.png') }}">
-    
+
     <meta name="application-name" content="LogistiQuote.com" />
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
@@ -33,7 +33,7 @@
     @include('frontend.snippets.footer')
 
     @include('frontend.includes.bottom-scripts')
-    
+
     @yield('bottom_scripts')
 
 </body>

@@ -41,7 +41,7 @@ class RouteController extends Controller
     public function create()
     {
         $data['locations'] = Location::all();;
-        $data['containerTypes'] = WaterContainerType::all();;
+        $data['containerTypes'] = WaterContainerType::all();
         $data['page_name'] = 'create_route';
         $data['page_title'] = 'Create Route | LogisticQuote';
         return view('panels.route.create', $data);

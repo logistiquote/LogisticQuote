@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\RouteContainerRepository;
 use App\Repositories\RouteRepository;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class RouteService
@@ -45,5 +46,48 @@ class RouteService
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function getAllRoutes()
+    {
+        return $this->routeRepository->getAll();
+    }
+
+    /**
+     * Get unique origins from routes.
+     *
+     * @param Collection $allRoutes
+     * @return Collection
+     */
+    public function getUniqueOrigins($allRoutes): Collection
+    {
+        return $allRoutes->unique('origin_id')->map(function ($route) {
+            return [
+                'id' => $route->origin_id,
+                'route_id' => $route->id,
+                'containers' => $route->containers,
+                'destination_id' => $route->destination_id,
+                'full_location' => $route->origin->full_location,
+            ];
+        });
+    }
+
+    /**
+     * Get unique destinations from routes.
+     *
+     * @param Collection $allRoutes
+     * @return Collection
+     */
+    public function getUniqueDestinations($allRoutes)
+    {
+        return $allRoutes->unique('destination_id')->map(function ($route) {
+            return [
+                'id' => $route->destination_id,
+                'route_id' => $route->id,
+                'containers' => $route->containers,
+                'origin_id' => $route->origin_id,
+                'full_location' => $route->destination->full_location,
+            ];
+        });
     }
 }

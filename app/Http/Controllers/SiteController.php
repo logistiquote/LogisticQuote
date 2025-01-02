@@ -2,22 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Proposal;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Quotation;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
-
 use App\Mail\ContactUs;
+use App\Models\Quotation;
+use App\Services\RouteService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
 {
+    public function __construct(private RouteService $routeService)
+    {
+    }
+
     public function index()
     {
         $data['page_title'] = 'Homepage | LogistiQuote';
         $data['page_name'] = 'homepage';
+
+        $allRoutes = $this->routeService->getAllRoutes();
+        $data['origins'] = $this->routeService->getUniqueOrigins($allRoutes);
+        $data['destinations'] = $this->routeService->getUniqueDestinations($allRoutes);
+
         return view('frontend.index', $data);
     }
 
@@ -30,10 +37,7 @@ class SiteController extends Controller
 
     public function contact(Request $request)
     {
-        // dd( (string) $request->message);
-        $data = [];
         $data = array(
-            // 'to'      => array('cs@logistiquote.com'),
             'to'      => array('malickateeq@gmail.com'),
             'subject' => $request->subject,
             'name' => $request->name,
@@ -127,12 +131,6 @@ class SiteController extends Controller
         {
             return redirect(route('login'));
         }
-    }
-
-    public function mail_view_proposal($token)
-    {
-        $proposal = Proposal::where('url', $token)->first();
-        return redirect(route('proposal.show', $proposal->id));
     }
 
     public function mail_view_quotation($token)

@@ -32,7 +32,7 @@
                                     @enderror
                             </div>
                         </div>
-                        
+
                         <div class="input-wrapper @error('email') error @enderror">
                             <input class="input" type="text" name="email" placeholder=" " value="{{ old('email') }}">
                             <span class="placeholder">E-mail</span>
@@ -45,13 +45,12 @@
                             <select name="role">
                                 <option disabled="" value="" selected=""> Create account as</option>
                                 <option data-tel="user" value="user">User</option>
-                                <option data-tel="vendor" value="vendor">Vendor</option>
                             </select>
                             @error('role')
                                 <p class="errorInputMsg">{{ $message }}</p>
                             @enderror
                         </div>
-                        
+
                         <div class="input-wrapper @error('additional_email') error @enderror" id="additional_email">
                             <input class="input" type="text" name="additional_email" placeholder=" " value="{{ old('additional_email') }}">
                             <span class="placeholder">Additional E-mail</span>
@@ -320,7 +319,7 @@
                                 <p class="errorInputMsg">{{ $message }}</p>
                             @enderror
                         </div>
-                        
+
                         <div class="input-wrapper @error('phone') error @enderror">
                             <input class="input" type="tel" name="phone" value="{{ old('phone') }}" placeholder=" ">
                             <span class="placeholder">Phone</span>
@@ -348,15 +347,15 @@
                         </div>
 
                         <div class="input-wrapper">
-                            
+
                             <p>
                             <input type="checkbox" style="margin: 10px;">
-                                Agree with our 
+                                Agree with our
                                 <a target="_blank" href="/tos">Terms &amp; conditions?</a></p>
                         </div>
-                            
+
                         <button type="submit" class="sign-form_content-main-btn">Create Account</button>
-                    
+
                     </form>
                     <div class="sign-form_content-reg-part">
                         <p>Already have an account?</p><a href="{{ route('login') }}">Sign in</a>
@@ -383,16 +382,12 @@
 
 @section('bottom_scripts')
 <script>
-    $(document).ready(function() 
+    $(document).ready(function()
     {
         $('#additional_email').hide();
         $("#role").change(function()
         {
-            if($(this).find(':selected').val() == 'vendor')
-            {
-                $('#additional_email').show();
-            }
-            else if($(this).find(':selected').val() == 'user')
+            if($(this).find(':selected').val() === 'user')
             {
                 $('#additional_email').hide();
             }

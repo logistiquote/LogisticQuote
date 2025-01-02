@@ -4,3 +4,5 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('panel/css/sb-admin-2.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('panel/css/custom-panel.css') }}" rel="stylesheet">
+

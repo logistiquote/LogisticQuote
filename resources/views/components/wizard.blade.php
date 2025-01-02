@@ -1,4 +1,4 @@
-<div class="wizard-inner mb-3">
+<div class="wizard-inner mb-3" style="display: none">
     <div class="connecting-line"></div>
     <ul class="nav nav-tabs" role="tablist">
         @foreach ($steps as $index => $step)

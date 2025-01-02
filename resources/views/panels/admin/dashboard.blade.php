@@ -38,10 +38,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Vendors
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $total_vendors }}</div>
-                        </div>
+                          </div>
                         <div class="col-auto">
                             <i class="far fa-users-crown fa-2x text-gray-300"></i>
                         </div>
@@ -77,9 +74,6 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Accepted Proposals
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $accepted_proposals }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fal fa-clipboard-check fa-2x text-gray-300"></i>

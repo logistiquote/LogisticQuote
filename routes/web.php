@@ -24,24 +24,17 @@ Route::get('/user', 'UserController@index')->name('user');
 Route::get('/user/profile', 'UserController@profile')->name('user.profile');
 Route::post('/user/update_profile', 'UserController@update_profile')->name('user.update_profile');
 
-// vendor Routes
-Route::get('/ven', 'VendorController@index')->name('vendor');
-Route::get('/ven/profile', 'VendorController@profile')->name('vendor.profile');
-Route::post('/ven/update_profile', 'VendorController@update_profile')->name('vendor.update_profile');
-
 // admin Routes
 Route::get('/admin', 'AdminController@index')->name('admin');
 Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');
 Route::post('/admin/update_profile', 'AdminController@update_user_profile')->name('admin.update_profile');
 Route::get('/view_user/{id}', 'AdminController@view_user')->name('admin.view_user');
 Route::get('/all_users', 'AdminController@all_users')->name('admin.all_users');
-Route::get('/all_vendors', 'AdminController@all_vendors')->name('admin.all_vendors');
 
 // Quotation Routes
 Route::resource('/quotation', 'QuotationController');
 Route::get('/quotations', 'QuotationController@view_all')->name('quotations.view_all');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
-Route::get('/store_pending_form', 'QuotationController@store_pending_form')->name('store_pending_form');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
 Route::get('/mail_view_quotation/{token}', 'SiteController@mail_view_quotation')->name('quotation.mail_view');
 
