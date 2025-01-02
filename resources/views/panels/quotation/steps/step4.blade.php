@@ -1,4 +1,4 @@
-<div class="tab-panel" role="tabpanel" id="step4">
+<div class="tab-pane" role="tabpanel" id="step4">
     <h4 class="text-center">Other Info</h4>
     <hr>
     <div class="all-info-container">

@@ -26,22 +26,16 @@ class QuotationRequest extends FormRequest
         switch ($this->route()->getActionMethod()) {
             case 'store':
                 return [
-//                    'route_id' => ['required', 'integer', 'exists:routes,id'], // Ensure valid route.
+                    'route_id' => ['required', 'integer', 'exists:routes,id'], // Ensure valid route.
                     'incoterms' => ['required', 'string', 'in:EXW,FOB,CIP,CIF'],
-                    'origin_city' => ['required', 'string', 'regex:/^[a-zA-Z\s\-]+$/u', 'max:100'],
-                    'origin_country' => ['required', 'string', 'size:2'],
-                    'origin_zip' => ['required', 'string', 'regex:/^[a-zA-Z0-9\s\-]{4,10}$/'],
-                    'destination_city' => ['required', 'string', 'regex:/^[a-zA-Z\s\-]+$/u', 'max:100'],
-                    'destination_country' => ['required', 'string', 'size:2'],
-                    'destination_zip' => ['required', 'string', 'regex:/^[a-zA-Z0-9\s\-]{4,10}$/'],
                     'pickup_address' => ['nullable', 'string', 'max:255'],
                     'destination_address' => ['nullable', 'string', 'max:255'],
                     'transportation_type' => ['required', 'string', 'min:3', 'max:50'],
                     'type' => ['required', 'string', 'min:2', 'max:50'],
                     'ready_to_load_date' => ['required', 'date', 'after_or_equal:today'],
                     'value_of_goods' => ['required', 'numeric', 'min:1', 'max:100000000'],
-                    'calculate_by' => ['required', 'string', 'in:units,weight'],
                     'description_of_goods' => ['nullable', 'string', 'max:500'],
+                    'calculate_by' => ['required_if:transportation_type,lcl', 'string', 'in:units,weight'],
                     'remarks' => ['nullable', 'string', 'max:500'],
                     'is_stockable' => ['boolean'],
                     'is_dgr' => ['boolean'],

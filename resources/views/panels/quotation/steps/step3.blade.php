@@ -1,4 +1,4 @@
-<div class="tab-panel" role="tabpanel" id="step3">
+<div class="tab-pane" role="tabpanel" id="step3">
     <h4 class="text-center">Shipment Calculations</h4>
     <hr>
     <div class="row">

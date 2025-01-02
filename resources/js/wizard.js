@@ -1,59 +1,90 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const navTabs = document.querySelector(".nav-tabs");
-    const tabs = document.querySelectorAll('.nav-tabs > li a[title]');
-    const nextButtons = document.querySelectorAll(".next-step");
-    const prevButtons = document.querySelectorAll(".prev-step");
+    document.addEventListener("DOMContentLoaded", function () {
+    const wizardData = JSON.parse(sessionStorage.getItem("wizardData")) || {};
 
-    // Initialize tooltips
-    tabs.forEach(tab => {
-        tab.setAttribute("data-bs-toggle", "tooltip");
-        new bootstrap.Tooltip(tab);
-    });
+    function saveStepData(stepId) {
+        const form = document.querySelector(`#${stepId}`);
+        const inputs = form.querySelectorAll("input, textarea, select");
+        inputs.forEach(input => {
+            wizardData[input.name] = input.value;
+        });
 
-    // Handle tab clicks
-    navTabs.addEventListener("click", function (e) {
-        const clickedTab = e.target.closest("a[data-toggle='tab']");
-        if (!clickedTab) return;
+        sessionStorage.setItem("wizardData", JSON.stringify(wizardData));
+    }
 
-        const clickedLi = clickedTab.closest("li");
-        if (clickedLi && clickedLi.classList.contains("disabled")) {
-            e.preventDefault();
-        }
+    function loadStepData(stepId) {
+        const savedData = JSON.parse(sessionStorage.getItem("wizardData")) || {};
+        const form = document.querySelector(`#${stepId}`);
+        const inputs = form.querySelectorAll("input, textarea, select");
+        inputs.forEach(input => {
+            if (savedData[input.name]) {
+                input.value = savedData[input.name];
+            }
+        });
+    }
 
-        // Update active state
-        document.querySelectorAll(".nav-tabs li").forEach(li => li.classList.remove("active"));
-        if (clickedLi) clickedLi.classList.add("active");
-    });
+    function validateStep(stepId) {
+        const form = document.querySelector(`#${stepId}`);
+        const inputs = form.querySelectorAll("[required]");
+        let isValid = true;
 
-    // Next button click
-    nextButtons.forEach(button => {
+        inputs.forEach(input => {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add("is-invalid");
+            } else {
+                input.classList.remove("is-invalid");
+            }
+        });
+
+        return isValid;
+    }
+
+    document.querySelectorAll(".next-step").forEach(button => {
         button.addEventListener("click", function () {
+
+            const currentStep = button.closest(".tab-pane").id;
+
+            if (!validateStep(currentStep)) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            saveStepData(currentStep);
+
             const activeLi = document.querySelector(".wizard .nav-tabs li.active");
             if (!activeLi) return;
 
             const nextLi = activeLi.nextElementSibling;
-            if (nextLi && nextLi.classList.contains("disabled")) {
-                nextLi.classList.remove("disabled");
-            }
 
             if (nextLi) {
                 const nextTab = nextLi.querySelector('a[data-toggle="tab"]');
                 if (nextTab) nextTab.click();
+                activeLi.classList.remove("active");
+                nextLi.classList.add("active");
             }
         });
     });
 
-    // Previous button click
-    prevButtons.forEach(button => {
+    document.querySelectorAll(".prev-step").forEach(button => {
         button.addEventListener("click", function () {
+            const currentStep = button.closest(".tab-pane").id;
+            saveStepData(currentStep);
+
             const activeLi = document.querySelector(".wizard .nav-tabs li.active");
             if (!activeLi) return;
-
             const prevLi = activeLi.previousElementSibling;
+
             if (prevLi) {
                 const prevTab = prevLi.querySelector('a[data-toggle="tab"]');
                 if (prevTab) prevTab.click();
+                activeLi.classList.remove("active");
+                prevLi.classList.add("active");
             }
         });
     });
+
+    document.querySelectorAll(".tab-pane").forEach(tabPane => {
+        loadStepData(tabPane.id);
+    });
 });
+

@@ -1,175 +1,223 @@
-<div class="tab-panel active" role="tabpanel" id="step1">
-    <h4 class="text-center">Basic Info</h4>
-    <hr>
+<div class="tab-pane container-fluid active" role="tabpanel" id="step1">
+    <input type="hidden" name="route_id" id="route_id" value="">
+    @error('route_id')
+    <div class="invalid-feedback">
+        {{ $message }}
+    </div>
+    @enderror
     <div class="row">
-
-        <div class="col-md-6">
-            <label>Route *</label>
+        <div class="col-sm-2 no-padding">Via</div>
+        <div class="col-sm-2 no-padding">Origin *</div>
+        <div class="col-sm-2 no-padding">Destination *</div>
+        <div class="col-sm-2 no-padding">Ready to Load *</div>
+        <div class="col-sm-2 no-padding">Type of Shipment *</div>
+    </div>
+    <div class="row quote-form">
+        <div class="col-sm-2 no-padding">
+            <input type="hidden" id="transportation_type" name="transportation_type" value="ocean" />
+            <button class="btn-blue">
+               <span class="icon-container">
+                   <i class="fad fa-ship fa-2x"></i>
+               </span>
+                <span class="text-container">
+                    OCEAN FREIGHT
+                </span>
+            </button>
         </div>
-        <div class="col-md-12 form-row">
-            <div class="col-md-6 mb-3">
-                <label for="origin_id">Origin</label>
-                <select class="form-control @error('origin_id') is-invalid @enderror" id="origin_id" name="origin_id" onchange="setDestination()">
-                    <option value="" disabled selected>Select Origin</option>
-                    @foreach($origins as $origin)
-                        <option value="{{ $origin['id'] }}" data-destination="{{ $origin['destination_id'] }}">{{ $origin['full_location'] }}</option>
-                    @endforeach
-                </select>
-                @error('origin_id')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="destination_id">Destination</label>
-                <select class="form-control @error('destination_id') is-invalid @enderror" id="destination_id" name="destination_id" onchange="setOrigin()">
-                    <option value="" disabled selected>Select Destination</option>
-                    @foreach($destinations as $destination)
-                        <option value="{{ $destination['id'] }}" data-origin="{{ $destination['origin_id'] }}">{{ $destination['full_location'] }}</option>
-                    @endforeach
-                </select>
-                @error('destination_id')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
+        <div class="col-sm-2 no-padding">
+            <select class="custom-block-padding full-width full-height no-border custom-default-font" id="origin_id" name="origin_id"
+                    onchange="setDestinationAndRoute()">
+                <option value="" disabled selected>Select Origin</option>
+                @foreach($origins as $origin)
+                    <option value="{{ $origin['id'] }}" data-destination="{{ $origin['destination_id'] }}"
+                            data-containers="{{$origin['containers']}}"
+                            data-route-id="{{ $origin['route_id'] }}">
+                        {{ $origin['full_location'] }}
+                    </option>
+                @endforeach
+            </select>
         </div>
-
-
-        <div class="col-md-4 mb-3">
-            <label for="validationServer01">Ready to load date *</label>
-            <input type="date"
-                   class="form-control @error('ready_to_load_date') is-invalid @enderror"
-                   name="ready_to_load_date" value="{{ old('ready_to_load_date') }}" required />
+        <div class="col-sm-2 no-padding">
+            <select class="custom-block-padding full-width full-height no-border custom-default-font" id="destination_id" name="destination_id"
+                    onchange="setOriginAndRoute()">
+                <option value="" disabled selected>Select Destination</option>
+                @foreach($destinations as $destination)
+                    <option value="{{ $destination['id'] }}" data-origin="{{ $destination['origin_id'] }}"
+                            data-containers="{{$destination['containers']}}"
+                            data-route-id="{{ $destination['route_id'] }}">
+                        {{ $destination['full_location'] }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-sm-2 no-padding">
+            <input type="date" class="custom-block-padding full-width full-height no-border custom-default-font" name="ready_to_load_date"
+                   id="ready_to_load_date" required min="{{ date('Y-m-d') }}">
             @error('ready_to_load_date')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
             @enderror
         </div>
-
-        <div class="col-md-9 mb-3">
-            <label for="exampleFormControlTextarea1">Description of goods</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                      name="description_of_goods">{{ old('description_of_goods') }}</textarea>
-            @error('description_of_goods')
+        <div class="col-sm-2 no-padding">
+            <div class="custom-dropdown custom-block-padding full-width full-height no-border custom-default-font">
+                <input type="hidden" id="type_of_shipment" name="type" value="fcl" />
+                <div class="dropdown-selected full-height" id="selectedOption">
+                    <i class="fad fa-truck-container mr-2 icon-font-size"></i> FCL
+                </div>
+                <div class="dropdown-options" id="dropdownOptions">
+                    <div class="dropdown-option" data-value="fcl">
+                        <i class="fad fa-truck-container mr-2 icon-font-size"></i> FCL
+                    </div>
+                    <div class="dropdown-option" data-value="lcl">
+                        <i class="fad fa-truck-loading mr-2 icon-font-size"></i> LCL
+                    </div>
+                </div>
+            </div>
+            @error('type')
             <div class="invalid-feedback">
                 {{ $message }}
             </div>
             @enderror
         </div>
-
+        <div class="col-sm-2 no-padding">
+            <button type="button" class="quote-btn next-step step1 full-height full-width">Next step</button>
+        </div>
     </div>
-    <ul class="list-inline pull-right">
-        <li>
-            <button type="button" class="default-btn next-step step1">Continue to next
-                step</button>
-        </li>
-    </ul>
 </div>
-
 <script>
+    const selectedOption = document.getElementById('selectedOption');
+    const dropdownOptions = document.getElementById('dropdownOptions');
+    const typeOfShipment = document.getElementById('type_of_shipment');
+    selectedOption.addEventListener('click', () => {
+        dropdownOptions.style.display = dropdownOptions.style.display === 'block' ? 'none' : 'block';
+    });
+
+    dropdownOptions.addEventListener('click', (e) => {
+        if (e.target.closest('.dropdown-option')) {
+            const option = e.target.closest('.dropdown-option');
+            const icon = option.querySelector('i').outerHTML;
+            const value = option.dataset.value;
+
+            selectedOption.innerHTML = `${icon} ${option.textContent.trim()}`;
+
+            typeOfShipment.value = value;
+
+            if(value === 'fcl'){
+                $('#for_fcl').show();
+                $('#for_lcl').hide();
+            }else{
+                $('#for_fcl').hide();
+                $('#for_lcl').show();
+            }
+            dropdownOptions.style.display = 'none';
+        }
+    });
+</script>
+<script>
+    // Additional validation logic or utilities for this step
     document.addEventListener('DOMContentLoaded', function () {
         const nextStepButton = document.querySelector('.step1');
+        if(document.getElementById('type_of_shipment').value === 'fcl'){
+            $('#for_fcl').show();
+            $('#for_lcl').hide();
+        }else{
+            $('#for_fcl').hide();
+            $('#for_lcl').show();
+        }
 
         if (nextStepButton) {
             nextStepButton.addEventListener('click', function (event) {
-                // Validation logic
                 const fields = [
-                    { name: 'origin_city', required: true, regex: /^[a-zA-Z\s\-]+$/, maxLength: 100, label: 'Origin City', message: 'Enter a valid city name (letters, spaces, and dashes only, max 100 characters).' },
-                    { name: 'origin_country', required: true, regex: /^[A-Z]{2}$/, label: 'Origin Country', message: 'Enter a valid 2-letter country code (e.g., US, GB).' },
-                    { name: 'origin_zip', required: true, regex: /^\d{4,10}$/, label: 'Origin ZIP', message: 'Enter a valid ZIP code (4-10 digits).' },
-                    { name: 'destination_city', required: true, regex: /^[a-zA-Z\s\-]+$/, maxLength: 100, label: 'Destination City', message: 'Enter a valid city name (letters, spaces, and dashes only, max 100 characters).' },
-                    { name: 'destination_country', required: true, regex: /^[A-Z]{2}$/, label: 'Destination Country', message: 'Enter a valid 2-letter country code (e.g., US, GB).' },
-                    { name: 'destination_zip', required: true, regex: /^\d{4,10}$/, label: 'Destination ZIP', message: 'Enter a valid ZIP code (4-10 digits).' },
-                    { name: 'ready_to_load_date', required: true, type: 'date', label: 'Ready to Load Date', message: 'Enter a valid date not earlier than today.' }
+                    {name: 'route_id', required: true, label: 'Route'},
+                    {name: 'type', required: true, label: 'Type of Shipment'},
+                    {name: 'ready_to_load_date', required: true, label: 'Ready to Load Date'}
                 ];
 
                 let isValid = true;
 
                 // Clear previous errors
-                document.querySelectorAll('.error-message').forEach(el => el.remove());
                 document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+                document.querySelectorAll('.error-message').forEach(el => el.remove());
 
                 fields.forEach(field => {
                     const input = document.querySelector(`[name="${field.name}"]`);
-                    if (input) {
-                        const value = input.value.trim();
-                        let errorMessage = '';
-
-                        // Validation for required fields
-                        if (field.required && !value) {
-                            errorMessage = `${field.label} is required.`;
-                        }
-
-                        // Validation for regex pattern
-                        if (!errorMessage && field.regex && !field.regex.test(value)) {
-                            errorMessage = field.message;
-                        }
-
-                        // Validation for string length
-                        if (!errorMessage && field.maxLength && value.length > field.maxLength) {
-                            errorMessage = field.message;
-                        }
-
-                        // Validation for dates
-                        if (!errorMessage && field.type === 'date') {
-                            const today = new Date().toISOString().split('T')[0];
-                            if (new Date(value) < new Date(today)) {
-                                errorMessage = field.message;
-                            }
-                        }
-
-                        if (errorMessage) {
-                            isValid = false;
-                            console.log('1');
-                            // Add error class and message
-                            input.classList.add('is-invalid');
-                            const errorElement = document.createElement('div');
-                            errorElement.className = 'error-message text-danger';
-                            errorElement.textContent = errorMessage;
-                            input.parentNode.appendChild(errorElement);
-                        }
+                    if (!input || !input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('is-invalid');
+                        const errorElement = document.createElement('div');
+                        errorElement.className = 'error-message text-danger';
+                        errorElement.textContent = `${field.label} is required.`;
+                        input.parentNode.appendChild(errorElement);
                     }
                 });
 
-                // Prevent default action if validation fails
                 if (!isValid) {
-                    alert('Please fix the errors before proceeding to the next step.');
-                    event.preventDefault(); // Prevent default behavior
-                    event.stopImmediatePropagation(); // Stop other click handlers from executing
+                    event.preventDefault();
                 }
-            }, true); // Use the "capture" phase to give this handler higher priority
+            });
         }
     });
 
-    function setDestination() {
+    // Pre-fill dependent fields based on selection
+    function setDestinationAndRoute() {
         const originSelect = document.getElementById('origin_id');
         const destinationSelect = document.getElementById('destination_id');
+        const routeIdInput = document.getElementById('route_id');
         const selectedOrigin = originSelect.options[originSelect.selectedIndex];
 
+        // Update destination based on the selected origin
         if (selectedOrigin && selectedOrigin.dataset.destination) {
             const destinationValue = selectedOrigin.dataset.destination;
             Array.from(destinationSelect.options).forEach(option => {
                 option.selected = option.value === destinationValue;
             });
         }
+
+        // Set the route_id hidden input
+        if (selectedOrigin && selectedOrigin.dataset.routeId) {
+            routeIdInput.value = selectedOrigin.dataset.routeId;
+            updateContainerSelectOptions(selectedDestination.dataset.containers)
+        }
     }
 
-    function setOrigin() {
+    function setOriginAndRoute() {
         const destinationSelect = document.getElementById('destination_id');
         const originSelect = document.getElementById('origin_id');
+        const routeIdInput = document.getElementById('route_id');
         const selectedDestination = destinationSelect.options[destinationSelect.selectedIndex];
 
+        // Update origin based on the selected destination
         if (selectedDestination && selectedDestination.dataset.origin) {
             const originValue = selectedDestination.dataset.origin;
             Array.from(originSelect.options).forEach(option => {
                 option.selected = option.value === originValue;
             });
         }
+
+        // Set the route_id hidden input
+        if (selectedDestination && selectedDestination.dataset.routeId) {
+            routeIdInput.value = selectedDestination.dataset.routeId;
+            updateContainerSelectOptions(selectedDestination.dataset.containers)
+        }
     }
 
-</script>
+    function updateContainerSelectOptions(dataArray){
+        const select = document.getElementById('inlineFormCustomSelect');
 
+        while (select.options.length > 1) {
+            select.remove(1);
+        }
+        if (typeof dataArray === 'string') {
+            dataArray = JSON.parse(dataArray);
+        }
+
+        dataArray.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.container_type;
+            option.textContent = `${item.container_type} - $${item.price}`;
+
+            select.appendChild(option);
+        });
+    }
+</script>

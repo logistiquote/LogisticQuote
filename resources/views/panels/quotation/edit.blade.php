@@ -398,7 +398,7 @@
         </div>
 
         <div class="row d-flex justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="wizard">
                     <div class="wizard-inner">
                         <div class="connecting-line"></div>
