@@ -3,7 +3,7 @@
 
 <div class="app-wrapper container">
     <div class="shipping-form" style="display: inline-block;">
-        <form action="{{ route('form_quote_step2') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('frontend.quote_final_step') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <h2>Type of delivery</h2>
             <div class="shipment-type" style="margin: 20px 0px;">

@@ -17,7 +17,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Shipment Controller
 Route::post('/get_quote_step1', 'SiteController@get_quote_step1')->name('get_quote_step1');
 Route::get('/get_quote_step2', 'SiteController@get_quote_step2')->name('get_quote_step2');
-Route::post('/form_quote_step2', 'SiteController@form_quote_step2')->name('form_quote_step2');
+Route::post('/get_quote_step3', 'SiteController@getQuoteStepThree')->name('frontend.quote_step3');
+Route::post('/form-quote-final-step', 'SiteController@formQuoteFinalStep')->name('frontend.quote_final_step');
 
 // User Routes
 Route::get('/user', 'UserController@index')->name('user');
@@ -35,6 +36,7 @@ Route::get('/all_users', 'AdminController@all_users')->name('admin.all_users');
 Route::resource('/quotation', 'QuotationController');
 Route::get('/quotations', 'QuotationController@view_all')->name('quotations.view_all');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
+Route::get('/store_pending_form', 'QuotationController@store_pending_form')->name('store_pending_form');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
 Route::get('/mail_view_quotation/{token}', 'SiteController@mail_view_quotation')->name('quotation.mail_view');
 
@@ -44,13 +46,13 @@ Route::get('/location-import', 'LocationController@importLocationsView')->name('
 Route::post('/location/import', 'ImportController@importLocations')->name('location.import');
 Route::resource('/route', 'RouteController');
 
-// Proposal Routes
-Route::resource('/proposal', 'ProposalController');
-Route::get('/proposals', 'ProposalController@view_all')->name('proposals.view_all');
-Route::get('/make_proposal/{id}', 'ProposalController@make_proposal')->name('proposal.make');
-Route::get('proposals_received/', 'ProposalController@proposals_received')->name('proposals.received');
-Route::get('/accept_proposal/{id}', 'ProposalController@accept_proposal')->name('proposal.accept');
-Route::get('/mail_view_proposal/{token}', 'SiteController@mail_view_proposal')->name('proposal.mail_view');
+// Payment
+use App\Http\Controllers\PaymentController;
+
+Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
+Route::get('/payment/success', [PaymentController::class, 'executePayment'])->name('payment.success');
+Route::get('/payment/cancel', [PaymentController::class, 'cancelPayment'])->name('payment.cancel');
+
 
 // Merging translated file scripts
 Route::get('merge_them', function () {

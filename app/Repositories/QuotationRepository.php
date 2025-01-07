@@ -37,7 +37,12 @@ class QuotationRepository
     {
         $container = new QuotationContainer($containerData);
         $container->quotation_id = $quotation->id;
-        $container->total_price = $containerData['quantity'] * $containerData['price_per_container'];
+        $pricePerContainer = $containerData['price'];
+        $container->total_price = $pricePerContainer;
+        $container->quantity = 1;
+        $container->weight = $containerData['weight'];
+        $container->price_per_container = $pricePerContainer;
+        $container->route_container_id = $containerData['container_id'];
         $container->save();
 
         return $container;

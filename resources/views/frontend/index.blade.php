@@ -52,19 +52,24 @@
                                                         </div>
 
                                                         <div class="shipping-directions">
+                                                            <input type="hidden" name="route_id" id="route_id" value="">
+                                                            <input type="hidden" name="route_containers" id="route_containers" value="">
                                                             <div class="input-icon">
                                                                 <span class="top-title">ORIGIN OF SHIPMENT</span>
                                                                     <select
                                                                         class="form-control @error('origin_id') is-invalid @enderror"
                                                                         id="origin_id" name="origin_id"
                                                                         style="height: 100%; border: none"
-                                                                        onchange="setDestination()" required>
+                                                                        onchange="setDestinationAndRoute()" required>
                                                                         <option value="" disabled selected>Select
                                                                             Origin
                                                                         </option>
                                                                         @foreach($origins as $origin)
                                                                             <option value="{{ $origin['id'] }}"
-                                                                                    data-destination="{{ $origin['destination_id'] }}">{{ $origin['full_location'] }}</option>
+                                                                                    data-destination="{{ $origin['destination_id'] }}"
+                                                                                    data-route-id="{{ $origin['route_id'] }}"
+                                                                                    data-containers="{{ $origin['containers'] }}"
+                                                                            >{{ $origin['full_location'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                             </div>
@@ -75,13 +80,16 @@
                                                                         class="form-control @error('destination_id') is-invalid @enderror"
                                                                         id="destination_id" name="destination_id"
                                                                         style="height: 100%; border: none"
-                                                                        onchange="setOrigin()" required>
+                                                                        onchange="setOriginAndRoute()" required>
                                                                         <option value="" disabled selected>Select
                                                                             Destination
                                                                         </option>
                                                                         @foreach($destinations as $destination)
                                                                             <option value="{{ $destination['id'] }}"
-                                                                                    data-origin="{{ $destination['origin_id'] }}">{{ $destination['full_location'] }}</option>
+                                                                                    data-origin="{{ $destination['origin_id'] }}"
+                                                                                    data-route-id="{{ $destination['route_id'] }}"
+                                                                                    data-containers="{{ $origin['containers'] }}"
+                                                                            >{{ $destination['full_location'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                             </div>
@@ -294,31 +302,51 @@
 
     </div>
     <script>
-        // Pre-fill dependent fields based on selection
-        function setDestination() {
+        function setDestinationAndRoute() {
             const originSelect = document.getElementById('origin_id');
             const destinationSelect = document.getElementById('destination_id');
+            const routeIdInput = document.getElementById('route_id');
             const selectedOrigin = originSelect.options[originSelect.selectedIndex];
 
+            // Update destination based on the selected origin
             if (selectedOrigin && selectedOrigin.dataset.destination) {
                 const destinationValue = selectedOrigin.dataset.destination;
                 Array.from(destinationSelect.options).forEach(option => {
                     option.selected = option.value === destinationValue;
                 });
             }
+
+            // Set the route_id hidden input
+            if (selectedOrigin && selectedOrigin.dataset.routeId) {
+                routeIdInput.value = selectedOrigin.dataset.routeId;
+                updateContainerSelectOptions(selectedOrigin.dataset.containers)
+            }
         }
 
-        function setOrigin() {
+        function setOriginAndRoute() {
             const destinationSelect = document.getElementById('destination_id');
             const originSelect = document.getElementById('origin_id');
+            const routeIdInput = document.getElementById('route_id');
             const selectedDestination = destinationSelect.options[destinationSelect.selectedIndex];
 
+            // Update origin based on the selected destination
             if (selectedDestination && selectedDestination.dataset.origin) {
                 const originValue = selectedDestination.dataset.origin;
                 Array.from(originSelect.options).forEach(option => {
                     option.selected = option.value === originValue;
                 });
             }
+
+            // Set the route_id hidden input
+            if (selectedDestination && selectedDestination.dataset.routeId) {
+                routeIdInput.value = selectedDestination.dataset.routeId;
+                updateContainerSelectOptions(selectedDestination.dataset.containers)
+            }
+        }
+
+        function updateContainerSelectOptions(dataArray){
+            document.getElementById('route_containers').value = dataArray;
+            console.log(document.getElementById('route_containers').value);
         }
     </script>
 @endsection
