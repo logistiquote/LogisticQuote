@@ -454,7 +454,6 @@
 
                         if (errorMessage) {
                             isValid = false;
-                            console.log('2');
 
                             // Add error class and message
                             input.classList.add('is-invalid');

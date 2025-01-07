@@ -275,7 +275,6 @@
         // On Incoterms button clicks
         $('#incoterms').change(function () {
             var el = $(this).val();
-            console.log(el);
             if (el == 'EXW') {
                 $('#exw').show();
                 $("input[name=pickup_address]").prop('required', true);

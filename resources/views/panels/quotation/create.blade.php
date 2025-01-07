@@ -313,7 +313,6 @@
         $(document).on('keyup', "input[name^='l'], input[name^='w'], input[name^='h']", function () {
             $el = $(this);
             $unit_num = $el.parent().parent().parent();
-            console.log($unit_num);
             if ($unit_num.find("input[name^='l']").val() && $unit_num.find("input[name^='w']").val() &&
                 $unit_num.find("input[name^='h']").val()) {
                 let l = $unit_num.find("input[name^='l']").val();

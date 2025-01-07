@@ -943,7 +943,6 @@
         $(document).on('keyup', "input[name^='l'], input[name^='w'], input[name^='h']", function () {
             $el = $(this);
             $unit_num = $el.parent().parent().parent();
-            console.log($unit_num);
             if ($unit_num.find("input[name^='l']").val() && $unit_num.find("input[name^='w']").val() &&
                 $unit_num.find("input[name^='h']").val()) {
                 var l = $unit_num.find("input[name^='l']").val();
@@ -1004,7 +1003,6 @@
         // Live results on calculations
         $("input[name=quantity_units], input[name=total_weight_units], input[name=l], input[name=w], input[name=h]")
             .keyup(function () {
-                console.log('123');
                 var quantity = $('input[name=quantity_units]').val() ? parseFloat($(
                     'input[name=quantity_units]').val()) : 1;
                 var l = $('input[name=l]').val() ? parseFloat($('input[name=l]').val()) : 1;
@@ -1021,7 +1019,6 @@
         // On Incoterms button clicks
         $('#incoterms').change(function () {
             var el = $(this).val();
-            console.log(el);
             if (el == 'EXW') {
                 $('#exw').show();
                 $("input[name=pickup_address]").prop('', true);

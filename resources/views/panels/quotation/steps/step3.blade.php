@@ -229,7 +229,6 @@
          * @param {string} message - The error message
          */
         function displayError(field, message) {
-            console.log('3')
             field.classList.add('is-invalid');
             const errorElement = document.createElement('div');
             errorElement.className = 'error-message text-danger';

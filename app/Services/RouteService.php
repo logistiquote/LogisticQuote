@@ -61,7 +61,7 @@ class RouteService
      */
     public function getUniqueOrigins($allRoutes): Collection
     {
-        return $allRoutes->unique('origin_id')->map(function ($route) {
+        return $allRoutes->map(function ($route) {
             return [
                 'id' => $route->origin_id,
                 'route_id' => $route->id,
@@ -80,7 +80,7 @@ class RouteService
      */
     public function getUniqueDestinations($allRoutes)
     {
-        return $allRoutes->unique('destination_id')->map(function ($route) {
+        return $allRoutes->map(function ($route) {
             return [
                 'id' => $route->destination_id,
                 'route_id' => $route->id,

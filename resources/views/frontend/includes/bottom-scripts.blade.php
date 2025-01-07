@@ -74,7 +74,7 @@
                 };
             });
         }
-        $(document).ready(function() 
+        $(document).ready(function()
         {
             $('.btn-route').on('click', function() {
                 $('.route-active').removeClass('route-active');
@@ -83,7 +83,6 @@
                 $('.dropdown-shipment li').hide();
                 $('.dropdown-shipment li:has([data-mode="' + mode + '"])').show().find('a').first().click();
                 var type = $(this).data('type');
-                console.log( $(this).data().mode );
                 $("#transportation_type").val( $(this).data().mode );
                 $('.type-delivery-active').removeClass('type-delivery-active');
                 $('.type-' + type + '-item').addClass('type-delivery-active');
@@ -130,6 +129,6 @@
                 $('#lng_to').val(lng);
             });
             $('#select-two').select2();
-        }); 
+        });
     </script>
 <!-- ! Index scripts -->

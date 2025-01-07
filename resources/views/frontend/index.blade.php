@@ -52,6 +52,10 @@
                                                         </div>
 
                                                         <div class="shipping-directions">
+                                                            @php
+                                                                $uniqueOrigins = collect($origins)->unique('full_location');
+                                                                $uniqueDestinations = collect($destinations)->unique('full_location');
+                                                            @endphp
                                                             <input type="hidden" name="route_id" id="route_id" value="">
                                                             <input type="hidden" name="route_containers" id="route_containers" value="">
                                                             <div class="input-icon">
@@ -64,11 +68,12 @@
                                                                         <option value="" disabled selected>Select
                                                                             Origin
                                                                         </option>
-                                                                        @foreach($origins as $origin)
+                                                                        @foreach($uniqueOrigins as $origin)
                                                                             <option value="{{ $origin['id'] }}"
                                                                                     data-destination="{{ $origin['destination_id'] }}"
                                                                                     data-route-id="{{ $origin['route_id'] }}"
                                                                                     data-containers="{{ $origin['containers'] }}"
+                                                                                    data-all-destinations="{{ json_encode($destinations) }}"
                                                                             >{{ $origin['full_location'] }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -84,11 +89,12 @@
                                                                         <option value="" disabled selected>Select
                                                                             Destination
                                                                         </option>
-                                                                        @foreach($destinations as $destination)
+                                                                        @foreach($uniqueDestinations as $destination)
                                                                             <option value="{{ $destination['id'] }}"
                                                                                     data-origin="{{ $destination['origin_id'] }}"
                                                                                     data-route-id="{{ $destination['route_id'] }}"
                                                                                     data-containers="{{ $origin['containers'] }}"
+                                                                                    data-all-origins="{{ json_encode($origins) }}"
                                                                             >{{ $destination['full_location'] }}</option>
                                                                         @endforeach
                                                                     </select>
@@ -302,51 +308,73 @@
 
     </div>
     <script>
-        function setDestinationAndRoute() {
-            const originSelect = document.getElementById('origin_id');
-            const destinationSelect = document.getElementById('destination_id');
-            const routeIdInput = document.getElementById('route_id');
-            const selectedOrigin = originSelect.options[originSelect.selectedIndex];
-
-            // Update destination based on the selected origin
-            if (selectedOrigin && selectedOrigin.dataset.destination) {
-                const destinationValue = selectedOrigin.dataset.destination;
-                Array.from(destinationSelect.options).forEach(option => {
-                    option.selected = option.value === destinationValue;
-                });
-            }
-
-            // Set the route_id hidden input
-            if (selectedOrigin && selectedOrigin.dataset.routeId) {
-                routeIdInput.value = selectedOrigin.dataset.routeId;
-                updateContainerSelectOptions(selectedOrigin.dataset.containers)
-            }
-        }
-
         function setOriginAndRoute() {
             const destinationSelect = document.getElementById('destination_id');
             const originSelect = document.getElementById('origin_id');
             const routeIdInput = document.getElementById('route_id');
             const selectedDestination = destinationSelect.options[destinationSelect.selectedIndex];
+            let currentOrigin;
 
-            // Update origin based on the selected destination
-            if (selectedDestination && selectedDestination.dataset.origin) {
-                const originValue = selectedDestination.dataset.origin;
-                Array.from(originSelect.options).forEach(option => {
-                    option.selected = option.value === originValue;
-                });
+            if (!selectedDestination) return;
+
+            // Parse all origins from the data attribute
+            const allOrigins = JSON.parse(selectedDestination.dataset.allOrigins || '[]');
+            const selectedOriginId = originSelect.value;
+
+            // Check if any origin matches the selected destination's origin_id
+            const matchingOrigins = allOrigins.filter(origin => origin.destination_id == selectedDestination.value);
+
+            if (matchingOrigins.length > 0) {
+                // If a matching origin exists, keep the current selection if it's valid
+                currentOrigin = matchingOrigins.find(origin => origin.id == selectedOriginId);
+                if (!currentOrigin){
+                    originSelect.value = matchingOrigins[0].id; // Default to the first matching origin
+
+                }
+            } else {
+                // If no matching origin exists, select the first option as default
+                originSelect.value = '';
             }
 
-            // Set the route_id hidden input
-            if (selectedDestination && selectedDestination.dataset.routeId) {
-                routeIdInput.value = selectedDestination.dataset.routeId;
-                updateContainerSelectOptions(selectedDestination.dataset.containers)
+            // Update route_id and call container update if applicable
+            routeIdInput.value = currentOrigin.route_id || '';
+            updateContainerSelectOptions(selectedDestination.dataset.containers);
+        }
+
+        function setDestinationAndRoute() {
+            const originSelect = document.getElementById('origin_id');
+            const destinationSelect = document.getElementById('destination_id');
+            const routeIdInput = document.getElementById('route_id');
+            const selectedOrigin = originSelect.options[originSelect.selectedIndex];
+            let currentDestination;
+
+            if (!selectedOrigin) return;
+
+            // Parse all destinations from the data attribute
+            const allDestinations = JSON.parse(selectedOrigin.dataset.allDestinations || '[]');
+            const selectedDestinationId = destinationSelect.value;
+
+            // Check if any destination matches the selected origin's destination_id
+            const matchingDestinations = allDestinations.filter(destination => destination.origin_id == selectedOrigin.value);
+
+            if (matchingDestinations.length > 0) {
+                // If a matching destination exists, keep the current selection if it's valid
+                currentDestination = matchingDestinations.some(destination => destination.id == selectedDestinationId);
+                if (!currentDestination) {
+                    destinationSelect.value = matchingDestinations[0].id; // Default to the first matching destination
+                }
+            } else {
+                // If no matching destination exists, select the first option as default
+                destinationSelect.value = '';
             }
+
+            // Update route_id and call container update if applicable
+            routeIdInput.value = currentDestination.route_id || '';
+            updateContainerSelectOptions(selectedOrigin.dataset.containers);
         }
 
         function updateContainerSelectOptions(dataArray){
             document.getElementById('route_containers').value = dataArray;
-            console.log(document.getElementById('route_containers').value);
         }
     </script>
 @endsection
