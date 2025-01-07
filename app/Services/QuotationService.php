@@ -40,9 +40,14 @@ class QuotationService
             }
         }
 
-        $quotation->update([
-            'total_price' => $totalPrice,
-        ]);
+        if(isset($data['attachment_file']))
+        {
+            Storage::disk('public')->move( 'temp/'.$data['attachment_file'], 'files/'.$data['attachment_file'] );
+
+            $quotation->attachment = $data['attachment_file'];
+        }
+        $quotation->total_price = $totalPrice;
+        $quotation->save();
 
         return $quotation;
     }
@@ -106,7 +111,7 @@ class QuotationService
             'remarks' => $data['remarks'] ?? null,
         ];
 
-        if (isset($data['attachment'])) {
+        if (isset($data['attachment']) && !empty(get_object_vars($data['attachment']))) {
             $fileName = rand() . '.' . $data['attachment']->getClientOriginalExtension();
             Storage::disk('public')->putFileAs('files/', $data['attachment'], $fileName);
             $baseQuotationData['attachment'] = $fileName;

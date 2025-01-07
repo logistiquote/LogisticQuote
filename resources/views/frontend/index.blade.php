@@ -120,21 +120,21 @@
                                                                     </a>
                                                                     <span class="transcript">FULL CONTAINER LOAD</span>
                                                                 </li>
-                                                                <li>
-                                                                    <a data-mode="sea" data-type="lcl"
-                                                                       href="javascript:;">
-                                                                        <i class="fad fa-truck-loading"></i><span>LCL</span>
-                                                                    </a>
-                                                                    <span class="transcript">LESS CONTAINER LOAD</span>
-                                                                </li>
+{{--                                                                <li>--}}
+{{--                                                                    <a data-mode="sea" data-type="lcl"--}}
+{{--                                                                       href="javascript:;">--}}
+{{--                                                                        <i class="fad fa-truck-loading"></i><span>LCL</span>--}}
+{{--                                                                    </a>--}}
+{{--                                                                    <span class="transcript">LESS CONTAINER LOAD</span>--}}
+{{--                                                                </li>--}}
 
-                                                                <li>
-                                                                    <a data-mode="air" data-type="air"
-                                                                       href="javascript:;">
-                                                                        <i class="fad fa-plane"></i><span>AIR</span>
-                                                                    </a>
-                                                                    <span class="transcript">AIR DELIVERY</span>
-                                                                </li>
+{{--                                                                <li>--}}
+{{--                                                                    <a data-mode="air" data-type="air"--}}
+{{--                                                                       href="javascript:;">--}}
+{{--                                                                        <i class="fad fa-plane"></i><span>AIR</span>--}}
+{{--                                                                    </a>--}}
+{{--                                                                    <span class="transcript">AIR DELIVERY</span>--}}
+{{--                                                                </li>--}}
                                                             </ul>
                                                         </div>
                                                         <input type="hidden" name="type" value="fcl">

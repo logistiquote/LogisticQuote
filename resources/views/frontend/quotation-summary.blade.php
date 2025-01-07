@@ -33,7 +33,7 @@
             </div>
             <form action="{{ route('frontend.quote_final_step') }}" method="POST">
                 @csrf
-                <h4>You need to be logged in to finish flow</h4>
+                <h4>You must to be logged in to finish your quotation</h4>
                 <button type="submit" class="request-btn next " style="background: rgb(243, 156, 1);">
                     <span>Login to payment</span>
                     <i class="fal fa-angle-right"></i>
