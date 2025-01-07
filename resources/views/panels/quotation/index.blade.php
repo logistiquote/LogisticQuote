@@ -3,7 +3,11 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">My Quotations</h1>
@@ -30,6 +34,7 @@
                             <th width="13%">Ready to load</th>
                             <th>Worth</th>
                             <th width="10%">Gross Weight</th>
+                            <th>Paid</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -62,6 +67,68 @@
                             </td>
                             <td>{{ $quotation->value_of_goods }} $</td>
                             <td>{{ $quotation->total_weight }} KG</td>
+                            <td>
+                                @if(!$quotation->is_paid)
+                                    <form action="{{ route('payment.create') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="provider" value="paypal">
+                                        <input type="hidden" name="quotation_id" value="{{ $quotation->id }}">
+                                        <button type="submit" class="btn btn-primary">Pay with PayPal</button>
+                                    </form>
+
+                                    <div class="mt-1">
+                                        <button class="btn btn-primary" id="showInfoButton" data-bs-toggle="modal" data-bs-target="#ibanInfoModal">
+                                            Show IBAN Info
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="ibanInfoModal" tabindex="-1" aria-labelledby="ibanInfoModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="ibanInfoModalLabel">Bank account details</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table table-bordered">
+                                                            <tbody>
+                                                            <tr>
+                                                                <th>IBAN in print format</th>
+                                                                <td>IL62 0108 0000 0009 9999 999</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Country code</th>
+                                                                <td>IL</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Check digits</th>
+                                                                <td>62</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Bank code</th>
+                                                                <td>010</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Branch code</th>
+                                                                <td>800</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Bank account number</th>
+                                                                <td>000009999999999</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <span class="badge badge-success">Paid</span>
+                                @endif
+                            </td>
                             <td>
                             <div class="dropdown">
                                 <button type="button" class="btn btn-success fa-2x" data-toggle="dropdown">
@@ -104,6 +171,7 @@
 @endsection
 
 @section('bottom_scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready( function () {
         $('#quotations_table').DataTable();

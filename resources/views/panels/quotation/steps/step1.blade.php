@@ -177,7 +177,7 @@
         // Set the route_id hidden input
         if (selectedOrigin && selectedOrigin.dataset.routeId) {
             routeIdInput.value = selectedOrigin.dataset.routeId;
-            updateContainerSelectOptions(selectedDestination.dataset.containers)
+            updateContainerSelectOptions(selectedOrigin.dataset.containers)
         }
     }
 

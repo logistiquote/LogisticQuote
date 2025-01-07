@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ContactUs;
 use App\Models\Quotation;
+use App\Services\QuotationService;
 use App\Services\RouteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
 {
-    public function __construct(private RouteService $routeService)
+    public function __construct(private RouteService $routeService, private QuotationService $quotationService)
     {
     }
 
@@ -55,10 +56,11 @@ class SiteController extends Controller
         $data = [
             'type' => $request->type,
             'transportation_type' => $request->transportation_type,
-            'origin' => $request->origin,
-            'destination' => $request->destination,
+            'route_id' => $request->route_id,
             'ready_to_load_date' => $request->date,
+            'route_containers' => $request->route_containers,
         ];
+
         $isDelete = Storage::disk('public')->delete('store_pending_form.json');
         Storage::disk('public')->put('store_pending_form.json', json_encode($data));
 
@@ -87,6 +89,7 @@ class SiteController extends Controller
         }
         else if($fileContents->transportation_type == 'sea' && $fileContents->type == 'fcl')
         {
+            $data['containers'] = $fileContents->route_containers;
             return view('frontend.get_quote_fcl', $data);
         }
         else
@@ -94,7 +97,7 @@ class SiteController extends Controller
             return redirect()->back();
         }
     }
-    public function form_quote_step2(Request $request)
+    public function getQuoteStepThree(Request $request)
     {
         if($request->file('attachment'))
         {
@@ -107,19 +110,30 @@ class SiteController extends Controller
         $fileContents = json_decode($fileContents, true);
         $merge = array_merge($fileContents, $request->all());
 
-        $isDelete = Storage::disk('public')->delete('store_pending_form.json');
+        Storage::disk('public')->delete('store_pending_form.json');
         Storage::disk('public')->put('store_pending_form.json', json_encode($merge));
 
-        if($fileContents['origin'] == "")
-        {
-            return redirect(route('index'));
-        }
+        $fileContents = Storage::disk('public')->get('store_pending_form.json');
+        $data = (array)json_decode($fileContents);
+        $currentContainers = $this->quotationService->getFormatedContainersData($data);
+        $data['current_containers'] = $currentContainers;
+        $data['page_title'] = 'Request a quote | LogistiQuote';
+        $data['page_name'] = 'get_quote_step3';
 
+        if (!empty($data)){
+            return view('frontend.quotation-summary', $data);
+        }else{
+            return redirect()->back();
+        }
+    }
+
+    public function formQuoteFinalStep(Request $request)
+    {
         if(Auth::check())
         {
             if(Auth::user()->role != 'user')
             {
-                $isDelete = Storage::disk('public')->delete('store_pending_form.json');
+                Storage::disk('public')->delete('store_pending_form.json');
                 return "You are no allowed to perform this action. Only user can add quotation.";
             }
             else

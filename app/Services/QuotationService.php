@@ -23,18 +23,26 @@ class QuotationService
 
         $quotation = $this->quotationRepository->createBaseQuotation($baseQuotationData);
 
-        if ($data['transportation_type'] === 'ocean' && $data['type'] === 'fcl') {
-            $this->addContainers($quotation, $data);
+        $totalPrice = 0;
+        if (($data['transportation_type'] === 'ocean' || $data['transportation_type'] === 'sea') && $data['type'] === 'fcl') {
+            $containers = $this->addContainers($quotation, $data);
+            $totalPrice = $this->getGoodsTotalPrice($containers);
         }
 
-        if ($data['calculate_by'] === 'units') {
-            $this->addPallets($quotation, $data);
-        } else {
-            $quotation->update([
-                'quantity' => $data['quantity'],
-                'total_weight' => $data['total_weight'],
-            ]);
+        if (isset($data['calculate_by'])){
+            if ($data['calculate_by'] === 'units') {
+                $this->addPallets($quotation, $data);
+            } elseif ($data['calculate_by'] === 'shipment') {
+                $quotation->update([
+                    'quantity' => $data['quantity'],
+                    'total_weight' => $data['total_weight'],
+                ]);
+            }
         }
+
+        $quotation->update([
+            'total_price' => $totalPrice,
+        ]);
 
         return $quotation;
     }
@@ -81,15 +89,14 @@ class QuotationService
     {
         $baseQuotationData = [
             'user_id' => auth()->id(),
-//            'route_id' => $data['route_id'],
-            'route_id' => 75,
+            'route_id' => $data['route_id'],
             'status' => 'active',
             'type' => $data['type'],
             'transportation_type' => $data['transportation_type'],
-            'ready_to_load_date' => Carbon::createFromFormat('Y-m-d', $data['ready_to_load_date']),
+            'ready_to_load_date' => Carbon::createFromFormat('d-m-Y', $data['ready_to_load_date']),
             'incoterms' => $data['incoterms'],
             'pickup_address' => $data['pickup_address'] ?? null,
-            'destination_address' => $data['destination_address'] ?? null,
+            'destination_address' => $data['final_destination_address'] ?? null,
             'value_of_goods' => $data['value_of_goods'],
             'description_of_goods' => $data['description_of_goods'],
             'is_stockable' => $data['is_stockable'] ?? false,
@@ -108,19 +115,15 @@ class QuotationService
         return $baseQuotationData;
     }
 
-    private function addContainers(Quotation $quotation, array $data): void
+    private function addContainers(Quotation $quotation, array $data): array
     {
-        $containers = [];
-        foreach ($data['container_size'] as $key => $size) {
-            $containers[] = [
-                'container_no' => $key + 1,
-                'size' => $size,
-                'weight' => $data['container_weight'][$key],
-            ];
-        }
+        $containers = $this->getFormatedContainersData($data);
 
         $this->quotationRepository->syncContainers($quotation, $containers);
+
+        return $containers;
     }
+
 
     private function addPallets(Quotation $quotation, array $data): void
     {
@@ -145,6 +148,36 @@ class QuotationService
             'quantity' => count($pallets),
             'total_weight' => number_format($totalWeight, 2),
         ]);
+    }
+
+    public function getFormatedContainersData(array $data): array
+    {
+        $containers = [];
+        $routeContainers = json_decode($data['route_containers']) ?? [];
+
+        foreach ($data['container_size'] as $key => $size) {
+            $container = current(array_filter($routeContainers, function($item) use ($size) {
+                return $item->container_type == $size;
+            }));
+            $containers[] = [
+                'container_id' => $container->id,
+                'size' => $size,
+                'price' => $container->price,
+                'weight' => $data['container_weight'][$key],
+            ];
+        }
+        return $containers;
+    }
+
+    public function getGoodsTotalPrice(array $data): float
+    {
+        $totalPrice = 0;
+        if (!empty($data)){
+            foreach ($data as $item){
+                $totalPrice += $item['price'];
+            }
+        }
+        return $totalPrice;
     }
 
     private function updateContainers(Quotation $quotation, array $data): void

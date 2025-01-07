@@ -3,7 +3,7 @@
 
 <div class="app-wrapper container">
     <div class="shipping-form" style="display: inline-block;">
-        <form action="{{ route('form_quote_step2') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('frontend.quote_step3') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <h2>Type of delivery</h2>
             <div class="shipment-type" style="margin: 20px 0px;">
@@ -93,20 +93,8 @@
 
                                         <div class="request-select medium">
                                             <div class="select-wrap  blue">
-                                                <select name="container_size[]" required="">
+                                                <select id="container_type" name="container_size[]" required="">
                                                     <option>choose..</option>
-                                                    <option value="20f-dc">20' Dry Cargo</option>
-                                                    <option value="40f-dc">40' Dry Cargo</option>
-                                                    <option value="40f-hdc">40' add-high Dry Cargo</option>
-                                                    <option value="45f-hdc">45' add-high Dry Cargo</option>
-                                                    <option value="20f-ot">20' Open Top</option>
-                                                    <option value="40f-ot">40' Open Top</option>
-                                                    <option value="20f-col">20' Collapsible</option>
-                                                    <option value="40f-col">40' Collapsible</option>
-                                                    <option value="20f-os">20' Open Side</option>
-                                                    <option value="20f-dv">20' D.V for Side Floor</option>
-                                                    <option value="20f-ven">20' Ventilated</option>
-                                                    <option value="20f-gar">40' Garmentainer</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -143,7 +131,7 @@
                         <label class="request-toggle">
                             <p class="label">Stockable Shipment</p>
                             <div class="toggle-wrap">
-                                <input type="checkbox" name="isStockable" value="yes">
+                                <input type="checkbox" name="isStockable" value="1">
                                 <div class="toggle-content">
                                     <span class="toggler" style="background: rgb(243, 156, 1);"></span>
                                     <div class="values">
@@ -158,7 +146,7 @@
                     <label class="request-toggle">
                         <p class="label">DGR Shipment</p>
                         <div class="toggle-wrap">
-                            <input type="checkbox" name="isDGR" value="yes">
+                            <input type="checkbox" name="isDGR" value="1">
                             <div class="toggle-content">
                                 <span class="toggler" style="background: rgb(243, 156, 1);"></span>
                                 <div class="values">
@@ -198,7 +186,7 @@
                         <label class="request-toggle">
                             <p class="label">Reqires customs clearance?</p>
                             <div class="toggle-wrap">
-                                <input type="checkbox" name="isClearanceReq" value="yes">
+                                <input type="checkbox" name="isClearanceReq" value="1">
                                 <div class="toggle-content">
                                     <span class="toggler" style="background: rgb(243, 156, 1);"></span>
                                     <div class="values">
@@ -213,7 +201,7 @@
                         <label class="request-toggle">
                             <p class="label">Goods Insurance</p>
                             <div class="toggle-wrap">
-                                <input type="checkbox" name="insurance" value="yes">
+                                <input type="checkbox" name="insurance" value="1">
                                 <div class="toggle-content">
                                     <span class="toggler" style="background: rgb(243, 156, 1);"></span>
                                     <div class="values">
@@ -338,6 +326,29 @@
 
     });
 
+</script>
+
+<!-- Set containers type select -->
+<script>
+    $(document).ready(function () {
+        const select = document.getElementById('container_type');
+        let dataArray = @json($containers);
+
+        while (select.options.length > 1) {
+            select.remove(1);
+        }
+        if (typeof dataArray === 'string') {
+            dataArray = JSON.parse(dataArray);
+        }
+
+        dataArray.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.container_type;
+            option.textContent = `${item.container_type} - $${item.price}`;
+
+            select.appendChild(option);
+        });
+    });
 </script>
 
 <!-- Add dynamic input fields -->

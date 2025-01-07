@@ -8,9 +8,11 @@ use App\Models\Quotation;
 use App\Models\Route;
 use App\Services\QuotationService;
 use App\Services\RouteService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class QuotationController extends Controller
 {
@@ -180,5 +182,29 @@ class QuotationController extends Controller
         $data['page_name'] = 'quotations';
         $data['page_title'] = 'View quotations | LogistiQuote';
         return view('panels.quotation.search_quotations', $data);
+    }
+
+    public function store_pending_form()
+    {
+        if(Auth::user()->role != 'user')
+        {
+            Storage::disk('public')->delete('store_pending_form.json');
+            return redirect(route('quotations.view_all'));
+        }
+
+        $fileContents = (array)json_decode(Storage::disk('public')->get('store_pending_form.json'));
+
+        DB::beginTransaction();
+
+        try {
+            $this->quotationService->createQuotation($fileContents);
+            DB::commit();
+
+            return redirect()->route('quotation.index')->with('success', 'Quotation created successfully!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

@@ -30,6 +30,7 @@ class Quotation extends Model
         'quantity',
         'total_weight',
         'total_price',
+        'is_paid',
         'remarks',
     ];
 

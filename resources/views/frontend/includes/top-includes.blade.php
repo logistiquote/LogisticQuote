@@ -12,7 +12,7 @@
     @if(isset($page_name))
         @if($page_name == 'homepage')
         <link href="{{ asset('frontend/css/index.css') }}" media="screen" rel="stylesheet" type="text/css" />
-        @elseif($page_name == 'get_quote_step2')
+        @elseif($page_name == 'get_quote_step2' || $page_name == 'get_quote_step3')
         <!-- Request quote includes -->
         <link href="{{ asset('frontend/css/bundle.css') }}" media="screen" rel="stylesheet" type="text/css" />
         @endif
