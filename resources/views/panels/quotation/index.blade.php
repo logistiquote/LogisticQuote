@@ -11,9 +11,9 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">My Quotations</h1>
-        <a href="{{ route('quotation.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-plus fa-sm text-white-50"></i> Add Quotation
-        </a>
+{{--        <a href="{{ route('quotation.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">--}}
+{{--            <i class="fas fa-plus fa-sm text-white-50"></i> Add Quotation--}}
+{{--        </a>--}}
     </div>
     <p class="mb-4"> View status of your quotations.</p>
 
@@ -33,6 +33,7 @@
                             <th width="10%">Transportation</th>
                             <th width="13%">Ready to load</th>
                             <th>Worth</th>
+                            <th>Total price</th>
                             <th width="10%">Gross Weight</th>
                             <th>Paid</th>
                             <th>Actions</th>
@@ -66,6 +67,7 @@
                                 ?>
                             </td>
                             <td>{{ $quotation->value_of_goods }} $</td>
+                            <td>{{ $quotation->total_price }} $</td>
                             <td>{{ $quotation->total_weight }} KG</td>
                             <td>
                                 @if(!$quotation->is_paid)
@@ -137,21 +139,7 @@
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('quotation.show', $quotation->id) }}">View</a>
                                     <a class="dropdown-item" href="{{ route('quotation.edit', $quotation->id) }}">Edit</a>
-
-                                    @if( $quotation->status != 'withdrawn')
-                                        <form action="{{ route('quotation.destroy', $quotation->id ) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button type="button" class="dropdown-item" data-toggle="modal" data-target="#publish">
-                                                Withdraw
-                                            </button>
-                                        </form>
-                                    @else
-                                        <!-- Button trigger modal -->
-                                        <!-- <button type="button" class="dropdown-item" data-toggle="modal" data-target="#publish">
-                                            Publish
-                                        </button> -->
-                                    @endif
+                                    <a class="dropdown-item" href="{{ route('quotation.summary.download', $quotation->id) }}">Download Summary</a>
                                 </div>
                             </div>
 

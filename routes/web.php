@@ -1,6 +1,6 @@
 <?php
 
-use App\Proposal;
+use App\Http\Controllers\QuotationController;
 use Illuminate\Support\Facades\Route;
 
 // CronJob Controller
@@ -34,9 +34,10 @@ Route::get('/all_users', 'AdminController@all_users')->name('admin.all_users');
 
 // Quotation Routes
 Route::resource('/quotation', 'QuotationController');
+Route::get('/quotation/summary-download/{quotation}', [QuotationController::class, 'downloadQuotationSummary'])->name('quotation.summary.download');
 Route::get('/quotations', 'QuotationController@view_all')->name('quotations.view_all');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
-Route::get('/store_pending_form', 'QuotationController@store_pending_form')->name('store_pending_form');
+Route::get('/store_pending_form', 'QuotationController@storePendingForm')->name('store_pending_form');
 Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
 Route::get('/mail_view_quotation/{token}', 'SiteController@mail_view_quotation')->name('quotation.mail_view');
 

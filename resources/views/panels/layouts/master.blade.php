@@ -36,14 +36,6 @@
         <hr class="sidebar-divider my-0">
 
         @if(Auth::user()->role == 'user')
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item <?php echo ($page_name == 'dashboard') ? 'active' : ''; ?>">
-                <a class="nav-link" href="{{ route('user') }}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
 

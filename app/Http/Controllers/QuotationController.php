@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Enums\WaterContainerType;
 use App\Http\Requests\QuotationRequest;
+use App\Mail\QuotationCreated;
 use App\Models\Quotation;
-use App\Models\Route;
 use App\Services\QuotationService;
 use App\Services\RouteService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class QuotationController extends Controller
@@ -47,7 +47,6 @@ class QuotationController extends Controller
 
     public function store(QuotationRequest $request)
     {
-        dd($request->validated());
         DB::beginTransaction();
 
         try {
@@ -128,6 +127,11 @@ class QuotationController extends Controller
         return view('panels.quotation.search_quotations', $data);
     }
 
+    public function downloadQuotationSummary(Quotation $quotation)
+    {
+        dd($quotation);
+    }
+
     public function search(Request $request)
     {
         // dd( $request->all() );
@@ -184,7 +188,7 @@ class QuotationController extends Controller
         return view('panels.quotation.search_quotations', $data);
     }
 
-    public function store_pending_form()
+    public function storePendingForm()
     {
         if(Auth::user()->role != 'user')
         {
@@ -197,9 +201,12 @@ class QuotationController extends Controller
         DB::beginTransaction();
 
         try {
-            $this->quotationService->createQuotation($fileContents);
+            $quotation = $this->quotationService->createQuotation($fileContents);
             DB::commit();
 
+            if (env('MAIL_ENABLED', false)) {
+                Mail::to('admin@example.com')->send(new QuotationCreated($quotation));
+            }
             return redirect()->route('quotation.index')->with('success', 'Quotation created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();

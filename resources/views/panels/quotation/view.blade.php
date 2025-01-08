@@ -21,7 +21,7 @@
                         <div class="col-md-6 mb-3">
                             <h5> <b> Origin </b> </h5>
                             <input type="text" class="form-control @error('origin_city') is-invalid @enderror"
-                                id="validationServer03" placeholder="City" value="{{ $quotation->origin }}" readonly
+                                id="validationServer03" placeholder="City" value="{{ $quotation->route->full_origin_location }}" readonly
                                 name="origin_city" required>
                             @error('origin_city')
                             <div class="invalid-feedback">
@@ -32,7 +32,7 @@
                         <div class="col-md-6 mb-3">
                             <h5> <b> Destination </b> </h5>
                             <input type="text" class="form-control @error('origin_city') is-invalid @enderror"
-                                id="validationServer03" placeholder="City" value="{{ $quotation->origin }}" readonly
+                                id="validationServer03" placeholder="City" value="{{ $quotation->route->full_destination_location }}" readonly
                                 name="origin_city" required>
                             @error('origin_city')
                             <div class="invalid-feedback">

@@ -101,6 +101,7 @@
                                 <th width="10%">Transportation</th>
                                 <th width="13%">Ready to load</th>
                                 <th>Worth</th>
+                                <th>Total price</th>
                                 <th width="10%">Gross Weight</th>
                                 <th>Actions</th>
                             </tr>
@@ -133,6 +134,7 @@
                             ?>
                                 </td>
                                 <td>{{ $quotation->value_of_goods }} $</td>
+                                <td>{{ $quotation->total_price }} $</td>
                                 <td>{{ $quotation->total_weight }} KG</td>
                                 <td>
                                     <a class=" btn btn-primary fa-2x"
