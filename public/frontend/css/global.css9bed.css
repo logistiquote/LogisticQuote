@@ -26278,8 +26278,8 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
     background-image: url('./../images/site/logo.png');
     background-position: center;
     background-size: cover;
-    width: 144px;
-    height: 31px
+    width: 155px;
+    height: 40px
 }
 
 @media (max-width:425px) {
@@ -26342,7 +26342,7 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 .navbar a {
     text-decoration: none;
     -webkit-tap-highlight-color: transparent;
-    color: #097be9;
+    color: #444444;
     -webkit-transition: color .1s;
     transition: color .1s
 }
@@ -26361,7 +26361,7 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 .navbar .navRoot {
     position: relative;
     margin: 0;
-    padding: 15px 0
+    padding: 15px 0 0 0;
 }
 
 .navbar .navRoot .navSection.secondary {
@@ -26429,7 +26429,7 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 .navbar .navSection.primary {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
-    justify-content: center
+    justify-content: space-between;
 }
 
 .navbar .navSection.secondary {
@@ -26466,14 +26466,7 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
     justify-content: flex-end
 }
 
-.navbar.compact .navRoot {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex
-}
-
 .navbar.compact .navSection.logo {
-    position: static;
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1
@@ -26718,11 +26711,10 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 
 .navbar .linkTitle {
     margin: 0;
-    color: #097be9;
+    color: #0C263F;
     font-size: 16px;
     line-height: 14px;
-    text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: .025em
 }
 
@@ -27664,7 +27656,8 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 }
 
 .navbar .dropdownSection .dropdownContent {
-    top: 20px
+    top: 20px;
+    background-color: #FFF4E5;
 }
 
 header .navbar .navSection.secondary a.rootLink.colorize.pricing {

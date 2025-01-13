@@ -61,12 +61,14 @@ class SiteController extends Controller
             'route_containers' => $request->route_containers,
         ];
 
+        dd($data);
         $isDelete = Storage::disk('public')->delete('store_pending_form.json');
         Storage::disk('public')->put('store_pending_form.json', json_encode($data));
 
         session([
             'transportation_type' => $request->transportation_type
         ]);
+
         session()->save();
 
         return redirect(route('get_quote_step2'));
@@ -80,6 +82,7 @@ class SiteController extends Controller
         {
             return redirect(route('index'));
         }
+
         $data['page_title'] = 'Request a quote | LogistiQuote';
         $data['page_name'] = 'get_quote_step2';
 
@@ -89,6 +92,7 @@ class SiteController extends Controller
         }
         else if($fileContents->transportation_type == 'sea' && $fileContents->type == 'fcl')
         {
+
             $data['containers'] = $fileContents->route_containers;
             return view('frontend.get_quote_fcl', $data);
         }

@@ -4585,10 +4585,6 @@ textarea.form-control.is-invalid {
     }
 }
 
-.main-content {
-    background-color: transparent !important
-}
-
 .mobile-img {
     display: none
 }
@@ -4636,7 +4632,6 @@ body header .navbar .container-lg {
 body .main-content {
     position: relative;
     top: 0;
-    margin-bottom: -5.125rem;
     padding: 0;
     overflow: hidden;
     width: 100%
@@ -4653,7 +4648,7 @@ body .main-content {
 .wrapper-home-pages .wrapper-header-block .header-block .header-block-top {
     position: relative;
     height: 42.5rem;
-    background-color: #fff1ca;
+    background-color: white;
     overflow: hidden
 }
 

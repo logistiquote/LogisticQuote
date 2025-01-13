@@ -2,6 +2,7 @@
     <!-- Index page includes -->
     <link href="{{ asset('frontend/css/partial-mp-filter.css0cdb.css') }}" media="screen" rel="stylesheet" type="text/css" />
     <link href="{{ asset('frontend/css/global.css9bed.css') }}" media="screen" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('frontend/css/custom.css') }}" media="screen" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{{ asset('frontend/js/main.min.jse003.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/libs/jquery-ui-custom.mine23c.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/libs/bootstrap-datepicker.mine23c.js') }}"></script>

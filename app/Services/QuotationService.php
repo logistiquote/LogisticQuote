@@ -92,13 +92,14 @@ class QuotationService
 
     private function prepareBaseQuotationData(array $data): array
     {
+
         $baseQuotationData = [
             'user_id' => auth()->id(),
             'route_id' => $data['route_id'],
             'status' => 'active',
             'type' => $data['type'],
             'transportation_type' => $data['transportation_type'],
-            'ready_to_load_date' => Carbon::createFromFormat('d-m-Y', $data['ready_to_load_date']),
+            'ready_to_load_date' => Carbon::createFromFormat('Y-m-d', $data['ready_to_load_date']),
             'incoterms' => $data['incoterms'],
             'pickup_address' => $data['pickup_address'] ?? null,
             'destination_address' => $data['final_destination_address'] ?? null,

@@ -190,6 +190,7 @@ class QuotationController extends Controller
 
     public function storePendingForm()
     {
+
         if(Auth::user()->role != 'user')
         {
             Storage::disk('public')->delete('store_pending_form.json');
@@ -197,20 +198,21 @@ class QuotationController extends Controller
         }
 
         $fileContents = (array)json_decode(Storage::disk('public')->get('store_pending_form.json'));
-
         DB::beginTransaction();
 
         try {
+
             $quotation = $this->quotationService->createQuotation($fileContents);
+
             DB::commit();
 
             if (env('MAIL_ENABLED', false)) {
-                Mail::to('admin@example.com')->send(new QuotationCreated($quotation));
+                Mail::to('mshlafman@gmail.com')->send(new QuotationCreated($quotation));
             }
+
             return redirect()->route('quotation.index')->with('success', 'Quotation created successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
-
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }

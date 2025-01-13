@@ -251,14 +251,14 @@ h2 {
     display: flex;
     width: 50px;
     height: 40px;
-    background-color: #E9F0F7;
+    background-color: #E78200;
     border: 5px;
     align-items: center;
     justify-content: center;
     font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
-    color: #15354E;
+    color: white;
     margin: 0 0 0 10px;
     border-radius: 5px
 }
