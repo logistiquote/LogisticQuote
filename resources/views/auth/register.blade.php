@@ -38,15 +38,7 @@
                                 @enderror
                             </div>
 
-                            <div class="select-wrapper @error('role') error @enderror" id="role">
-                                <select name="role">
-                                    <option disabled="" value="" selected=""> Create account as</option>
-                                    <option data-tel="user" value="user">User</option>
-                                </select>
-                                @error('role')
-                                <p class="errorInputMsg">{{ $message }}</p>
-                                @enderror
-                            </div>
+                            <input type="hidden" name="role" value="user" data-tel="user">
 
                             <div class="select-wrapper @error('country') error @enderror">
                                 <select name="country">
@@ -334,7 +326,7 @@
 
                             <div class="input-wrapper">
                                 <p>
-                                    <input type="checkbox" style="margin: 10px;">
+                                    <input type="checkbox" style="margin: 10px; width: auto">
                                     Agree with our
                                     <a target="_blank" href="/tos">Terms &amp; conditions?</a></p>
                             </div>

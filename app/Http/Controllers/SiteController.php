@@ -61,7 +61,6 @@ class SiteController extends Controller
             'route_containers' => $request->route_containers,
         ];
 
-        dd($data);
         $isDelete = Storage::disk('public')->delete('store_pending_form.json');
         Storage::disk('public')->put('store_pending_form.json', json_encode($data));
 
@@ -103,6 +102,7 @@ class SiteController extends Controller
     }
     public function getQuoteStepThree(Request $request)
     {
+        dd($request->all());
         if($request->file('attachment'))
         {
             $file_name = rand().'.'.$request->file('attachment')->getClientOriginalExtension();

@@ -25,11 +25,7 @@
                             <label class="quotation-label">Incoterms</label>
                             <select name="incoterms" required="" id="incoterms">
                                 <option>Choose..</option>
-                                <option value="EXW">EXW (Ex Works Place)</option>
                                 <option value="FOB">FOB (Free On Board Port)</option>
-                                <option value="CIP/CIF">CIF/CIP (Cost Insurance & Freight / Carriage & Insurance Paid)
-                                </option>
-                                <option value="DAP">DAP (Delivered At Place)</option>
                             </select>
                         </div>
                         <div class="input-group">
@@ -59,9 +55,9 @@
                     <div class="form-grid">
                         <div class="input-group">
                             <label class="request-toggle">
-                                <p class="label">Stockable Shipment</p>
+                                <p class="label">Stackable Shipment</p>
                                 <div class="toggle-wrap">
-                                    <input type="checkbox" name="isStockable" value="1">
+                                    <input type="checkbox" name="isStockable" value="1" checked>
                                     <div class="toggle-content">
                                         <span class="toggler" style="background: rgb(243, 156, 1);"></span>
                                         <div class="values">
@@ -86,6 +82,40 @@
                                     </div>
                                 </div>
                             </label>
+                        </div>
+                        <div class="input-group">
+                            <div class="request-cascader">
+                                <label class="request-toggle">
+                                    <p class="label">Requires customs clearance?</p>
+                                    <div class="toggle-wrap">
+                                        <input type="checkbox" name="isClearanceReq" value="1">
+                                        <div class="toggle-content">
+                                            <span class="toggler" style="background: rgb(243, 156, 1);"></span>
+                                            <div class="values">
+                                                <p>No</p>
+                                                <p>Yes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="request-cascader">
+                                <label class="request-toggle">
+                                    <p class="label">Insurance</p>
+                                    <div class="toggle-wrap">
+                                        <input type="checkbox" name="insurance" value="1">
+                                        <div class="toggle-content">
+                                            <span class="toggler" style="background: rgb(243, 156, 1);"></span>
+                                            <div class="values">
+                                                <p>No</p>
+                                                <p>Yes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -142,41 +172,6 @@
                     <div class="input-group">
                         <label class="quotation-label">Remarks</label>
                         <textarea name="remarks" id="remarks" cols="45" rows="5"></textarea>
-                    </div>
-
-                    <div class="shipment-form">
-                        <div class="form-row">
-                            <div class="request-cascader">
-                                <label class="request-toggle">
-                                    <p class="label">Requires customs clearance?</p>
-                                    <div class="toggle-wrap">
-                                        <input type="checkbox" name="isClearanceReq" value="1">
-                                        <div class="toggle-content">
-                                            <span class="toggler" style="background: rgb(243, 156, 1);"></span>
-                                            <div class="values">
-                                                <p>No</p>
-                                                <p>Yes</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="request-cascader">
-                                <label class="request-toggle">
-                                    <p class="label">Insurance</p>
-                                    <div class="toggle-wrap">
-                                        <input type="checkbox" name="insurance" value="1">
-                                        <div class="toggle-content">
-                                            <span class="toggler" style="background: rgb(243, 156, 1);"></span>
-                                            <div class="values">
-                                                <p>No</p>
-                                                <p>Yes</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
                     </div>
 
                     <button type="submit" class="next submit-button">Next</button>
@@ -282,7 +277,7 @@
             dataArray.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.container_type;
-                option.textContent = `${item.container_type} - $${item.price}`;
+                option.textContent = `${item.container_type}`;
 
                 select.appendChild(option);
             });

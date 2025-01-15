@@ -42,7 +42,7 @@
                     <tbody>
                         @foreach($quotations as $quotation)
                         <tr>
-                            <td> <b>{{ $quotation->quotation_id }} </b> </td>
+                            <td> <b>{{ $quotation->id }} </b> </td>
                             <td>
                                 <span class="text-success">{{ $quotation->route?->full_origin_location }}</span>
                                 to
@@ -162,7 +162,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     $(document).ready( function () {
-        $('#quotations_table').DataTable();
+        $('#quotations_table').DataTable({
+            order: [[0, 'desc']]
+        });
     });
 </script>
 @endsection

@@ -29,6 +29,7 @@ class QuotationController extends Controller
 
         $data['page_name'] = 'quotations';
         $data['page_title'] = 'View quotations | LogistiQuote';
+
         return view('panels.quotation.index', $data);
     }
 

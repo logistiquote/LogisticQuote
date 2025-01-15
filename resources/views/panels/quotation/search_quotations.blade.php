@@ -109,7 +109,7 @@
                         <tbody>
                             @foreach($quotations as $quotation)
                             <tr>
-                                <td> <b>{{ $quotation->quotation_id }} </b> </td>
+                                <td> <b>{{ $quotation->id }} </b> </td>
                                 <td>
                                     <span class="text-success">{{ $quotation->origin }}</span>
                                     to
