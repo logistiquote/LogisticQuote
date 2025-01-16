@@ -19,30 +19,20 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        // if (Auth::guard($guard)->check()) {
-        //     return redirect(RouteServiceProvider::HOME);
-        // }
+        if (Auth::guard($guard)->check()) {
+            $sessionData = session('quote_data');
 
-        if (Auth::guard($guard)->check())
-        {
-            if(Storage::disk('public')->exists('store_pending_form.json'))
-            {
-                $fileContents = Storage::disk('public')->get('store_pending_form.json');
-                $fileContents = json_decode($fileContents);
-                if(isset($fileContents->incoterms) != null)
-                {
-                    return redirect(route('store_pending_form'));
-                }
+            if (!empty($sessionData) && isset($sessionData['incoterms'])) {
+                return redirect(route('store_pending_form'));
             }
-            if(Auth::user()->role == 'admin')
-            {
+
+            if (Auth::user()->role === 'admin') {
                 return redirect('/admin');
-            }
-            else if(Auth::user()->role == 'user')
-            {
+            } elseif (Auth::user()->role === 'user') {
                 return redirect('/user');
             }
         }
+
         return $next($request);
     }
 }

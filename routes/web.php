@@ -15,8 +15,8 @@ Auth::routes(['verify' => true]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Shipment Controller
-Route::post('/get_quote_step1', 'SiteController@get_quote_step1')->name('get_quote_step1');
-Route::get('/get_quote_step2', 'SiteController@get_quote_step2')->name('get_quote_step2');
+Route::post('/get_quote_step1', 'SiteController@getQuoteStepOne')->name('get_quote_step1');
+Route::get('/get_quote_step2', 'SiteController@getQuoteStepOneTwo')->name('get_quote_step2');
 Route::post('/get_quote_step3', 'SiteController@getQuoteStepThree')->name('frontend.quote_step3');
 Route::post('/form-quote-final-step', 'SiteController@formQuoteFinalStep')->name('frontend.quote_final_step');
 

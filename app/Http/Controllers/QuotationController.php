@@ -191,20 +191,20 @@ class QuotationController extends Controller
 
     public function storePendingForm()
     {
-
-        if(Auth::user()->role != 'user')
-        {
-            Storage::disk('public')->delete('store_pending_form.json');
+        if(Auth::user()->role != 'user') {
             return redirect(route('quotations.view_all'));
         }
 
-        $fileContents = (array)json_decode(Storage::disk('public')->get('store_pending_form.json'));
-        DB::beginTransaction();
-
         try {
+            DB::beginTransaction();
 
-            $quotation = $this->quotationService->createQuotation($fileContents);
+            $sessionData = session('quote_data');
 
+            if (empty($sessionData)) {
+                return redirect()->back()->withErrors(['error' => 'No data found.']);
+            }
+
+            $quotation = $this->quotationService->createQuotation($sessionData);
             DB::commit();
 
             if (env('MAIL_ENABLED', false)) {

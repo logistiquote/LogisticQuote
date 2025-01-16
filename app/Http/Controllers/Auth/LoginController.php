@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Storage;
@@ -41,16 +40,13 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
     protected function authenticated(Request $request, $user)
     {
-        if(Storage::disk('public')->exists('store_pending_form.json'))
-        {
-            $fileContents = Storage::disk('public')->get('store_pending_form.json');
-            $fileContents = json_decode($fileContents);
-            if(isset($fileContents->incoterms) != null)
-            {
-                return redirect(route('store_pending_form'));
-            }
+        $sessionData = session('quote_data');
+
+        if (!empty($sessionData) && isset($sessionData['incoterms'])) {
+            return redirect(route('store_pending_form'));
         }
     }
 

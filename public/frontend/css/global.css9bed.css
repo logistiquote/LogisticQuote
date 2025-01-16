@@ -26725,7 +26725,10 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
     margin: 7px 0 0;
     display: block;
     -webkit-transition: color .1s;
-    transition: color .1s
+    transition: color .1s;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .navbar .linkTitle {
@@ -27042,10 +27045,9 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 }
 
 .navbar .popup {
+    width: 100%;
     position: absolute;
-    left: 10px;
-    top: 5px;
-    right: 10px;
+    top: 65px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -27153,14 +27155,10 @@ header .navbar.fixed .navbar-container.container .log-prov-li {
 }
 
 .navbar .collapsible {
-    background: #f6f9fc;
+    background: #FFF4E5;
     display: block;
     padding: 12px 30px;
     font-weight: 600
-}
-
-.navbar .mobileProducts {
-    padding: 0 0 2px
 }
 
 .navbar .mobileProducts h4 {

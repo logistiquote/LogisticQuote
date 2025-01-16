@@ -668,3 +668,9 @@
     color: #ff7f00;
 }
 
+.ports-mobile {
+    display: flex !important;
+    gap: 20px;
+    padding: 12px 30px !important;
+}
+

@@ -39,7 +39,7 @@ class SiteController extends Controller
     public function contact(Request $request)
     {
         $data = array(
-            'to'      => array('malickateeq@gmail.com'),
+            'to' => array('malickateeq@gmail.com'),
             'subject' => $request->subject,
             'name' => $request->name,
             'phone' => $request->phone,
@@ -51,102 +51,80 @@ class SiteController extends Controller
         return redirect()->back();
     }
 
-    public function get_quote_step1(Request $request)
+    public function getQuoteStepOne(Request $request)
     {
-        $data = [
-            'type' => $request->type,
-            'transportation_type' => $request->transportation_type,
-            'route_id' => $request->route_id,
-            'ready_to_load_date' => $request->date,
-            'route_containers' => $request->route_containers,
-        ];
-
-        $isDelete = Storage::disk('public')->delete('store_pending_form.json');
-        Storage::disk('public')->put('store_pending_form.json', json_encode($data));
-
         session([
-            'transportation_type' => $request->transportation_type
+            'quote_data' => [
+                'type' => $request->type,
+                'transportation_type' => $request->transportation_type,
+                'route_id' => $request->route_id,
+                'ready_to_load_date' => $request->date,
+                'route_containers' => $request->route_containers,
+            ]
         ]);
 
         session()->save();
 
         return redirect(route('get_quote_step2'));
     }
-    public function get_quote_step2()
-    {
-        $fileContents = Storage::disk('public')->get('store_pending_form.json');
-        $fileContents = json_decode($fileContents);
 
-        if($fileContents->ready_to_load_date == null)
-        {
+    public function getQuoteStepOneTwo()
+    {
+        $sessionData = session('quote_data');
+
+        if (!$sessionData || empty($sessionData['ready_to_load_date'])) {
             return redirect(route('index'));
         }
 
         $data['page_title'] = 'Request a quote | LogistiQuote';
         $data['page_name'] = 'get_quote_step2';
 
-        if($fileContents->type == 'lcl' || $fileContents->transportation_type == 'air')
-        {
+        if ($sessionData['type'] === 'lcl' || $sessionData['transportation_type'] === 'air') {
             return view('frontend.get_quote_lcl', $data);
-        }
-        else if($fileContents->transportation_type == 'sea' && $fileContents->type == 'fcl')
-        {
-
-            $data['containers'] = $fileContents->route_containers;
+        } elseif ($sessionData['transportation_type'] === 'sea' && $sessionData['type'] === 'fcl') {
+            $data['containers'] = $sessionData['route_containers'];
             return view('frontend.get_quote_fcl', $data);
-        }
-        else
-        {
+        } else {
             return redirect()->back();
         }
     }
+
     public function getQuoteStepThree(Request $request)
     {
-        dd($request->all());
-        if($request->file('attachment'))
-        {
-            $file_name = rand().'.'.$request->file('attachment')->getClientOriginalExtension();
+        if ($request->file('attachment')) {
+            $file_name = rand() . '.' . $request->file('attachment')->getClientOriginalExtension();
             $request->merge(['attachment_file' => $file_name]);
-            $isStore = Storage::disk('public')->putFileAs('temp/', $request->file('attachment'), $file_name);
+            Storage::disk('public')->putFileAs('temp/', $request->file('attachment'), $file_name);
         }
 
-        $fileContents = Storage::disk('public')->get('store_pending_form.json');
-        $fileContents = json_decode($fileContents, true);
-        $merge = array_merge($fileContents, $request->all());
+        $sessionData = session('quote_data', []);
 
-        Storage::disk('public')->delete('store_pending_form.json');
-        Storage::disk('public')->put('store_pending_form.json', json_encode($merge));
 
-        $fileContents = Storage::disk('public')->get('store_pending_form.json');
-        $data = (array)json_decode($fileContents);
-        $currentContainers = $this->quotationService->getFormatedContainersData($data);
-        $data['current_containers'] = $currentContainers;
-        $data['page_title'] = 'Request a quote | LogistiQuote';
-        $data['page_name'] = 'get_quote_step3';
+        $updatedData = array_merge($sessionData, $request->all());
 
-        if (!empty($data)){
-            return view('frontend.quotation-summary', $data);
-        }else{
+        session(['quote_data' => $updatedData]);
+
+        $currentContainers = $this->quotationService->getFormatedContainersData($updatedData);
+        $updatedData['current_containers'] = $currentContainers;
+        $updatedData['page_title'] = 'Request a quote | LogistiQuote';
+        $updatedData['page_name'] = 'get_quote_step3';
+
+        if (!empty($updatedData)) {
+            return view('frontend.quotation-summary', $updatedData);
+        } else {
             return redirect()->back();
         }
     }
 
-    public function formQuoteFinalStep(Request $request)
+    public function formQuoteFinalStep()
     {
-        if(Auth::check())
-        {
-            if(Auth::user()->role != 'user')
-            {
-                Storage::disk('public')->delete('store_pending_form.json');
+        if (Auth::check()) {
+            if (Auth::user()->role != 'user') {
                 return "You are no allowed to perform this action. Only user can add quotation.";
-            }
-            else
-            {
+            } else {
                 return redirect()->route('store_pending_form');
             }
-        }
-        else
-        {
+        } else {
             return redirect(route('login'));
         }
     }
@@ -159,18 +137,14 @@ class SiteController extends Controller
 
     public function merge_them()
     {
-        $arabic="";
-        foreach(file( url('public/trans/variables.json') ) as $line)
-        {
-            $arabic=$arabic.$line.'+<br>';
+        $arabic = "";
+        foreach (file(url('public/trans/variables.json')) as $line) {
+            $arabic = $arabic . $line . '+<br>';
         }
-        foreach(file( url('public/trans/arabic_translation.json') ) as $line)
-        {
-            $from = '/'.preg_quote('+', '/').'/';
+        foreach (file(url('public/trans/arabic_translation.json')) as $line) {
+            $from = '/' . preg_quote('+', '/') . '/';
             $arabic = preg_replace($from, $line, $arabic, 1);
-            // print_r( $arabic);
-            // return;
         }
-        print_r( $arabic);
+        print_r($arabic);
     }
 }

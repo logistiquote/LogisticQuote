@@ -14,13 +14,19 @@
                         Incoterms
                     </a>
 
-                    <a class="rootLink hasDropdown colorize" data-dropdown="ports"> Ports </a>
+                    <a class="rootLink hasDropdown colorize" data-dropdown="ports">
+                        Ports
+                    </a>
 
                     <a class="rootLink colorize"
                        href="https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/he/CustomsBook"
-                       target="_blank"> Taxes and duties </a>
+                       target="_blank">
+                        Taxes and duties
+                    </a>
 
-                    <a class="rootLink hasDropdown colorize" data-dropdown="company"> Company </a>
+                    <a class="rootLink hasDropdown colorize" data-dropdown="company">
+                        Company
+                    </a>
                     <a class="rootLink colorize" href="#" target="_blank">
                         Terms
                     </a>
@@ -45,7 +51,9 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{ route('user') }}"> <i class="fad fa-tachometer-alt-fast"></i> Dashboard
+                                    <a href="{{ route('user') }}">
+                                        <i class="fad fa-tachometer-alt-fast"></i>
+                                        Dashboard
                                     </a>
                                 </li>
                                 <li>
@@ -73,13 +81,64 @@
                     </a>
 
                     <div class="popup">
-                        <div class="popupContainer"><a class="popupCloseButton">Close</a>
-                            <div class="mobileProducts"><a class="collapsible" href="#">MENU</a>
-                                <div class="collapse show in">
+                        <div class="popupContainer">
+                            <a
+                                class="collapsible"
+                                href="https://iccwbo.org/publication/incoterms-2020-practical-free-wallchart"
+                                target="_blank"
+                            >
+                                Incoterms
+                            </a>
+                            <div class="mobileProducts">
+                                <a class="collapsible" href="#">Ports</a>
+                                <div class="collapse">
+                                    <a class="linkContainer item-payments ports-mobile"
+                                       href="https://www.ashdodport.co.il/pages/default.aspx" target="_blank">
+                                        <i class="fab fa-usps fa-2x"></i>
+                                        <div>
+                                            <h3 class="linkTitle">Ashdod Port</h3>
+                                            <p class="linkSub">About 40 kilometers south of Tel Aviv</p>
+                                        </div>
+                                    </a>
+                                    <a class="linkContainer item-payments ports-mobile" href="https://www.haifaport.co.il/"
+                                       target="_blank">
+                                        <i class="fas fa-pallet fa-2x"></i>
+                                        <div>
+                                            <h3 class="linkTitle">Haifa Port</h3>
+                                            <p class="linkSub">'Israel's leading Cruise Terminal and the only turnaround
+                                                terminal in Israel</p>
+                                        </div>
+                                    </a>
+                                    <a class="linkContainer item-payments ports-mobile" href="https://www.maman.co.il/he/3-1-3.asp"
+                                       target="_blank">
+                                        <i class="far fa-torii-gate fa-2x"></i>
+                                        <div>
+                                            <h3 class="linkTitle">Maman</h3>
+                                            <p class="linkSub">It is a full-service logistics supplier</p>
+                                        </div>
+                                    </a>
+                                    <a class="linkContainer item-payments ports-mobile" href="https://www.swissport.co.il/heb/Main/"
+                                       target="_blank">
+                                        <i class="fab fa-cotton-bureau fa-2x"></i>
+                                        <div>
+                                            <h3 class="linkTitle">Swissport</h3>
+                                            <p class="linkSub">Swissport International Ltd. is an aviation services
+                                                company</p>
+                                        </div>
+                                    </a>
                                 </div>
-                                <a class="collapsible" href="#">URL</a>
                             </div>
-                            <a class="collapsible" href="#">LRU</a>
+                            <a class="collapsible"
+                               href="https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/he/CustomsBook"
+                               target="_blank">
+                                Taxes and duties
+                            </a>
+                            <a class="collapsible" href="{{ route('contact_us') }}" target="_blank">
+                                Company
+                            </a>
+                            <a class="collapsible" href="#" target="_blank">
+                                Terms
+                            </a>
                         </div>
                     </div>
                 </li>
