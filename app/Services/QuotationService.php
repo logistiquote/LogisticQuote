@@ -56,22 +56,34 @@ class QuotationService
     {
         $quotation = $this->quotationRepository->findById($id);
 
-        $baseQuotationData = $this->prepareBaseQuotationData($data);
+        $baseQuotationData = [
+            'transportation_type' => $data['transportation_type'],
+            'type' => $data['type'],
+            'value_of_goods' => $data['value_of_goods'],
+        ];
 
         $this->quotationRepository->update($id, $baseQuotationData);
 
-        if ($data['transportation_type'] === 'ocean' && $data['type'] === 'fcl') {
-            $this->updateContainers($quotation, $data);
+        $totalPrice = $quotation->total_price;
+        if (($data['transportation_type'] === 'ocean' || $data['transportation_type'] === 'sea') && $data['type'] === 'fcl') {
+            $data['route_containers'] = $quotation->route->containers;
+            $containers = $this->updateContainers($quotation, $data);
+            $totalPrice = $this->getGoodsTotalPrice($containers);
         }
 
-        if ($data['calculate_by'] === 'units') {
-            $this->updatePallets($quotation, $data);
-        } else {
-            $this->quotationRepository->update($id, [
-                'quantity' => $data['quantity'],
-                'total_weight' => $data['total_weight'],
-            ]);
+        if (isset($data['calculate_by'])){
+            if ($data['calculate_by'] === 'units') {
+                $this->addPallets($quotation, $data);
+            } elseif ($data['calculate_by'] === 'shipment') {
+                $quotation->update([
+                    'quantity' => $data['quantity'],
+                    'total_weight' => $data['total_weight'],
+                ]);
+            }
         }
+
+        $quotation->total_price = $totalPrice;
+        $quotation->save();
 
         return $quotation;
     }
@@ -92,7 +104,6 @@ class QuotationService
 
     private function prepareBaseQuotationData(array $data): array
     {
-
         $baseQuotationData = [
             'user_id' => auth()->id(),
             'route_id' => $data['route_id'],
@@ -105,9 +116,9 @@ class QuotationService
             'destination_address' => $data['final_destination_address'] ?? null,
             'value_of_goods' => $data['value_of_goods'],
             'description_of_goods' => $data['description_of_goods'],
-            'is_stockable' => $data['is_stockable'] ?? false,
-            'is_dgr' => $data['is_dgr'] ?? false,
-            'is_clearance_req' => $data['is_clearance_req'] ?? false,
+            'is_stockable' => $data['isStockable'] ?? false,
+            'is_dgr' => $data['isDgr'] ?? false,
+            'is_clearance_req' => $data['isClearanceReq'] ?? false,
             'insurance' => $data['insurance'] ?? false,
             'remarks' => $data['remarks'] ?? null,
         ];
@@ -165,10 +176,11 @@ class QuotationService
             $container = current(array_filter($routeContainers, function($item) use ($size) {
                 return $item->container_type == $size;
             }));
+
             $containers[] = [
                 'container_id' => $container->id,
                 'size' => $size,
-                'price' => $container->price,
+                'price' => $data['container_price'][$key] ?? $container->price,
                 'weight' => $data['container_weight'][$key],
             ];
         }
@@ -186,9 +198,9 @@ class QuotationService
         return $totalPrice;
     }
 
-    private function updateContainers(Quotation $quotation, array $data): void
+    private function updateContainers(Quotation $quotation, array $data): array
     {
-        $this->addContainers($quotation, $data);
+        return $this->addContainers($quotation, $data);
     }
 
     private function updatePallets(Quotation $quotation, array $data): void

@@ -18,14 +18,7 @@ class UserController extends Controller
     }
     public function index()
     {
-        $data['my_quotations'] = Quotation::where('user_id', Auth::user()->id)->count();
-        $data['completed_quotations'] = Quotation::where('user_id', Auth::user()->id)
-        ->where('status', 'completed')->count();
-        $data['active_quotations'] = Quotation::where('user_id', Auth::user()->id)
-        ->where('status', 'active')->count();
-        $data['page_title'] = 'Dashboard | LogistiQuote';
-        $data['page_name'] = 'dashboard';
-        return view('panels.user.dashboard', $data);
+        return redirect()->route('quotation.index');
     }
     public function profile()
     {

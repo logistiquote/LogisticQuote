@@ -38,11 +38,6 @@ class Quotation extends Model
         'ready_to_load_date',
     ];
 
-    protected $casts = [
-        'pallets' => 'array',
-        'containers' => 'array',
-    ];
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

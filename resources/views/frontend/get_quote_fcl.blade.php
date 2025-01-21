@@ -3,7 +3,7 @@
     <div class="main-content mt-5">
         <div class="container">
             <div class="form-container" style="text-align: left">
-                <form class="form active contact-us-form" action="{{ route('frontend.quote_step3') }}" method="POST"
+                <form class="form active contact-us-form" action="{{ route('frontend.quote_final_step') }}" method="POST"
                       enctype="multipart/form-data">
                     @csrf
                     <h3 class="section-title">Type of delivery</h3>

@@ -111,9 +111,9 @@
                             <tr>
                                 <td> <b>{{ $quotation->id }} </b> </td>
                                 <td>
-                                    <span class="text-success">{{ $quotation->origin }}</span>
+                                    <span class="text-success">{{ $quotation->route?->full_origin_location }}</span>
                                     to
-                                    <span class="text-danger">{{ $quotation->destination }}</span>
+                                    <span class="text-danger">{{ $quotation->route?->full_destination_location }}</span>
                                 </td>
                                 <td>
                                     @if($quotation->status == 'active')
@@ -158,7 +158,9 @@
 @section('bottom_scripts')
 <script>
     $(document).ready(function () {
-        $('#quotations_table').DataTable();
+        $('#quotations_table').DataTable({
+            order: [[0, 'desc']]
+        });
 
         $("#transportation_type").change(function () {
             if ($(this).find(':selected').val() == 'ocean') {

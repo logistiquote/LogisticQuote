@@ -51,14 +51,13 @@ class QuotationRequest extends FormRequest
                 ];
             case 'update':
                 return [
-                    'incoterms' => ['required', 'string', 'min:3', 'max:255'],
-                    'origin' => ['required', 'string', 'min:3', 'max:255'],
-                    'destination' => ['required', 'string', 'min:3', 'max:255'],
-                    'transportation_type' => ['required', 'string', 'min:3', 'max:255'],
-                    'type' => ['required', 'string', 'min:2', 'max:255'],
-                    'ready_to_load_date' => ['required', 'string', 'min:3', 'max:255'],
+                    'transportation_type' => ['required', 'string', 'min:3', 'max:50'],
+                    'type' => ['required', 'string', 'min:2', 'max:50'],
+//                    'ready_to_load_date' => ['required', 'string', 'min:3', 'max:255'],
                     'value_of_goods' => ['required', 'numeric', 'min:3', 'max:9999999'],
-                    'calculate_by' => ['required', 'string', 'min:3', 'max:255'],
+                    'container_size' => ['required_if:transportation_type,ocean,type,fcl', 'array'],
+                    'container_weight' => ['required_if:transportation_type,ocean,type,fcl', 'array'],
+                    'container_price' => ['required_if:transportation_type,ocean,type,fcl', 'array'],
                 ];
             default:
                 return [];

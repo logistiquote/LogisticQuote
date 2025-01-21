@@ -10,7 +10,7 @@
                     <a href="{{ route('index') }}" class="navbar-brand adapt-logo-mobile" data-dropdown="admin"></a>
 
                     <a class="rootLink colorize"
-                       href="https://iccwbo.org/publication/incoterms-2020-practical-free-wallchart" target="_blank">
+                       href="https://iccwbo.org/business-solutions/incoterms-rules/incoterms-2020/" target="_blank">
                         Incoterms
                     </a>
 
@@ -84,7 +84,7 @@
                         <div class="popupContainer">
                             <a
                                 class="collapsible"
-                                href="https://iccwbo.org/publication/incoterms-2020-practical-free-wallchart"
+                                href="https://iccwbo.org/business-solutions/incoterms-rules/incoterms-2020/"
                                 target="_blank"
                             >
                                 Incoterms

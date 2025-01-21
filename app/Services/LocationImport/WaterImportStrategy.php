@@ -11,8 +11,8 @@ class WaterImportStrategy implements ImportStrategyInterface
 {
 
     public function __construct(
-        protected LocationRepository $locationRepository,
-        protected RouteRepository $routeRepository,
+        protected LocationRepository       $locationRepository,
+        protected RouteRepository          $routeRepository,
         protected RouteContainerRepository $routeContainerRepository
     )
     {
@@ -53,14 +53,12 @@ class WaterImportStrategy implements ImportStrategyInterface
             ]);
 
             foreach (WaterContainerType::all() as $containerType) {
-                $priceField = strtolower($containerType); // Map "20DV" to "20dv"
-                if (isset($record[$priceField])) {
-                    $this->routeContainerRepository->createOrUpdate([
-                        'route_id' => $route->id,
-                        'container_type' => $containerType,
-                        'price' => (float)$record[$priceField],
-                    ]);
-                }
+                $priceField = strtolower($containerType);
+                $this->routeContainerRepository->createOrUpdate([
+                    'route_id' => $route->id,
+                    'container_type' => $containerType,
+                    'price' => isset($record[$priceField]) ? (float)$record[$priceField] : 0.00,
+                ]);
             }
 
             $results[] = $route;

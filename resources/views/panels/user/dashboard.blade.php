@@ -1,94 +1,57 @@
 @extends('panels.layouts.master')
 @section('content')
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
 
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-    </div>
-
-    <!-- Content Row -->
-    <div class="row">
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">My Quotations
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $my_quotations }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="far fa-file-certificate fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
         </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+        <div class="app-wrapper container mt-5">
+            <div class="card shadow">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                        </div>
-                        <div class="col-auto">
-                            <i class="fad fa-file-signature fa-2x text-gray-300"></i>
-                        </div>
+                    <h2 class="card-title mb-4">Quotation Summary</h2>
+                    <div class="mb-3">
+                        <p><strong>Origin of shipment:</strong> <span class="text-muted">{{ $route->full_origin_location }}</span>
+                        </p>
+                        <p><strong>Destination of shipment:</strong> <span
+                                class="text-muted">{{ $route->full_destination_location }}</span></p>
+                        <p><strong>Ready to load:</strong> <span class="text-muted">{{ $ready_to_load_date }}</span></p>
+                        <p><strong>Shipment type:</strong> <span class="text-muted">{{ strtoupper($type) }}</span></p>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed Quotations</div>
-                            <div class="row no-gutters align-items-center">
-                                <div class="col-auto">
-                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $completed_quotations }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fal fa-clipboard-list-check fa-2x text-gray-300"></i>
-                        </div>
+                    <hr>
+                    <div class="mb-3">
+                        <p><strong>Incoterms:</strong> <span class="text-muted">{{ strtoupper($incoterms) }}</span></p>
+                        <p><strong>Value of goods:</strong> <span
+                                class="text-muted">${{ number_format($value_of_goods, 2) }}</span></p>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Active Quotations
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $active_quotations }}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fal fa-list-ol fa-2x text-gray-300"></i>
-                        </div>
+                    <hr>
+                    <div>
+                        <h2 class="mb-3">Containers Info</h2>
+                        @foreach($current_containers as $container)
+                            <p><strong>Container #{{ $loop->index + 1, $container['size'] }}:</strong>
+                                <span class="text-muted">
+                                    ${{$container['price'] != 0 ? number_format($container['price'], 2) : "Custom price. We'll contact you for more details" }}, weight - {{ $container['size'] }}</span>
+                            </p>
+                        @endforeach
                     </div>
+                    <hr>
+                    <div class="text-end">
+                        <h2 class="fw-bold">Total, $:
+                            {{ number_format(collect($current_containers)->sum('price'), 2) }}
+                        </h2>
+                    </div>
+                    <form action="{{ route('quotation.index') }}" method="GET">
+                        <button type="submit" class="btn btn-primary">
+                            <span>Go to quotations</span>
+                            <i class="fal fa-angle-right"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-</div>
-<!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 
 @endsection

@@ -81,7 +81,9 @@
                                     <label class="quotation-label">Ready to load</label>
                                     <input name="date" type="date"
                                            data-date-format="dd-mm-yyyy" autocomplete="off"
-                                           required id="ready_to_load_date">
+                                           required id="ready_to_load_date"
+                                           min="<?= date('Y-m-d'); ?>"
+                                    >
                                 </div>
                                 <div class="input-group">
                                     <label class="quotation-label">Shipment type</label>

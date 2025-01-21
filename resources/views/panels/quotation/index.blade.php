@@ -70,7 +70,7 @@
                             <td>{{ $quotation->total_price }} $</td>
                             <td>{{ $quotation->total_weight }} KG</td>
                             <td>
-                                @if(!$quotation->is_paid)
+                                @if(!$quotation->is_paid && $quotation->can_be_paid)
                                     <form action="{{ route('payment.create') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="provider" value="paypal">
@@ -127,6 +127,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                @elseif(!$quotation->can_be_paid)
+                                    <span class="badge badge-secondary">Pending</span>
                                 @else
                                     <span class="badge badge-success">Paid</span>
                                 @endif
@@ -137,8 +139,7 @@
                                     <i class="fad fa-ellipsis-v-alt"></i>
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('quotation.show', $quotation->id) }}">View</a>
-                                    <a class="dropdown-item" href="{{ route('quotation.edit', $quotation->id) }}">Edit</a>
+                                    <a class="dropdown-item" href="{{ route('quotation.edit', $quotation->id) }}">View</a>
                                     <a class="dropdown-item" href="{{ route('quotation.summary.download', $quotation->id) }}">Download Summary</a>
                                 </div>
                             </div>

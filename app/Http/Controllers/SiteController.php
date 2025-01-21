@@ -68,7 +68,7 @@ class SiteController extends Controller
         return redirect(route('get_quote_step2'));
     }
 
-    public function getQuoteStepOneTwo()
+    public function getQuoteStepTwo()
     {
         $sessionData = session('quote_data');
 
@@ -82,6 +82,7 @@ class SiteController extends Controller
         if ($sessionData['type'] === 'lcl' || $sessionData['transportation_type'] === 'air') {
             return view('frontend.get_quote_lcl', $data);
         } elseif ($sessionData['transportation_type'] === 'sea' && $sessionData['type'] === 'fcl') {
+
             $data['containers'] = $sessionData['route_containers'];
             return view('frontend.get_quote_fcl', $data);
         } else {
@@ -91,21 +92,6 @@ class SiteController extends Controller
 
     public function getQuoteStepThree(Request $request)
     {
-        if ($request->file('attachment')) {
-            $file_name = rand() . '.' . $request->file('attachment')->getClientOriginalExtension();
-            $request->merge(['attachment_file' => $file_name]);
-            Storage::disk('public')->putFileAs('temp/', $request->file('attachment'), $file_name);
-        }
-
-        $sessionData = session('quote_data', []);
-
-
-        $updatedData = array_merge($sessionData, $request->all());
-
-        session(['quote_data' => $updatedData]);
-
-        $currentContainers = $this->quotationService->getFormatedContainersData($updatedData);
-        $updatedData['current_containers'] = $currentContainers;
         $updatedData['page_title'] = 'Request a quote | LogistiQuote';
         $updatedData['page_name'] = 'get_quote_step3';
 
@@ -116,10 +102,24 @@ class SiteController extends Controller
         }
     }
 
-    public function formQuoteFinalStep()
+    public function formQuoteFinalStep(Request $request)
     {
+        if ($request->file('attachment')) {
+            $file_name = rand() . '.' . $request->file('attachment')->getClientOriginalExtension();
+            $request->merge(['attachment_file' => $file_name]);
+            Storage::disk('public')->putFileAs('temp/', $request->file('attachment'), $file_name);
+        }
+
+        $sessionData = session('quote_data', []);
+
+        $updatedData = array_merge($sessionData, $request->all());
+        $currentContainers = $this->quotationService->getFormatedContainersData($updatedData);
+        $updatedData['current_containers'] = $currentContainers;
+        session(['quote_data' => $updatedData]);
+
         if (Auth::check()) {
             if (Auth::user()->role != 'user') {
+                session()->forget('quote_data');
                 return "You are no allowed to perform this action. Only user can add quotation.";
             } else {
                 return redirect()->route('store_pending_form');
