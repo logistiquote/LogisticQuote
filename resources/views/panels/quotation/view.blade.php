@@ -13,6 +13,9 @@
                     @elseif($quotation->status == 'completed')
                         <span class="badge badge-primary">{{ $quotation->status }}</span>
                     @endif
+
+                    <span class="badge">{{ $quotation->quote_number }}</span>
+
                 </h5>
                 <div class="card-body">
                     <form role="form" action="{{ route('quotation.update', $quotation->id) }}" method="POST" enctype="multipart/form-data">
@@ -155,6 +158,15 @@
                                 <input type="number" class="form-control @error('value_of_goods') is-invalid @enderror"
                                        id="validationServer03" value="{{ $quotation->value_of_goods }}" readonly
                                        name="value_of_goods" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label class="mr-sm-2">Insurance price ($)</label>
+                                <input type="number" class="form-control @error('insurance_price') is-invalid @enderror"
+                                       id="validationServer03" value="{{ $quotation->insurance_price }}" readonly
+                                       name="insurance_price" required>
                             </div>
                         </div>
 

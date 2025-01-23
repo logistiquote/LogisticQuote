@@ -41,15 +41,15 @@ class PaymentController extends Controller
 
         try {
             $result = $this->paymentService->executePayment($provider,$orderId);
-            return redirect('quotation.index')->with('success', $result);
+            return redirect(route('quotation.index'))->with('success', $result);
         } catch (\Exception $e) {
-            return redirect('quotation.index')->with('error', $e->getMessage());
+            return redirect(route('quotation.index'))->with('error', $e->getMessage());
         }
     }
 
     public function cancelPayment()
     {
-        return redirect('quotation.index');
+        return redirect(route('quotation.index'));
     }
 }
 

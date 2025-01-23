@@ -3,8 +3,19 @@
         <div class="card-body">
             <h2 class="card-title mb-4">Quotation Summary</h2>
             <div class="mb-3">
-                <p><strong>Origin of shipment:</strong> <span
-                        class="text-muted">{{ $quotation->route->full_origin_location }}</span></p>
+                <p>
+                    <strong>
+                        Quotation Number: {{ $quotation->quote_number }}
+                    </strong>
+                </p>
+                <p>
+                    <strong>
+                        Origin of shipment:
+                    </strong>
+                    <span class="text-muted">
+                        {{ $quotation->route->full_origin_location }}
+                    </span>
+                </p>
                 <p><strong>Destination of shipment:</strong> <span
                         class="text-muted">{{ $quotation->route->full_destination_location }}</span></p>
                 <p><strong>Ready to load:</strong> <span class="text-muted">{{ $quotation->ready_to_load_date }}</span>
@@ -39,8 +50,14 @@
             </div>
             <hr>
             <div class="text-end">
+                <h2 class="fw-bold">Insurance price, $:
+                    {{ number_format($quotation->insurance_price, 2) }}
+                </h2>
+            </div>
+            <hr>
+            <div class="text-end">
                 <h2 class="fw-bold">Total, $:
-                    {{ number_format($quotation->containers->sum('price'), 2) }}
+                    {{ number_format($quotation->total_price, 2) }}
                 </h2>
             </div>
         </div>
