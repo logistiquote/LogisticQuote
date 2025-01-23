@@ -41,7 +41,7 @@ class QuotationResponse extends Mailable
             view: 'emails.quotation_response_email',
             with: [
                 'userName' => $this->quotation->user->name,
-                'quotationNumber' => "XXXXXX",
+                'quotationNumber' => $this->quotation->quote_number,
             ],
         );
     }

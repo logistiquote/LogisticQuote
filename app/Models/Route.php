@@ -14,6 +14,8 @@ class Route extends Model
         'origin_id',
         'destination_id',
         'type',
+        'delivery_line',
+        'delivery_time',
     ];
 
     protected $dates = [

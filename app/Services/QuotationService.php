@@ -46,7 +46,7 @@ class QuotationService
 
             $quotation->attachment = $data['attachment_file'];
         }
-        $quotation->total_price = $totalPrice;
+        $quotation->total_price = $totalPrice + $quotation->insurance_price;
         $quotation->save();
 
         return $quotation;
@@ -88,6 +88,15 @@ class QuotationService
         return $quotation;
     }
 
+    public function generateQuotationNumber(): string
+    {
+        $date = date('Ymd');
+
+        $uniqueId = strtoupper(substr(uniqid(), -5));
+
+        return "QUOTE-{$date}-{$uniqueId}";
+    }
+
     /**
      * @throws Exception
      */
@@ -107,6 +116,7 @@ class QuotationService
         $baseQuotationData = [
             'user_id' => auth()->id(),
             'route_id' => $data['route_id'],
+            'quote_number' => $this->generateQuotationNumber(),
             'status' => 'active',
             'type' => $data['type'],
             'transportation_type' => $data['transportation_type'],
@@ -120,6 +130,7 @@ class QuotationService
             'is_dgr' => $data['isDgr'] ?? false,
             'is_clearance_req' => $data['isClearanceReq'] ?? false,
             'insurance' => $data['insurance'] ?? false,
+            'insurance_price' => $this->calculateInsurancePrice( $data['value_of_goods'] ?? 0),
             'remarks' => $data['remarks'] ?? null,
         ];
 
@@ -130,6 +141,13 @@ class QuotationService
         }
 
         return $baseQuotationData;
+    }
+
+    public function calculateInsurancePrice($goodsValue)
+    {
+        $baseFee = $goodsValue * 1.1 * 0.25;
+
+        return max($baseFee, 50);
     }
 
     private function addContainers(Quotation $quotation, array $data): array

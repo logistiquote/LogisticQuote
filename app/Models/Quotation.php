@@ -13,6 +13,7 @@ class Quotation extends Model
     protected $fillable = [
         'user_id',
         'route_id',
+        'quote_number',
         'status',
         'type',
         'transportation_type',
@@ -26,6 +27,7 @@ class Quotation extends Model
         'is_dgr',
         'is_clearance_req',
         'insurance',
+        'insurance_price',
         'attachment',
         'quantity',
         'total_weight',

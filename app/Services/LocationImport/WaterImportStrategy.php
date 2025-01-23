@@ -50,6 +50,8 @@ class WaterImportStrategy implements ImportStrategyInterface
                 'origin_id' => $origin->id,
                 'destination_id' => $destination->id,
                 'type' => 'water',
+                'delivery_line' => $record['shipping_line'],
+                'delivery_time' => $record['transit_time'],
             ]);
 
             foreach (WaterContainerType::all() as $containerType) {

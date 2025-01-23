@@ -10,6 +10,7 @@ use App\Models\Quotation;
 use App\Models\Route;
 use App\Services\QuotationService;
 use App\Services\RouteService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -116,7 +117,12 @@ class QuotationController extends Controller
             $this->quotationService->updateQuotation($id, $request->validated());
             DB::commit();
 
-            return redirect()->route('quotation.index')->with('success', 'Quotation updated successfully!');
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('quotations.view_all')->with('success', 'Quotation updated successfully!');
+            }else{
+                return redirect()->route('quotation.index')->with('success', 'Quotation updated successfully!');
+            }
+
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -150,7 +156,11 @@ class QuotationController extends Controller
 
     public function downloadQuotationSummary(Quotation $quotation)
     {
-        dd($quotation);
+        $pdf = Pdf::loadView('panels.quotation.quotation-summary', [
+            'quotation' => $quotation,
+        ]);
+
+        return $pdf->download('quotation-summary-' . $quotation->id . '.pdf');
     }
 
     public function search(Request $request)
@@ -234,10 +244,10 @@ class QuotationController extends Controller
                 Mail::to($quotation->user->email)->send(new QuotationResponse($quotation));
             }
 
-            $sessionData['page_title'] = 'Dashboard | LogistiQuote';
-            $sessionData['page_name'] = 'dashboard';
-            $sessionData['route'] = Route::findOrFail($sessionData['route_id']);
-            return view('panels.user.dashboard', $sessionData);
+            $data['page_title'] = 'Dashboard | LogistiQuote';
+            $data['page_name'] = 'dashboard';
+            $data['quotation'] = $quotation;
+            return view('panels.user.dashboard', $data);
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);

@@ -34,75 +34,81 @@
                             <input type="hidden" id="transportation_type"
                                    name="transportation_type" value="sea" required>
                             <div class="transport-type">
-                                <button type="button" class="active transport-type-button">Ocean</button>
+                                <button type="button" class="active transport-type-button" data-type="ocean">Ocean</button>
                                 <span class="via-text">VIA</span>
-                                <button type="button" class="transport-type-button">Air</button>
+                                <button type="button" class="transport-type-button" data-type="air">Air</button>
                             </div>
-                            <div class="form-grid">
-                                <div class="input-group">
-                                    <label class="quotation-label">Origin of shipment</label>
-                                    <select
-                                        class="@error('origin_id') is-invalid @enderror"
-                                        id="origin_id" name="origin_id"
-                                        onchange="setDestinationAndRoute()" required>
-                                        <option value="" disabled selected>Select
-                                            Origin
-                                        </option>
-                                        @foreach($uniqueOrigins as $origin)
-                                            <option value="{{ $origin['id'] }}"
-                                                    data-destination="{{ $origin['destination_id'] }}"
-                                                    data-route-id="{{ $origin['route_id'] }}"
-                                                    data-containers="{{ $origin['containers'] }}"
-                                                    data-all-destinations="{{ json_encode($destinations) }}"
-                                            >{{ $origin['full_location'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label class="quotation-label">Destination of shipment</label>
-                                    <select
-                                        class="@error('destination_id') is-invalid @enderror"
-                                        id="destination_id" name="destination_id"
-                                        onchange="setOriginAndRoute()" required>
-                                        <option value="" disabled selected>Select
-                                            Destination
-                                        </option>
-                                        @foreach($uniqueDestinations as $destination)
-                                            <option value="{{ $destination['id'] }}"
-                                                    data-origin="{{ $destination['origin_id'] }}"
-                                                    data-route-id="{{ $destination['route_id'] }}"
-                                                    data-containers="{{ $origin['containers'] }}"
-                                                    data-all-origins="{{ json_encode($origins) }}"
-                                            >{{ $destination['full_location'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label class="quotation-label">Ready to load</label>
-                                    <input name="date" type="date"
-                                           data-date-format="dd-mm-yyyy" autocomplete="off"
-                                           required id="ready_to_load_date"
-                                           min="<?= date('Y-m-d'); ?>"
-                                    >
-                                </div>
-                                <div class="input-group">
-                                    <label class="quotation-label">Shipment type</label>
-                                    <div class="custom-select">
-                                        <div class="select-trigger">
-                                            <span><i class="icon fad fa-truck-container"></i> FCL</span>
-                                            <i class="arrow">^</i>
+                            <div>
+                                <div class="form-grid" id="ocean-form">
+                                    <div class="input-group">
+                                        <label class="quotation-label">Origin of shipment</label>
+                                        <select
+                                            class="@error('origin_id') is-invalid @enderror"
+                                            id="origin_id" name="origin_id"
+                                            onchange="setDestinationAndRoute()" required>
+                                            <option value="" disabled selected>Select
+                                                Origin
+                                            </option>
+                                            @foreach($uniqueOrigins as $origin)
+                                                <option value="{{ $origin['id'] }}"
+                                                        data-destination="{{ $origin['destination_id'] }}"
+                                                        data-route-id="{{ $origin['route_id'] }}"
+                                                        data-containers="{{ $origin['containers'] }}"
+                                                        data-all-destinations="{{ json_encode($destinations) }}"
+                                                >{{ $origin['full_location'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="quotation-label">Destination of shipment</label>
+                                        <select
+                                            class="@error('destination_id') is-invalid @enderror"
+                                            id="destination_id" name="destination_id"
+                                            onchange="setOriginAndRoute()" required>
+                                            <option value="" disabled selected>Select
+                                                Destination
+                                            </option>
+                                            @foreach($uniqueDestinations as $destination)
+                                                <option value="{{ $destination['id'] }}"
+                                                        data-origin="{{ $destination['origin_id'] }}"
+                                                        data-route-id="{{ $destination['route_id'] }}"
+                                                        data-containers="{{ $origin['containers'] }}"
+                                                        data-all-origins="{{ json_encode($origins) }}"
+                                                >{{ $destination['full_location'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="quotation-label">Ready to load</label>
+                                        <input name="date" type="date"
+                                               data-date-format="dd-mm-yyyy" autocomplete="off"
+                                               required id="ready_to_load_date"
+                                               min="<?= date('Y-m-d'); ?>"
+                                        >
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="quotation-label">Shipment type</label>
+                                        <div class="custom-select">
+                                            <div class="select-trigger">
+                                                <span><i class="icon fad fa-truck-container"></i> FCL</span>
+                                                <i class="arrow">^</i>
+                                            </div>
+                                            <ul class="select-options">
+                                                <li class="option" data-value="fcl">
+                                                    <i class="icon fad fa-truck-container"></i>
+                                                    FCL
+                                                </li>
+                                            </ul>
+                                            <input type="hidden" name="type" value="fcl">
                                         </div>
-                                        <ul class="select-options">
-                                            <li class="option" data-value="fcl">
-                                                <i class="icon fad fa-truck-container"></i>
-                                                FCL
-                                            </li>
-                                        </ul>
-                                        <input type="hidden" name="type" value="fcl">
                                     </div>
                                 </div>
+
+                                <div class="form-grid" id="air-form" style="display: none; text-align: center">
+                                    <p>Coming Soon</p>
+                                </div>
                             </div>
-                            <button type="submit" class="submit-button">QUOTE</button>
+                            <button type="submit" id="quote-submit" class="submit-button">QUOTE</button>
                         </form>
 
                         <form id="container-tracking-form" class="form" method="GET">
@@ -134,6 +140,35 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const transportButtons = document.querySelectorAll(".transport-type-button");
+            const oceanForm = document.getElementById("ocean-form");
+            const airForm = document.getElementById("air-form");
+            const quoteSubmit = document.getElementById("quote-submit");
+
+            transportButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    transportButtons.forEach(btn => btn.classList.remove("active"));
+
+                    this.classList.add("active");
+
+                    const transportType = this.getAttribute("data-type");
+
+                    if (transportType === "ocean") {
+                        oceanForm.style.display = "grid";
+                        airForm.style.display = "none";
+                        quoteSubmit.style.display = "block"
+                    } else if (transportType === "air") {
+                        airForm.style.display = "block";
+                        oceanForm.style.display = "none";
+                        quoteSubmit.style.display = "none"
+                    }
+                });
+            });
+        });
+
+    </script>
     <script>
         const selectTrigger = document.querySelector(".select-trigger");
         const selectOptions = document.querySelector(".select-options");

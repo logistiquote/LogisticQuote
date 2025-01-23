@@ -8,10 +8,10 @@
                     @csrf
                     <h3 class="section-title">Type of delivery</h3>
                     <div class="shipment-type">
-                        <div class="item">
-                            <div class="icon"><i class="fad fa-boxes"></i></div>
-                            <p>lcl</p>
-                        </div>
+{{--                        <div class="item">--}}
+{{--                            <div class="icon"><i class="fad fa-boxes"></i></div>--}}
+{{--                            <p>lcl</p>--}}
+{{--                        </div>--}}
                         <div class="item active">
                             <div class="icon"><i class="fad fa-container-storage"></i></div>
                             <p>fcl</p>

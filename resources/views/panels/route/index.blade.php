@@ -15,10 +15,10 @@
     <div class="container-fluid">
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Routes</h1>
-            <a href="{{ route('route.create') }}"
-               class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                <i class="fas fa-plus fa-sm text-white-50"></i> Add route
-            </a>
+{{--            <a href="{{ route('route.create') }}"--}}
+{{--               class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">--}}
+{{--                <i class="fas fa-plus fa-sm text-white-50"></i> Add route--}}
+{{--            </a>--}}
         </div>
         <p class="mb-4"> View all your routes</p>
 
