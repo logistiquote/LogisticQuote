@@ -26,7 +26,7 @@ class QuotationController extends Controller
     public function index()
     {
         $data['quotations'] = Quotation::where('user_id', Auth::user()->id)
-            ->with(['containers'])
+            ->with(['containers', 'route.origin', 'route.destination'])
             ->latest()
             ->get()
             ->map(function ($quotation) {

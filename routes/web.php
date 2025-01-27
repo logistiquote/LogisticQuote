@@ -1,63 +1,73 @@
 <?php
 
+use App\Http\Controllers\CronJobController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\SiteController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\RouteController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-// CronJob Controller
-Route::get('/cron', 'CronJobController@index')->name('cronjob');
+// CronJob Routes
+Route::get('/cron', [CronJobController::class, 'index'])->name('cronjob');
 
-Route::get('/', 'SiteController@index')->name('index');
-Route::get('/contact-us', 'SiteController@contact_us')->name('contact_us');
-Route::post('/contact', 'SiteController@contact')->name('contact');
+// Public Routes
+Route::get('/', [SiteController::class, 'index'])->name('index');
+Route::get('/contact-us', [SiteController::class, 'contact_us'])->name('contact_us');
+Route::post('/contact', [SiteController::class, 'contact'])->name('contact');
 
+// Authentication Routes
 Auth::routes(['verify' => true]);
-
-Route::get('/home', 'HomeController@index')->name('home');
-
-// Shipment Controller
-Route::post('/get_quote_step1', 'SiteController@getQuoteStepOne')->name('get_quote_step1');
-Route::get('/get_quote_step2', 'SiteController@getQuoteStepTwo')->name('get_quote_step2');
-Route::post('/form-quote-final-step', 'SiteController@formQuoteFinalStep')->name('frontend.quote_final_step');
-
-// User Routes
-Route::get('/user', 'UserController@index')->name('user');
-Route::get('/user/profile', 'UserController@profile')->name('user.profile');
-Route::post('/user/update_profile', 'UserController@update_profile')->name('user.update_profile');
-
-// admin Routes
-Route::get('/admin', 'AdminController@index')->name('admin');
-Route::get('/admin/profile', 'AdminController@profile')->name('admin.profile');
-Route::post('/admin/update_profile', 'AdminController@update_user_profile')->name('admin.update_profile');
-Route::get('/view_user/{id}', 'AdminController@view_user')->name('admin.view_user');
-Route::get('/all_users', 'AdminController@all_users')->name('admin.all_users');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Quotation Routes
-Route::resource('/quotation', 'QuotationController');
+Route::resource('/quotation', QuotationController::class);
 Route::get('/quotation/summary-download/{quotation}', [QuotationController::class, 'downloadQuotationSummary'])->name('quotation.summary.download');
-Route::get('/quotations', 'QuotationController@view_all')->name('quotations.view_all');
-Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
-Route::get('/store_pending_form', 'QuotationController@storePendingForm')->name('store_pending_form');
-Route::post('/quotations', 'QuotationController@search')->name('quotations.search');
-Route::get('/mail_view_quotation/{token}', 'SiteController@mail_view_quotation')->name('quotation.mail_view');
+Route::get('/quotations', [QuotationController::class, 'view_all'])->name('quotations.view_all');
+Route::post('/quotations', [QuotationController::class, 'search'])->name('quotations.search');
+Route::get('/store_pending_form', [QuotationController::class, 'storePendingForm'])->name('store_pending_form');
+Route::get('/mail_view_quotation/{token}', [SiteController::class, 'mail_view_quotation'])->name('quotation.mail_view');
 
-// Routes
-Route::resource('/location', 'LocationController');
-Route::get('/location-import', 'LocationController@importLocationsView')->name('location.import.view');
-Route::post('/location/import', 'ImportController@importLocations')->name('location.import');
-Route::resource('/route', 'RouteController');
+// Shipment Routes
+Route::post('/get_quote_step1', [SiteController::class, 'getQuoteStepOne'])->name('get_quote_step1');
+Route::get('/get_quote_step2', [SiteController::class, 'getQuoteStepTwo'])->name('get_quote_step2');
+Route::post('/form-quote-final-step', [SiteController::class, 'formQuoteFinalStep'])->name('frontend.quote_final_step');
 
-// Payment
-use App\Http\Controllers\PaymentController;
-
-Route::post('/payment/create', [PaymentController::class, 'createPayment'])->name('payment.create');
-Route::get('/payment/success', [PaymentController::class, 'executePayment'])->name('payment.success');
-Route::get('/payment/cancel', [PaymentController::class, 'cancelPayment'])->name('payment.cancel');
-
-
-// Merging translated file scripts
-Route::get('merge_them', function () {
-
-
+// User Routes
+Route::prefix('user')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('user');
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
+    Route::post('/update_profile', [UserController::class, 'update_profile'])->name('user.update_profile');
 });
-Route::get('/merge_them', 'SiteController@merge_them')->name('merge_them');
 
+// Admin Routes
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin');
+    Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    Route::post('/update_profile', [AdminController::class, 'update_user_profile'])->name('admin.update_profile');
+    Route::get('/view_user/{id}', [AdminController::class, 'view_user'])->name('admin.view_user');
+    Route::get('/all_users', [AdminController::class, 'all_users'])->name('admin.all_users');
+});
+
+// Location Routes
+Route::resource('/location', LocationController::class);
+Route::get('/location-import', [LocationController::class, 'importLocationsView'])->name('location.import.view');
+Route::post('/location/import', [ImportController::class, 'importLocations'])->name('location.import');
+
+// Route Management
+Route::resource('/route', RouteController::class);
+
+// Payment Routes
+Route::prefix('payment')->group(function () {
+    Route::post('/create', [PaymentController::class, 'createPayment'])->name('payment.create');
+    Route::get('/success', [PaymentController::class, 'executePayment'])->name('payment.success');
+    Route::get('/cancel', [PaymentController::class, 'cancelPayment'])->name('payment.cancel');
+});
+
+// Merging Files
+Route::get('/merge_them', [SiteController::class, 'merge_them'])->name('merge_them');

@@ -11,6 +11,7 @@
         "php": "^8.2",
         "ext-curl": "*",
         "barryvdh/laravel-dompdf": "^3.0",
+        "google/cloud-recaptcha-enterprise": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "illuminate/support": "^10.0",
         "laravel/framework": "^10.0",
@@ -21,6 +22,7 @@
         "srmklive/paypal": "^3.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^7.0",
