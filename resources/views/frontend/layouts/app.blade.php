@@ -4,6 +4,7 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
+    @include('frontend.includes.google-tag')
     <meta name="referrer" content="always">
     <meta charset="utf-8">
     <meta name="Author" content="LogistiQuote">
