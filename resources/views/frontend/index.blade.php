@@ -1,4 +1,22 @@
 @extends('frontend.layouts.app')
+
+@section('head')
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "LogistiQuote",
+          "description": "Providing competitive freight shipping rates, quick responses for quotes, credit solutions, and efficient freight booking services.",
+          "serviceType": "International Freight Forwarding",
+          "provider": {
+            "@type": "Organization",
+            "name": "LogistiQuote",
+             "url": "https://logistiquote.com"
+          }
+        }
+    </script>
+@endsection
+
 @section('content')
     <div class="main-content">
         <div class="wrapper-home-pages">

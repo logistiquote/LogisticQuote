@@ -49,7 +49,7 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -67,14 +67,15 @@ class RegisterController extends Controller
             },],
             'role' => ['required', 'string'],
             'country' => ['required', 'string'],
-            'phone' => ['required', 'string', 'regex:/^\d{10,15}$/', function ($attribute, $value, $fail) {
+            'phone_code' => ['required', 'string', 'max:5'],
+            'phone' => ['required', 'string', 'regex:/^\d{8,15}$/', function ($attribute, $value, $fail) {
                 if (preg_match('/(\d)\1{6,}/', $value)) {
                     $fail('Invalid phone number.');
                 }
             }],
             'company_name' => ['required', 'string', 'regex:/^[a-zA-Z0-9 ]+$/', 'min:3', 'max:50'],
             'password' => ['required', 'string', 'min:6'],
-            'g-recaptcha-response' => ['required'],
+            'g-recaptcha-response' => env('APP_ENV') === 'production' ? ['required'] : [],
             'extra_field' => function ($attribute, $value, $fail) {
                 if (!empty($value)) {
                     $fail('Bot detected.');
@@ -117,16 +118,17 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['f_name']. ' '.$data['l_name'],
+            'name' => $data['f_name'] . ' ' . $data['l_name'],
             'email' => $data['email'],
             'role' => $data['role'],
             'country' => $data['country'],
+            'phone_code' => $data['phone_code'],
             'phone' => $data['phone'],
             'company_name' => $data['company_name'],
             'password' => Hash::make($data['password']),

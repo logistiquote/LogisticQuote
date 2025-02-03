@@ -10,7 +10,6 @@ class ImportController extends Controller
 {
     public function __construct(protected LocationImportService $importService)
     {
-        $this->middleware(['auth', 'verified']);
     }
 
     public function importLocations(LocationImportRequest $request)

@@ -7,7 +7,6 @@ use App\Http\Requests\QuotationRequest;
 use App\Mail\QuotationCreated;
 use App\Mail\QuotationResponse;
 use App\Models\Quotation;
-use App\Models\Route;
 use App\Services\QuotationService;
 use App\Services\RouteService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,7 +19,6 @@ class QuotationController extends Controller
 {
     public function __construct(private QuotationService $quotationService, private RouteService $routeService)
     {
-        $this->middleware(['auth', 'verified']);
     }
 
     public function index()

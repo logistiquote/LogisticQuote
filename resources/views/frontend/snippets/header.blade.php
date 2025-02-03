@@ -51,7 +51,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{ route('user') }}">
+                                    <a href="{{ route('users.list') }}">
                                         <i class="fad fa-tachometer-alt-fast"></i>
                                         Dashboard
                                     </a>

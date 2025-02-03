@@ -14,7 +14,6 @@ class RouteController extends Controller
 {
     public function __construct(protected RouteService $routeService)
     {
-        $this->middleware(['auth', 'verified']);
     }
 
     public function index()

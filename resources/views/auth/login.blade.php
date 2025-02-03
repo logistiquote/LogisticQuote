@@ -1,12 +1,9 @@
 @extends('frontend.layouts.app')
-
 @section('content')
 
 <div id="authApps">
     <section class="section-login">
         <div class="content">
-            <!-- <div class="sign-img"><img alt="man registers by tablet"
-                    src="#"></div> -->
             <div class="sign-form">
                 <div class="sign-form_content">
                     <form class="sign-form_content-input-part form active" action="{{ route('login') }}" method="POST">
@@ -51,9 +48,6 @@
                 </div>
             </div>
         </div>
-        <!-- <nav class="bottom-links"><a href="/contact" target="_blank">Contact us &amp; Feedback</a><a
-                href="/contact/shippers-help " target="_blank">Help</a><a href="/privacy" target="_blank">Privacy</a>
-        </nav> -->
     </section>
 </div>
 

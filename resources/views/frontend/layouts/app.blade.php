@@ -5,6 +5,7 @@
 
 <head>
     @include('frontend.includes.google-tag')
+    <meta name="description" content="Discover reliable international freight forwarding, logistics services, and freight shipping solutions. Compare shipping costs and get freight rate quotes today.">
     <meta name="referrer" content="always">
     <meta charset="utf-8">
     <meta name="Author" content="LogistiQuote">
@@ -24,6 +25,7 @@
     @include('frontend.includes.top-includes')
     @include('frontend.includes.top-scripts')
 
+    @yield('head')
 </head>
 
 <body>

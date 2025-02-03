@@ -2,32 +2,25 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use Closure;
 
 class checkRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        if (!Auth::check()) //Optional
-            return redirect('login');
+        if (!Auth::check()) {
+            return redirect('/login');
+        }
 
         $user = Auth::user();
-        if($user->role == $role)    // this $role coming from Controller to verify role authority
-        {
-            return $next($request);
+
+        if (!in_array($user->role, $roles)) {
+            return redirect()->back()->with('error', 'You do not have access to this section.');
         }
-        else    // If not matched goto login then there will be redirected to correct path
-        {
-            return redirect('login');
-        }
+
+        return $next($request);
     }
 }

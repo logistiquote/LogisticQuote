@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth', 'verified']);
-    }
-
     public function index()
     {
         $data['locations'] = Location::query()->latest()->get();

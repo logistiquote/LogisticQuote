@@ -96,7 +96,7 @@
                                     <div class="col-md-4 mb-3">
                                         <label for="validationServer01">Final destination address</label>
                                         <input type="text" class="form-control" name="final_destination_address"
-                                               value="{{ $quotation->pickup_address }}" value=""
+                                               value="{{ $quotation->pickup_address }}"
                                                disabled/>
 
                                     </div>

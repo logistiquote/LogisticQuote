@@ -675,3 +675,15 @@
     padding: 12px 30px !important;
 }
 
+.phone-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.phone-code select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+

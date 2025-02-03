@@ -1,46 +1,37 @@
 @extends('frontend.layouts.app')
-
 @section('content')
-
     <div id="authApps">
         <section class="section-login">
             <div class="content">
                 <div class="sign-form">
                     <div class="sign-form_content">
-                        <form id="register-form" action="{{ route('register') }}" method="POST"
-                              class="sign-form_content-input-part form active">
+                        <form id="register-form" method="POST" class="sign-form_content-input-part form active">
                             @csrf
                             <legend class="sign-form_content-title">Create an account on <span>LogistiQuote</span>
                             </legend>
 
                             <div class="sign-form_content-input-part-dual-input">
-                                <div class="input-wrapper @error('f_name') error @enderror">
+                                <div class="input-wrapper">
                                     <input class="input" type="text" name="f_name" value="{{ old('f_name') }}"
                                            autocomplete="first-name" placeholder="First name">
-                                    @error('f_name')
-                                    <p class="errorInputMsg">{{ $message }}</p>
-                                    @enderror
+                                    <p class="errorInputMsg" data-error="f_name"></p>
                                 </div>
-                                <div class="input-wrapper @error('l_name') error @enderror">
+                                <div class="input-wrapper">
                                     <input class="input" type="text" name="l_name" value="{{ old('l_name') }}"
                                            placeholder="Last name">
-                                    @error('l_name')
-                                    <p class="errorInputMsg">{{ $message }}</p>
-                                    @enderror
+                                    <p class="errorInputMsg" data-error="l_name"></p>
                                 </div>
                             </div>
 
-                            <div class="input-wrapper @error('email') error @enderror">
+                            <div class="input-wrapper">
                                 <input class="input" type="text" name="email" placeholder="E-mail"
                                        value="{{ old('email') }}">
-                                @error('email')
-                                <p class="errorInputMsg">{{ $message }}</p>
-                                @enderror
+                                <p class="errorInputMsg" data-error="email"></p>
                             </div>
 
                             <input type="hidden" name="role" value="user" data-tel="user">
 
-                            <div class="select-wrapper @error('country') error @enderror">
+                            <div class="select-wrapper">
                                 <select name="country">
                                     <option disabled="" value="" selected=""> Select country</option>
                                     <option data-tel="93" value="AF">Afghanistan</option>
@@ -301,27 +292,28 @@
                                 @enderror
                             </div>
 
-                            <div class="input-wrapper @error('phone') error @enderror">
-                                <input class="input" type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone">
-                                @error('phone')
-                                <p class="errorInputMsg">{{ $message }}</p>
-                                @enderror
+                            <div class="input-wrapper">
+                                <div class="phone-wrapper">
+                                    <div class="phone-code">
+                                        <select name="phone_code" id="phone_code">
+                                            @include('partials.phone_codes')
+                                        </select>
+                                    </div>
+                                    <input class="input" type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone">
+                                </div>
+                                <p class="errorInputMsg" data-error="phone"></p>
                             </div>
 
-                            <div class="input-wrapper @error('company_name') error @enderror">
+                            <div class="input-wrapper">
                                 <input class="input" type="text" name="company_name" value="{{ old('company_name') }}"
                                        autocomplete="org" placeholder="Company name">
-                                @error('company_name')
-                                <p class="errorInputMsg">{{ $message }}</p>
-                                @enderror
+                                <p class="errorInputMsg" data-error="company_name"></p>
                             </div>
 
-                            <div class="input-wrapper @error('password') error @enderror">
+                            <div class="input-wrapper">
                                 <input class="input" type="password" name="password"
                                        autocomplete="new-password" placeholder="Password">
-                                @error('password')
-                                <p class="errorInputMsg">{{ $message }}</p>
-                                @enderror
+                                <p class="errorInputMsg" data-error="password"></p>
                             </div>
 
                             <div class="input-wrapper">
@@ -361,6 +353,61 @@
 @endsection
 
 @section('bottom_scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("register-form");
+            const submitButton = document.getElementById("register-button");
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                submitButton.disabled = true;
+                submitButton.innerText = "Processing...";
+
+                const formData = new FormData(form);
+
+                fetch("{{ route('register') }}", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        clearErrors();
+
+                        if (data.errors) {
+                            displayErrors(data.errors);
+                            submitButton.disabled = false;
+                            submitButton.innerText = "Create Account";
+                        } else {
+                            window.location.href = "/quotation";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        submitButton.disabled = false;
+                        submitButton.innerText = "Create Account";
+                    });
+            });
+
+            function displayErrors(errors) {
+                for (const field in errors) {
+                    const errorElement = document.querySelector(`.errorInputMsg[data-error="${field}"]`);
+                    if (errorElement) {
+                        errorElement.innerText = errors[field][0];
+                    }
+                }
+            }
+
+            function clearErrors() {
+                document.querySelectorAll(".errorInputMsg").forEach(el => el.innerText = "");
+            }
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
             $('#additional_email').hide();

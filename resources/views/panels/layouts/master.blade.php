@@ -95,7 +95,7 @@
             <!-- Nav Item - My Quotations -->
             <li
                 class="nav-item <?php echo ($page_name == 'all_users' || $page_name == 'add_user' || $page_name == 'edit_user' || $page_name == 'admin.view_user') ? 'active' : ''; ?>">
-                <a class="nav-link" href="{{ route('admin.all_users') }}">
+                <a class="nav-link" href="{{ route('users.list') }}">
                     <i class="far fa-users"></i>
                     <span>Users</span></a>
             </li>
@@ -127,7 +127,7 @@
 
             <!-- Nav Item - Profile -->
             <li class="nav-item <?php echo ($page_name == 'profile') ? 'active' : ''; ?>">
-                <a class="nav-link" href="{{ route('admin.profile') }}">
+                <a class="nav-link" href="{{ route('user.profile') }}">
                     <i class="fad fa-user-alt"></i>
                     <span>Profile</span></a>
             </li>
@@ -221,17 +221,10 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            @if(Auth::user()->role == 'user')
-                                <a class="dropdown-item" href="{{ route('user.profile') }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                            @elseif(Auth::user()->role == 'admin')
-                                <a class="dropdown-item" href="{{ route('admin.profile') }}">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                            @endif
+                            <a class="dropdown-item" href="{{ route('user.profile') }}">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
 
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>

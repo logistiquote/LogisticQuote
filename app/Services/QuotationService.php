@@ -145,7 +145,7 @@ class QuotationService
 
     public function calculateInsurancePrice($goodsValue)
     {
-        $baseFee = $goodsValue * 1.1 * 0.25;
+        $baseFee = $goodsValue * 1.1 * 0.003;
 
         return max($baseFee, 50);
     }

@@ -73,14 +73,14 @@
                   <!-- /.tab-pane -->
 
                   <div class="tab-pane active show" id="settings">
-                                
-                    <form action="{{ route('admin.update_profile') }}" method="POST" enctype="multipart/form-data">
+
+                    <form action="{{ route('user.update_profile') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-body col-8 offset-md-2">
 
                             <input type="hidden" name="id" value="{{ $profile->id }}">
                             <div class="form-group">
-                                
+
                                 <input type="text" name="name"
                                     placeholder="Name" value="{{ $profile->name }}"
                                     class="form-control @error('name') is-invalid @enderror">
@@ -123,7 +123,7 @@
                         </div>
 
                     </form>
-        
+
                   </div>
                   <!-- /.tab-pane -->
 
@@ -142,7 +142,7 @@
                                 <input type="text">
                             </div>
 
-                                <button @click.prevent="showMyRoute" type="submit" 
+                                <button @click.prevent="showMyRoute" type="submit"
                                 class="btn btn-primary my-2"> Show Route </button>
                                 <input type="text">
 
@@ -174,7 +174,7 @@
                                 <input  type="text" id="duration"
                                 class="form-control" class="{ 'is-invalid': form.errors.has('duration')}" disabled>
                             </div>
-                            
+
                             <div class="form-group">
                                 <input  type="text" id="origin" name="origin"
                                 class="form-control" class="{ 'is-invalid': form.errors.has('origin')}" hidden>
@@ -203,28 +203,28 @@
                   <!-- /.tab-pane -->
                   <div style="display:none;" class="tab-pane" id="preferences">
                     <!-- The preferences -->
-                        
+
                         <form  enctype="multipart/form-data">
 
                         <h4 class="text-center"> Timing  </h4>
-                        
+
                             <div class="form-group">
                                 <label for="departure_time"> Departure Time: </label>
-                                <input type="time" name="departure_time" 
+                                <input type="time" name="departure_time"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('departure_time') }">
                             </div>
 
                             <div class="form-group">
                                 <label for="arrival_time"> Arrival Time: </label>
-                                <input type="time" name="arrival_time" 
+                                <input type="time" name="arrival_time"
                                 class="form-control" :class="{ 'is-invalid': form.errors.has('arrival_time') }">
                             </div>
-                            
-                            
+
+
                         <h4 class="text-center"> Other  </h4>
 
                             <div class="form-group">
-                                <select name="v_type" value="Select Vehicle Type" 
+                                <select name="v_type" value="Select Vehicle Type"
                                  class="form-control" class="{ 'is-invalid': form.errors.has('v_type') }">
                                     <option value="car">Car</option>
                                     <option value="van">Van</option>
@@ -232,10 +232,10 @@
                                 </select>
                                 <has-error form="form" field="v_type"></has-error>
                             </div>
-                            
+
 
                             <button  type="submit" class="btn btn-primary"> Set Preferences </button>
-                            
+
                             </form>
                   </div>
                 </div>
