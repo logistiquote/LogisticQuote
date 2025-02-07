@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Route extends Model
 {
@@ -14,6 +15,7 @@ class Route extends Model
         'origin_id',
         'destination_id',
         'type',
+        'price_valid_until',
         'delivery_line',
         'delivery_time',
     ];
@@ -36,6 +38,11 @@ class Route extends Model
     public function containers(): HasMany
     {
         return $this->hasMany(RouteContainer::class);
+    }
+
+    public function rate(): HasOne
+    {
+        return $this->hasOne(RouteRate::class);
     }
 
     public function getFullOriginLocationAttribute(): string

@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\QuotationStatus;
 use App\Models\Quotation;
+use App\Models\RouteRate;
 use App\Repositories\QuotationRepository;
 use Carbon\Carbon;
 use Exception;
@@ -29,24 +31,18 @@ class QuotationService
             $totalPrice = $this->getGoodsTotalPrice($containers);
         }
 
-        if (isset($data['calculate_by'])){
-            if ($data['calculate_by'] === 'units') {
-                $this->addPallets($quotation, $data);
-            } elseif ($data['calculate_by'] === 'shipment') {
-                $quotation->update([
-                    'quantity' => $data['quantity'],
-                    'total_weight' => $data['total_weight'],
-                ]);
-            }
+        if (isset($data['calculate_by']) && $data['type'] === 'lcl') {
+            $pallets = $this->addPallets($quotation, $data);
+            $totalPrice = $this->getGoodsTotalPrice($pallets);
+
         }
 
-        if(isset($data['attachment_file']))
-        {
-            Storage::disk('public')->move( 'temp/'.$data['attachment_file'], 'files/'.$data['attachment_file'] );
+        if (isset($data['attachment_file'])) {
+            Storage::disk('public')->move('temp/' . $data['attachment_file'], 'files/' . $data['attachment_file']);
 
             $quotation->attachment = $data['attachment_file'];
         }
-        $quotation->total_price = $totalPrice + $quotation->insurance_price;
+        $quotation->total_price = $totalPrice + $quotation->insurance_price + $quotation->route->rate->destination_charges;
         $quotation->save();
 
         return $quotation;
@@ -71,15 +67,8 @@ class QuotationService
             $totalPrice = $this->getGoodsTotalPrice($containers);
         }
 
-        if (isset($data['calculate_by'])){
-            if ($data['calculate_by'] === 'units') {
-                $this->addPallets($quotation, $data);
-            } elseif ($data['calculate_by'] === 'shipment') {
-                $quotation->update([
-                    'quantity' => $data['quantity'],
-                    'total_weight' => $data['total_weight'],
-                ]);
-            }
+        if (isset($data['calculate_by']) && $data['type'] === 'lcl') {
+            $pallets = $this->addPallets($quotation, $data);
         }
 
         $quotation->total_price = $totalPrice;
@@ -117,7 +106,7 @@ class QuotationService
             'user_id' => auth()->id(),
             'route_id' => $data['route_id'],
             'quote_number' => $this->generateQuotationNumber(),
-            'status' => 'active',
+            'status' => QuotationStatus::ACTIVE,
             'type' => $data['type'],
             'transportation_type' => $data['transportation_type'],
             'ready_to_load_date' => Carbon::createFromFormat('Y-m-d', $data['ready_to_load_date']),
@@ -130,7 +119,7 @@ class QuotationService
             'is_dgr' => $data['isDgr'] ?? false,
             'is_clearance_req' => $data['isClearanceReq'] ?? false,
             'insurance' => $data['insurance'] ?? false,
-            'insurance_price' => $this->calculateInsurancePrice( $data['value_of_goods'] ?? 0),
+            'insurance_price' => $this->calculateInsurancePrice($data['value_of_goods'] ?? 0),
             'remarks' => $data['remarks'] ?? null,
         ];
 
@@ -160,29 +149,43 @@ class QuotationService
     }
 
 
-    private function addPallets(Quotation $quotation, array $data): void
+    private function addPallets(Quotation $quotation, array $data): array
     {
         $pallets = [];
-        $totalWeight = 0;
 
-        foreach ($data['l'] as $key => $length) {
-            $volumetricWeight = ($length * $data['w'][$key] * $data['h'][$key]) / 6000;
-            $pallets[] = [
-                'length' => $length,
-                'width' => $data['w'][$key],
-                'height' => $data['h'][$key],
-                'volumetric_weight' => $volumetricWeight,
-                'gross_weight' => $data['gross_weight'][$key],
-            ];
-            $totalWeight += $volumetricWeight;
+        if ($data['calculate_by'] === 'units') {
+            foreach ($data['units'] as $unit) {
+                $volumetricWeight = ($unit['l'] * $unit['w'] * $unit['h']) / 1000000;
+                $pallets[] = [
+                    'length' => $unit['l'],
+                    'width' => $unit['w'],
+                    'height' => $unit['h'],
+                    'volumetric_weight' => $volumetricWeight,
+                    'gross_weight' => $unit['gross_weight'],
+                    'price' => $this->calculatePalletPrice(
+                        max($volumetricWeight, ($unit['gross_weight'] / 1000)),
+                        $quotation->route->rate
+                    ),
+                ];
+            }
+
+        } elseif ($data['calculate_by'] === 'shipment') {
+            foreach ($data['shipment'] as $shipment) {
+                $pallets[] = [
+                    'volumetric_weight' => $shipment['volumetric_weight'],
+                    'gross_weight' => $shipment['gross_weight'],
+                    'quantity' => $shipment['quantity'],
+                    'price' => $this->calculatePalletPrice(
+                        max($shipment['volumetric_weight'], ($shipment['gross_weight'] / 1000)),
+                        $quotation->route->rate
+                    ) * $shipment['quantity'],
+                ];
+            }
         }
 
         $this->quotationRepository->syncPallets($quotation, $pallets);
 
-        $quotation->update([
-            'quantity' => count($pallets),
-            'total_weight' => number_format($totalWeight, 2),
-        ]);
+        return $pallets;
     }
 
     public function getFormatedContainersData(array $data): array
@@ -191,7 +194,7 @@ class QuotationService
         $routeContainers = json_decode($data['route_containers']) ?? [];
 
         foreach ($data['container_size'] as $key => $size) {
-            $container = current(array_filter($routeContainers, function($item) use ($size) {
+            $container = current(array_filter($routeContainers, function ($item) use ($size) {
                 return $item->container_type == $size;
             }));
 
@@ -205,11 +208,17 @@ class QuotationService
         return $containers;
     }
 
+    private function calculatePalletPrice($value, RouteRate $routeRate)
+    {
+        $price = $value * $routeRate->ocean_freight;
+        return round(max($price, $routeRate->min_ocean_freight), 2);
+    }
+
     public function getGoodsTotalPrice(array $data): float
     {
         $totalPrice = 0;
-        if (!empty($data)){
-            foreach ($data as $item){
+        if (!empty($data)) {
+            foreach ($data as $item) {
                 $totalPrice += $item['price'];
             }
         }

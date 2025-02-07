@@ -28,7 +28,7 @@ class ImportController extends Controller
         } catch (\Exception $e) {
             Log::error('ImportController(importLocations). Error: '.$e->getMessage());
 
-            return redirect()->back()->with('error', 'Failed to create the route. Please try again.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }

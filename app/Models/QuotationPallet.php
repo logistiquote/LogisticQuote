@@ -16,6 +16,8 @@ class QuotationPallet extends Model
         'height',
         'volumetric_weight',
         'gross_weight',
+        'quantity',
+        'price',
     ];
 
     public function quotation(): BelongsTo

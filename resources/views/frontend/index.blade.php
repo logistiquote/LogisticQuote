@@ -116,6 +116,10 @@
                                                     <i class="icon fad fa-truck-container"></i>
                                                     FCL
                                                 </li>
+                                                <li class="option" data-value="lcl">
+                                                    <i class="icon fas fa-dolly"></i>
+                                                    LCL
+                                                </li>
                                             </ul>
                                             <input type="hidden" name="type" value="fcl">
                                         </div>
@@ -259,25 +263,16 @@
             const matchingOrigins = allOrigins.filter(origin => origin.destination_id == selectedDestination.value);
 
             if (matchingOrigins.length > 0) {
-                console.log('matching')
-
                 // If a matching origin exists, keep the current selection if it's valid
                 currentOrigin = matchingOrigins.find(origin => origin.id == selectedOriginId);
                 if (!currentOrigin) {
-                    console.log('no current')
-
                     originSelect.value = matchingOrigins[0].id;
                     currentOrigin = matchingOrigins[0];
-                    console.log(currentOrigin)
-
                 }
             } else {
-                console.log('no matching')
-
                 // If no matching origin exists, select the first option as default
                 originSelect.value = '';
             }
-            console.log(currentOrigin);
 
             // Update route_id and call container update if applicable
             routeIdInput.value = currentOrigin.route_id || '';
@@ -301,25 +296,16 @@
             const matchingDestinations = allDestinations.filter(destination => destination.origin_id == selectedOrigin.value);
 
             if (matchingDestinations.length > 0) {
-                console.log('matching')
-
                 // If a matching destination exists, keep the current selection if it's valid
                 currentDestination = matchingDestinations.find(destination => destination.id == selectedDestinationId);
                 if (!currentDestination) {
-                    console.log('no current')
-
                     destinationSelect.value = matchingDestinations[0].id; // Default to the first matching destination
                     currentDestination = matchingDestinations[0];
-
                 }
             } else {
-                console.log('no matching')
-
                 // If no matching destination exists, select the first option as default
                 destinationSelect.value = '';
             }
-            console.log(currentDestination);
-
             // Update route_id and call container update if applicable
             routeIdInput.value = currentDestination.route_id || '';
             updateContainerSelectOptions(selectedOrigin.dataset.containers);

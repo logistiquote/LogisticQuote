@@ -156,7 +156,7 @@ class QuotationController extends Controller
     {
         $pdf = Pdf::loadView('panels.quotation.quotation-summary', [
             'quotation' => $quotation,
-        ]);
+        ])->setOptions(['isRemoteEnabled' => true]);
 
         return $pdf->download('quotation-summary-' . $quotation->id . '.pdf');
     }

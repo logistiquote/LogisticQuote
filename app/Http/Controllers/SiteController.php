@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactUsRequest;
 use App\Mail\ContactUs;
 use App\Models\Quotation;
 use App\Services\QuotationService;
+use App\Services\RecaptchaService;
 use App\Services\RouteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SiteController extends Controller
 {
-    public function __construct(private RouteService $routeService, private QuotationService $quotationService)
+    public function __construct(private RouteService $routeService, private QuotationService $quotationService, private RecaptchaService $recaptchaService)
     {
     }
 
@@ -36,16 +38,31 @@ class SiteController extends Controller
         return view('frontend.contact_us', $data);
     }
 
-    public function contact(Request $request)
+    public function contact(ContactUsRequest $request)
     {
-        $data = array(
-            'to' => array('malickateeq@gmail.com'),
-            'subject' => $request->subject,
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'msg' => (string)$request->message,
-        );
+        $validated = $request->validated();
+        $data = [
+            'to' => env('MAIL_HOST'),
+            'subject' => $validated->subject,
+            'name' => $validated->name,
+            'phone' => $validated->phone,
+            'email' => $validated->email,
+            'msg' => $validated->message,
+        ];
+
+        if (config('services.recaptcha.enabled')) {
+            $token = $request->all()['g-recaptcha-response'];
+            $recaptchaKey = env('RECAPTCHA_SITE_KEY');
+            $projectId = env('RECAPTCHA_PROJECT_ID');
+            $action = 'contact-us';
+
+            $score = $this->recaptchaService->validateToken($recaptchaKey, $token, $projectId, $action);
+
+            if (is_null($score) || $score < 0.5) {
+                return redirect()->back()->withErrors(['captcha' => 'Captcha validation failed or suspicious activity detected.']);
+            }
+        }
+
         Mail::to($data['to'])->send(new ContactUs($data));
 
         return redirect()->back();
@@ -78,25 +95,13 @@ class SiteController extends Controller
 
         $data['page_title'] = 'Request a quote | LogistiQuote';
         $data['page_name'] = 'get_quote_step2';
-
-        if ($sessionData['type'] === 'lcl' || $sessionData['transportation_type'] === 'air') {
-            return view('frontend.get_quote_lcl', $data);
-        } elseif ($sessionData['transportation_type'] === 'sea' && $sessionData['type'] === 'fcl') {
-
+        $data['type'] = $sessionData['type'];
+        if ($sessionData['type'] === 'fcl') {
             $data['containers'] = $sessionData['route_containers'];
-            return view('frontend.get_quote_fcl', $data);
-        } else {
-            return redirect()->back();
         }
-    }
 
-    public function getQuoteStepThree(Request $request)
-    {
-        $updatedData['page_title'] = 'Request a quote | LogistiQuote';
-        $updatedData['page_name'] = 'get_quote_step3';
-
-        if (!empty($updatedData)) {
-            return view('frontend.quotation-summary', $updatedData);
+        if ($sessionData['type'] === 'lcl' || $sessionData['type'] === 'fcl') {
+            return view('frontend.get_quote', $data);
         } else {
             return redirect()->back();
         }
@@ -113,8 +118,11 @@ class SiteController extends Controller
         $sessionData = session('quote_data', []);
 
         $updatedData = array_merge($sessionData, $request->all());
-        $currentContainers = $this->quotationService->getFormatedContainersData($updatedData);
-        $updatedData['current_containers'] = $currentContainers;
+        if ($updatedData['type'] === 'fcl') {
+            $currentContainers = $this->quotationService->getFormatedContainersData($updatedData);
+            $updatedData['current_containers'] = $currentContainers;
+        }
+
         session(['quote_data' => $updatedData]);
 
         if (Auth::check()) {

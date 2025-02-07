@@ -30,7 +30,10 @@
                             <input required name="email" type="email" placeholder="Email">
                         </div>
                     </div>
-                    <textarea name="message" rows="7" placeholder="Message"></textarea>
+                    <textarea name="message" rows="7" required minlength="10" placeholder="Message"></textarea>
+
+                    @include('components.recaptcha', ['action' => 'contact-us'])
+
                     <button type="submit" class="submit-button">Submit</button>
                 </form>
             </div>

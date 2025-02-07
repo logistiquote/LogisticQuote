@@ -202,7 +202,7 @@ h2 {
 }
 
 .request-input.small input {
-    width: 70px
+    width: 100px
 }
 
 .request-input .name {
@@ -362,7 +362,7 @@ h2 {
 }
 
 .request-select.small .select-wrap {
-    width: 70px
+    width: 100px
 }
 
 .request-select p.label {
@@ -769,7 +769,7 @@ h3 {
 }
 
 .shipment-form .form-row>div {
-    margin-right: 40px
+    margin-right: 30px
 }
 
 .shipment-form .form-row .dimensions {

@@ -18,6 +18,9 @@ class checkRole
         $user = Auth::user();
 
         if (!in_array($user->role, $roles)) {
+            if ($user->role === 'user') {
+                return redirect('/quotation');
+            }
             return redirect()->back()->with('error', 'You do not have access to this section.');
         }
 
