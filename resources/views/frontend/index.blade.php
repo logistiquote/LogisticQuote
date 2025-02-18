@@ -19,6 +19,7 @@
 
 @section('content')
     <div class="main-content">
+        @include('panels.includes.errors')
         <div class="wrapper-home-pages">
             <section class="wrapper-header-block">
                 @php
@@ -39,9 +40,13 @@
                             <button id="freight-quote-btn" class="active">Freight Quotes</button>
                             <button id="container-tracking-btn">Container Tracking</button>
                         </div>
-
+                        <div class="transport-type mb-3">
+                            <button type="button" class="active transport-type-button" data-type="ocean">Ocean</button>
+                            <span class="via-text">VIA</span>
+                            <button type="button" class="transport-type-button" data-type="air">Air</button>
+                        </div>
                         <form
-                            id="freight-quote-form"
+                            id="freight-quote-form-ocean"
                             class="form active" method="POST"
                             action="{{ route('get_quote_step1') }}"
                             autocomplete="off"
@@ -49,15 +54,10 @@
                             @csrf
                             <input type="hidden" name="route_id" id="route_id" value="">
                             <input type="hidden" name="route_containers" id="route_containers" value="">
-                            <input type="hidden" id="transportation_type"
-                                   name="transportation_type" value="sea" required>
-                            <div class="transport-type">
-                                <button type="button" class="active transport-type-button" data-type="ocean">Ocean</button>
-                                <span class="via-text">VIA</span>
-                                <button type="button" class="transport-type-button" data-type="air">Air</button>
-                            </div>
+                            <input type="hidden" id="transportation_type" name="transportation_type" value="sea">
+
                             <div>
-                                <div class="form-grid" id="ocean-form">
+                                <div class="form-grid">
                                     <div class="input-group">
                                         <label class="quotation-label">Origin of shipment</label>
                                         <select
@@ -125,14 +125,62 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-grid" id="air-form" style="display: none; text-align: center">
-                                    <p>Coming Soon</p>
-                                </div>
                             </div>
                             <button type="submit" id="quote-submit" class="submit-button">QUOTE</button>
                         </form>
+                        @if(env('APP_ENV') === 'production')
+                            <div class="form-grid" id="freight-quote-form-air" style="text-align: center">
+                                <p>Coming Soon</p>
+                            </div>
+                        @else
+                            <form
+                                id="freight-quote-form-air"
+                                class="form active" method="POST"
+                                action="{{ route('dhl.quote-formation') }}"
+                                style="display: none;"
+                                autocomplete="off"
+                            >
+                                @csrf
+                                <div class="form-grid">
+                                    <!-- Origin Details -->
+                                    <div class="input-group">
+                                        <label class="quotation-label" for="origin_country">Origin Country</label>
+                                        <input
+                                            type="text"
+                                            class="@error('origin_country') is-invalid @enderror"
+                                            id="origin_country" name="origin_country"
+                                            placeholder="Enter origin country" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="quotation-label" for="origin_postal">Origin Postal Code</label>
+                                        <input
+                                            type="text"
+                                            class="@error('origin_postal') is-invalid @enderror"
+                                            id="origin_postal" name="origin_postal"
+                                            placeholder="Enter origin postal code" required>
+                                    </div>
 
+                                    <!-- Destination Details -->
+                                    <div class="input-group">
+                                        <label class="quotation-label" for="destination_country">Destination Country</label>
+                                        <input
+                                            type="text"
+                                            class="@error('destination_country') is-invalid @enderror"
+                                            id="destination_country" name="destination_country"
+                                            placeholder="Enter destination country" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label class="quotation-label" for="destination_postal">Destination Postal Code</label>
+                                        <input
+                                            type="text"
+                                            class="@error('destination_postal') is-invalid @enderror"
+                                            id="destination_postal" name="destination_postal"
+                                            placeholder="Enter destination postal code" required>
+                                    </div>
+                                </div>
+                                <button type="submit" id="quote-submit" class="submit-button">QUOTE</button>
+                            </form>
+                        @endif
                         <form id="container-tracking-form" class="form" method="GET">
                             <div class="input-group">
                                 <label class="quotation-label">Tracking number</label>
@@ -165,9 +213,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const transportButtons = document.querySelectorAll(".transport-type-button");
-            const oceanForm = document.getElementById("ocean-form");
-            const airForm = document.getElementById("air-form");
-            const quoteSubmit = document.getElementById("quote-submit");
+            const oceanForm = document.getElementById("freight-quote-form-ocean");
+            const airForm = document.getElementById("freight-quote-form-air");
 
             transportButtons.forEach(button => {
                 button.addEventListener("click", function () {
@@ -180,11 +227,9 @@
                     if (transportType === "ocean") {
                         oceanForm.style.display = "grid";
                         airForm.style.display = "none";
-                        quoteSubmit.style.display = "block"
                     } else if (transportType === "air") {
-                        airForm.style.display = "block";
+                        airForm.style.display = "grid";
                         oceanForm.style.display = "none";
-                        quoteSubmit.style.display = "none"
                     }
                 });
             });
@@ -228,7 +273,7 @@
         //switching between forms
         const freightQuoteBtn = document.getElementById('freight-quote-btn');
         const containerTrackingBtn = document.getElementById('container-tracking-btn');
-        const freightQuoteForm = document.getElementById('freight-quote-form');
+        const freightQuoteForm = document.getElementById('freight-quote-form-ocean');
         const containerTrackingForm = document.getElementById('container-tracking-form');
 
         freightQuoteBtn.addEventListener('click', () => {

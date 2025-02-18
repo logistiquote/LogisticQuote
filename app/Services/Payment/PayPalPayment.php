@@ -2,6 +2,7 @@
 
 namespace App\Services\Payment;
 
+use App\Enums\QuotationStatus;
 use App\Models\Quotation;
 use App\Models\Transaction;
 use Exception;
@@ -103,6 +104,7 @@ class PayPalPayment implements PaymentStrategy
                 ]);
                 Quotation::where('id', $transaction->quotation_id)->update([
                     'is_paid' => 1,
+                    'status' => QuotationStatus::PAID,
                 ]);
                 return 'Payment successfully executed with transaction ID: ' . $response['id'];
             }

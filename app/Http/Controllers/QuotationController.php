@@ -248,7 +248,8 @@ class QuotationController extends Controller
             return view('panels.user.dashboard', $data);
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            session()->forget('quote_data');
+            return redirect()->route('index')->withErrors(['error' => $e->getMessage()]);
         }
     }
 }

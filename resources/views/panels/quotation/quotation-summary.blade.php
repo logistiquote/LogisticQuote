@@ -64,7 +64,7 @@
                     <p>
                         <strong>Estimated transit time:</strong>
                         <span class="text-muted">
-                        {{ $quotation->route->delivery_time}} days
+                        {{ $quotation->route->lcl_delivery_time}} days
                     </span>
                     </p>
                     <p>
@@ -107,7 +107,6 @@
                                 <th>Volume (cbm)</th>
                                 <th>Gross Weight (kg)</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -120,7 +119,6 @@
                                     <td>{{ $pallet->volumetric_weight ?? 'N/A' }}</td>
                                     <td>{{ $pallet->gross_weight ?? 'N/A' }}</td>
                                     <td>{{ $pallet->quantity ?? 'N/A' }}</td>
-                                    <td>{{ $pallet->price . '$' }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -138,7 +136,7 @@
             </div>
             <hr>
             <div class="text-end">
-                <h2 class="fw-bold">Total, $:
+                <h2 class="fw-bold">Total price, $:
                     {{ number_format($quotation->total_price, 2) }}
                 </h2>
             </div>

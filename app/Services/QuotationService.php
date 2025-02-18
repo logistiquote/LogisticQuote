@@ -32,6 +32,9 @@ class QuotationService
         }
 
         if (isset($data['calculate_by']) && $data['type'] === 'lcl') {
+            if (!$quotation->route->rate) {
+                throw new Exception('No route rates found for this quotation.');
+            }
             $pallets = $this->addPallets($quotation, $data);
             $totalPrice = $this->getGoodsTotalPrice($pallets);
 
@@ -210,7 +213,7 @@ class QuotationService
 
     private function calculatePalletPrice($value, RouteRate $routeRate)
     {
-        $price = $value * $routeRate->ocean_freight;
+        $price = $value * $routeRate->total_price;
         return round(max($price, $routeRate->min_ocean_freight), 2);
     }
 

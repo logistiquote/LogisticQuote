@@ -17,7 +17,8 @@ class Route extends Model
         'type',
         'price_valid_until',
         'delivery_line',
-        'delivery_time',
+        'fcl_delivery_time',
+        'lcl_delivery_time',
     ];
 
     protected $dates = [

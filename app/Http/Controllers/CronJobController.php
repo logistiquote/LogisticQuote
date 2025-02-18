@@ -13,17 +13,6 @@ class CronJobController extends Controller
         $now = Carbon::now();
         foreach($quotations as $quotation)
         {
-            // If it is weekend
-            $weekMap = [
-                0 => 'SU',
-                1 => 'MO',
-                2 => 'TU',
-                3 => 'WE',
-                4 => 'TH',
-                5 => 'FR',
-                6 => 'SA',
-            ];
-
             if($quotation->created_at->dayOfWeek == 4)
             {
                 $expire = $quotation->created_at->addDays(4);

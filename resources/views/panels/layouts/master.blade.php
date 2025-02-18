@@ -132,6 +132,13 @@
                     <span>Profile</span></a>
             </li>
 
+            <!-- Nav Item - Activity Logs -->
+            <li class="nav-item <?php echo ($page_name == 'activity_log') ? 'active' : ''; ?>">
+                <a class="nav-link" href="{{ route('activity-logs') }}">
+                    <i class="fad fa-book-alt"></i>
+                    <span>Activity Logs</span></a>
+            </li>
+
         @endif
 
 

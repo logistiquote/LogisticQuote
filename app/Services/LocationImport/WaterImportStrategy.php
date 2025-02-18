@@ -80,7 +80,7 @@ class WaterImportStrategy implements ImportStrategyInterface
                 'lcl',
             );
 
-            if (empty($route)){
+            if (empty($route)) {
                 continue;
             }
 
@@ -147,8 +147,13 @@ class WaterImportStrategy implements ImportStrategyInterface
             'origin_id' => $originId,
             'destination_id' => $destinationId,
             'type' => 'water',
-            'delivery_time' => $transitTime,
         ];
+
+        if ($fileType === 'lcl') {
+            $data['lcl_delivery_time'] = $transitTime;
+        } else {
+            $data['fcl_delivery_time'] = $transitTime;
+        }
 
         if (!empty($shippingLine)) {
             $data['delivery_line'] = $shippingLine;

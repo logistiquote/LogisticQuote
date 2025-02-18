@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\CronJobController;
+use App\Http\Controllers\DHLExpressController;
+use App\Http\Controllers\DHLShipmentController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImportController;
@@ -31,8 +34,15 @@ Route::post('/get_quote_step1', [SiteController::class, 'getQuoteStepOne'])->nam
 Route::get('/get_quote_step2', [SiteController::class, 'getQuoteStepTwo'])->name('get_quote_step2');
 Route::post('/form-quote-final-step', [SiteController::class, 'formQuoteFinalStep'])->name('frontend.quote_final_step');
 
+Route::post('/dhl/quote', [DHLExpressController::class, 'getQuote'])->name('dhl.quote');
+Route::post('/dhl/quote-formation', [DHLExpressController::class, 'getQuoteFormation'])->name('dhl.quote-formation');
+Route::get('/dhl/tracking/{tracking_number}', function($tracking_number) {
+    return view('dhl.tracking', compact('tracking_number'));
+})->name('dhl.tracking');
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    Route::post('/dhl/shipment', [DHLShipmentController::class, 'createShipment'])->name('dhl.shipment');
     // Quotation Routes
     Route::resource('/quotation', QuotationController::class);
     Route::get('/quotation/summary-download/{quotation}', [QuotationController::class, 'downloadQuotationSummary'])->name('quotation.summary.download');
@@ -55,6 +65,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::middleware('role:admin')->group(function () {
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs');
+
         // Location Routes
         Route::resource('/location', LocationController::class);
         Route::get('/location-import', [LocationController::class, 'importLocationsView'])->name('location.import.view');
