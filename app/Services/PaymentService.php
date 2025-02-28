@@ -16,14 +16,14 @@ class PaymentService
     /**
      * @throws Exception
      */
-    public function processPayment(string $provider, Quotation $quotation, array $data): string
+    public function processPayment(string $provider, $quotation, array $data): string
     {
 
         try {
             $payment = PaymentFactory::create($provider);
 
             $orderId = $payment->initialize($data);
-            $this->paymentRepository->saveTransaction([
+            $transaction = $this->paymentRepository->saveTransaction([
                 'provider' => $provider,
                 'amount' => $data['amount'],
                 'currency' => $data['currency'] ?? 'USD',
@@ -31,7 +31,10 @@ class PaymentService
                 'order_id' => $orderId,
                 'transaction_id' => $data['transaction_id'] ?? null,
                 'metadata' => $data['metadata'] ?? [],
-                'quotation_id' => $quotation->id,
+            ]);
+
+            $quotation->update([
+                'transaction_id' => $transaction->id,
             ]);
             return $payment->confirm();
         } catch (Exception $ex) {

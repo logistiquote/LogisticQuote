@@ -19,7 +19,7 @@ class DHLShipmentService
         $this->client = new Client();
         $this->apiUrl = env('DHL_API_URL');
         $this->apiKey = env('DHL_API_KEY');
-        $this->accountNumber = env('DHL_ACCOUNT_NUMBER'); // DHL Account Number
+        $this->accountNumber = env('DHL_ACCOUNT_NUMBER');
     }
 
     public function createShipment($shipmentDetails)

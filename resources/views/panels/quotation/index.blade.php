@@ -9,9 +9,9 @@
     @endif
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">My Quotations</h1>
-{{--        <a href="{{ route('quotation.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">--}}
-{{--            <i class="fas fa-plus fa-sm text-white-50"></i> Add Quotation--}}
-{{--        </a>--}}
+        <a href="{{ route('quotation.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Add Quotation
+        </a>
     </div>
     <p class="mb-4"> View status of your quotations.</p>
 
@@ -41,9 +41,15 @@
                         <tr>
                             <td> <b>{{ $quotation->id }} </b> </td>
                             <td>
-                                <span class="text-success">{{ $quotation->route?->full_origin_location }}</span>
-                                to
-                                <span class="text-danger">{{ $quotation->route?->full_destination_location }}</span>
+                                @if($quotation->route)
+                                    <span class="text-success">{{ $quotation->route?->full_origin_location }}</span>
+                                    to
+                                    <span class="text-danger">{{ $quotation->route?->full_destination_location }}</span>
+                                @elseif($quotation->shipment)
+                                    <span class="text-success">{{ $quotation->shipment?->full_origin_location }}</span>
+                                    to
+                                    <span class="text-danger">{{ $quotation->shipment?->full_destination_location }}</span>
+                                @endif
                             </td>
                             <td>
                                 @if($quotation->status == 'active')

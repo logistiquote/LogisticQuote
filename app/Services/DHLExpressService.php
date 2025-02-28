@@ -135,7 +135,6 @@ class DHLExpressService
 
             $rates = json_decode($response->getBody(), true);
             Session::put('dhl_rates', $rates);
-            Session::put('dhl_shipment_details', compact('origin', 'destination', 'weight', 'dimensions'));
 
             Log::info("DHL quote retrieved successfully", ['response' => $rates]);
 

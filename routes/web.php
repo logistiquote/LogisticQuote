@@ -41,8 +41,7 @@ Route::get('/dhl/tracking/{tracking_number}', function($tracking_number) {
 })->name('dhl.tracking');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
-    Route::post('/dhl/shipment', [DHLShipmentController::class, 'createShipment'])->name('dhl.shipment');
+    Route::get('/dhl/shipment', [DHLShipmentController::class, 'createShipment'])->name('dhl.shipment');
     // Quotation Routes
     Route::resource('/quotation', QuotationController::class);
     Route::get('/quotation/summary-download/{quotation}', [QuotationController::class, 'downloadQuotationSummary'])->name('quotation.summary.download');

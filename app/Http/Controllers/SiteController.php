@@ -77,6 +77,7 @@ class SiteController extends Controller
                 'route_id' => $request->route_id,
                 'ready_to_load_date' => $request->date,
                 'route_containers' => $request->route_containers,
+                'is_admin_panels' => str_contains(url()->previous(), '/quotation/create')
             ]
         ]);
 
@@ -101,7 +102,11 @@ class SiteController extends Controller
         }
 
         if ($sessionData['type'] === 'lcl' || $sessionData['type'] === 'fcl') {
-            return view('frontend.get_quote', $data);
+            if ($sessionData['is_admin_panels']) {
+                return view('panels.quotation.quote_info', $data);
+            } else {
+                return view('frontend.get_quote', $data);
+            }
         } else {
             return redirect()->back();
         }

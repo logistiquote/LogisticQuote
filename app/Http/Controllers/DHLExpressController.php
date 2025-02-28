@@ -16,7 +16,11 @@ class DHLExpressController extends Controller
     public function getQuote(GetDHLQuoteRequest $request)
     {
         $validated = $request->validated();
+        session([
+            'air_quote_data' => $validated
+        ]);
 
+        session()->save();
         try {
             $quote = $this->dhlExpressService->getQuote(
             // Origin details

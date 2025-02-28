@@ -43,10 +43,15 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        $sessionData = session('quote_data');
+        $oceanSessionData = session('quote_data');
+        $airSessionData = session('air_quote_data');
 
-        if (!empty($sessionData) && isset($sessionData['incoterms'])) {
+        if (!empty($oceanSessionData) && isset($oceanSessionData['incoterms'])) {
             return redirect(route('store_pending_form'));
+        }
+
+        if (!empty($airSessionData)) {
+            return redirect(route('dhl.shipment'))->with('service_type',$request->get('service_type'));
         }
     }
 

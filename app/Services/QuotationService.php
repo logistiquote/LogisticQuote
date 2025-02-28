@@ -12,11 +12,8 @@ use Illuminate\Support\Facades\Storage;
 
 class QuotationService
 {
-    private QuotationRepository $quotationRepository;
-
-    public function __construct(QuotationRepository $quotationRepository)
+    public function __construct(private QuotationRepository $quotationRepository)
     {
-        $this->quotationRepository = $quotationRepository;
     }
 
     public function createQuotation(array $data): Quotation
@@ -45,7 +42,8 @@ class QuotationService
 
             $quotation->attachment = $data['attachment_file'];
         }
-        $quotation->total_price = $totalPrice + $quotation->insurance_price + $quotation->route->rate->destination_charges;
+        $destinationCharges = $quotation->type === 'lcl' ? $quotation->route?->rate?->destination_charges : 0;
+        $quotation->total_price = $totalPrice + $quotation->insurance_price + $destinationCharges;
         $quotation->save();
 
         return $quotation;
@@ -107,17 +105,17 @@ class QuotationService
     {
         $baseQuotationData = [
             'user_id' => auth()->id(),
-            'route_id' => $data['route_id'],
+            'route_id' => $data['route_id'] ?? null,
             'quote_number' => $this->generateQuotationNumber(),
             'status' => QuotationStatus::ACTIVE,
             'type' => $data['type'],
             'transportation_type' => $data['transportation_type'],
             'ready_to_load_date' => Carbon::createFromFormat('Y-m-d', $data['ready_to_load_date']),
-            'incoterms' => $data['incoterms'],
+            'incoterms' => $data['incoterms'] ?? null,
             'pickup_address' => $data['pickup_address'] ?? null,
             'destination_address' => $data['final_destination_address'] ?? null,
-            'value_of_goods' => $data['value_of_goods'],
-            'description_of_goods' => $data['description_of_goods'],
+            'value_of_goods' => $data['value_of_goods'] ?? null,
+            'description_of_goods' => $data['description_of_goods'] ?? null,
             'is_stockable' => $data['isStockable'] ?? false,
             'is_dgr' => $data['isDgr'] ?? false,
             'is_clearance_req' => $data['isClearanceReq'] ?? false,

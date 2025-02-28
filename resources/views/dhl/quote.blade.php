@@ -105,7 +105,7 @@
                         <td style="color: green;">${{ $service['totalPrice'] }} {{ $service['currency'] }}</td>
                         <td>{{ $service['deliveryTime'] ?? 'N/A' }}</td>
                         <td>
-                            <form action="{{ route('dhl.shipment') }}" method="POST">
+                            <form action="{{ route('dhl.shipment') }}" method="GET">
                                 @csrf
                                 <input type="hidden" name="service_type" value="{{ $service['productCode'] }}">
                                 <button type="submit" class="btn">Select</button>

@@ -34,5 +34,15 @@ class Shipment extends Model
     {
         return DHLServiceType::tryFrom($this->service_type)?->label() ?? 'Unknown Service';
     }
+
+    public function getFullOriginLocationAttribute(): string
+    {
+        return  "{$this->shipment_data['origin_country']}, {$this->shipment_data['origin_city']}";
+    }
+
+    public function getFullDestinationLocationAttribute(): string
+    {
+        return  "{$this->shipment_data['destination_country']}, {$this->shipment_data['destination_city']}";
+    }
 }
 

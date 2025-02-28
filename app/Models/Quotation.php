@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Quotation extends Model
 {
@@ -38,6 +39,7 @@ class Quotation extends Model
 
     protected array $dates = [
         'ready_to_load_date',
+        'created_at',
     ];
 
     public function user(): BelongsTo
@@ -48,6 +50,11 @@ class Quotation extends Model
     public function route(): BelongsTo
     {
         return $this->belongsTo(Route::class);
+    }
+
+    public function shipment(): HasOne
+    {
+        return $this->hasOne(Shipment::class);
     }
 
     public function containers(): HasMany

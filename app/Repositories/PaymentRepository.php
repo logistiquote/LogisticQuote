@@ -8,7 +8,7 @@ class PaymentRepository
 {
     public function saveTransaction(array $data)
     {
-        Transaction::create($data);
+        return Transaction::create($data);
     }
 
     public function getTransactionById(int $id): ?Transaction

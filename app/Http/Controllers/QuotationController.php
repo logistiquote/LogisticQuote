@@ -47,7 +47,6 @@ class QuotationController extends Controller
     {
         $data['page_name'] = 'create_quotation';
         $data['page_title'] = 'Create quotation | LogistiQuote';
-        $data['containerTypes'] = WaterContainerType::all();
 
         $allRoutes = $this->routeService->getAllRoutes();
         $data['origins'] = $this->routeService->getUniqueOrigins($allRoutes);
@@ -158,6 +157,7 @@ class QuotationController extends Controller
             'quotation' => $quotation,
         ])->setOptions(['isRemoteEnabled' => true]);
 
+//        return view('panels.quotation.quotation-summary', compact('quotation'));
         return $pdf->download('quotation-summary-' . $quotation->id . '.pdf');
     }
 
