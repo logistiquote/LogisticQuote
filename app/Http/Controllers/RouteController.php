@@ -42,7 +42,7 @@ class RouteController extends Controller
         $data['locations'] = Location::all();;
         $data['containerTypes'] = WaterContainerType::all();
         $data['page_name'] = 'create_route';
-        $data['page_title'] = 'Create Route | LogisticQuote';
+        $data['page_title'] = 'Create Route | LogistiQuote';
         return view('panels.route.create', $data);
     }
 
@@ -72,7 +72,7 @@ class RouteController extends Controller
 
         $data['route'] = $route;
         $data['page_name'] = 'edit_route';
-        $data['page_title'] = 'Edit Route | LogisticQuote';
+        $data['page_title'] = 'Edit Route | LogistiQuote';
 
         return view('panels.route.edit', $data);
     }

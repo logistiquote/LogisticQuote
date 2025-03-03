@@ -91,7 +91,7 @@
     <button type="submit" id="quote-submit" class="submit-button">QUOTE</button>
 </form>
 @if(env('APP_ENV') === 'production')
-    <div class="form-grid" id="freight-quote-form-air" style="text-align: center">
+    <div class="form" id="freight-quote-form-air" style="text-align: center">
         <p>Coming Soon</p>
     </div>
 @else
