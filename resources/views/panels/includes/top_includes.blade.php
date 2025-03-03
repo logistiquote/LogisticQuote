@@ -6,4 +6,5 @@
   <link href="{{ asset('panel/css/sb-admin-2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('panel/css/custom-panel.css') }}" rel="stylesheet">
   <link href="{{ asset('frontend/css/custom.css') }}" media="screen" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('frontend/css/bundle.css') }}" media="screen" rel="stylesheet" type="text/css" />
 
