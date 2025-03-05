@@ -15,6 +15,7 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 
 mix.js('resources/js/wizard.js', 'public/js');
+mix.js('resources/js/notifications.js', 'public/js');
 
 // Frontend CSS mixing
 

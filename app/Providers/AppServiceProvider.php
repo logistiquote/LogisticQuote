@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Quotation;
+use App\Observers\QuotationObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -30,5 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+
+        Quotation::observe(QuotationObserver::class);
     }
 }

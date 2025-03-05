@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> {{ isset($page_title) ? $page_title : 'LogistiQuote' }} </title>
 
     @include('panels.includes.top_includes')
 
     <script src="{{ asset('js/wizard.js') }}" defer></script>
+    <script src="{{ asset('js/notifications.js') }}" defer></script>
 
 </head>
 
@@ -175,18 +176,6 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-          <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-          <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-              <i class="fas fa-search fa-sm"></i>
-            </button>
-          </div>
-        </div>
-      </form> -->
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
@@ -217,6 +206,15 @@
                     <div class="topbar-divider d-none d-sm-block"></div>
 
                     <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fa fa-bell"></i>
+                            <span id="notificationCount" class="badge bg-danger">0</span>
+                        </a>
+                        <ul class="dropdown-menu notification-dropdown" aria-labelledby="notificationDropdown" id="notificationList">
+                            <li class="dropdown-item text-center no-notifications">No notifications</li>
+                        </ul>
+                    </li>
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

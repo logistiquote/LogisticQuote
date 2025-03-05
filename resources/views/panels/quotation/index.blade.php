@@ -132,7 +132,7 @@
                                     </div>
                                 @elseif(!$quotation->can_be_paid)
                                     <span class="badge badge-secondary">Pending</span>
-                                @else
+                                @elseif($quotation->status == \App\Enums\QuotationStatus::PAID->value)
                                     <span class="badge badge-success">Paid</span>
                                 @endif
                             </td>

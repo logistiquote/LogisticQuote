@@ -7,6 +7,7 @@ use App\Http\Controllers\DHLShipmentController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,9 @@ Route::get('/dhl/tracking/{tracking_number}', function($tracking_number) {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dhl/shipment', [DHLShipmentController::class, 'createShipment'])->name('dhl.shipment');
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::post('/notifications/read/{id}', [NotificationController::class, 'markAsRead']);
     // Quotation Routes
     Route::resource('/quotation', QuotationController::class);
     Route::get('/quotation/summary-download/{quotation}', [QuotationController::class, 'downloadQuotationSummary'])->name('quotation.summary.download');

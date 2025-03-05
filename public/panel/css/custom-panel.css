@@ -188,3 +188,55 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+.notification-bell {
+    position: relative;
+    display: inline-block;
+}
+.notification-count {
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+}
+
+.notification-dropdown {
+    width: 300px !important;
+    left: -100px !important; /* Shift to the right */
+    transform: translateX(10px);
+}
+
+@media (max-width: 576px) {
+    .notification-dropdown {
+        left: 50% !important;
+        transform: translateX(-50%);
+        width: 100%;
+    }
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    white-space: normal; /* Ensure text wraps */
+    word-break: break-word; /* Allow text wrapping */
+}
+
+/* Adjust button size */
+.notification-item .mark-read {
+    flex-shrink: 0;
+    margin-right: 10px; /* Ensure spacing */
+    padding: 4px 6px;
+    font-size: 12px;
+}
+
+.notification-item .notification-text {
+    flex-grow: 1;
+    text-align: left;
+}

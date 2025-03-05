@@ -107,7 +107,7 @@ class QuotationService
             'user_id' => auth()->id(),
             'route_id' => $data['route_id'] ?? null,
             'quote_number' => $this->generateQuotationNumber(),
-            'status' => QuotationStatus::ACTIVE,
+            'status' => QuotationStatus::PENDING_PAYMENT,
             'type' => $data['type'],
             'transportation_type' => $data['transportation_type'],
             'ready_to_load_date' => Carbon::createFromFormat('Y-m-d', $data['ready_to_load_date']),
