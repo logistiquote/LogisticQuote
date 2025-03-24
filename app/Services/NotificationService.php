@@ -20,5 +20,6 @@ class NotificationService {
     public function createNotification($userId, $message, $quotationId = null) {
         return $this->notificationRepository->createNotification($userId, $message, $quotationId);
     }
+
 }
 

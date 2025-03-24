@@ -205,8 +205,8 @@
 }
 
 .notification-dropdown {
-    width: 300px !important;
-    left: -100px !important; /* Shift to the right */
+    width: 340px !important;
+    left: -150px !important; /* Shift to the right */
     transform: translateX(10px);
 }
 

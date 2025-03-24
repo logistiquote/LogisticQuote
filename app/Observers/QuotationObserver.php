@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Quotation;
+use App\Models\User;
 use App\Services\NotificationService;
 
 class QuotationObserver
@@ -14,7 +15,27 @@ class QuotationObserver
      */
     public function created(Quotation $quotation): void
     {
-        //
+        $admins = User::where('role', 'admin')->get();
+        foreach ($admins as $admin) {
+            $this->notificationService->createNotification(
+                $admin->id,
+                "A new quotation #{$quotation->id} has been created by {$quotation->user->name}",
+                $quotation->id
+            );
+
+            $hasZeroPriceContainer = $quotation->containers()
+                ->where('price_per_container', 0)
+                ->exists();
+            if ($hasZeroPriceContainer) {
+                $this->notificationService->createNotification(
+                    $admin->id,
+                    "Custom Pricing Needed! Quotation #{$quotation->id} requires a custom price",
+                    $quotation->id
+                );
+            }
+        }
+
+
     }
 
     public function updating(Quotation $quotation): void
@@ -33,7 +54,7 @@ class QuotationObserver
      */
     public function updated(Quotation $quotation): void
     {
-        //
+
     }
 
     /**

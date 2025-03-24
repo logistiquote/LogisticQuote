@@ -95,55 +95,53 @@
         <p>Coming Soon</p>
     </div>
 @else
-    <form
-        id="freight-quote-form-air"
-        class="form active" method="POST"
-        action="{{ route('dhl.quote-formation') }}"
-        style="display: none;"
-        autocomplete="off"
-    >
-        @csrf
-        <div class="form-grid">
-            <!-- Origin Details -->
-            <div class="input-group">
-                <label class="quotation-label" for="origin_country">Origin Country</label>
-                <input
-                    type="text"
-                    class="@error('origin_country') is-invalid @enderror"
-                    id="origin_country" name="origin_country"
-                    placeholder="Enter origin country" required>
-            </div>
-            <div class="input-group">
-                <label class="quotation-label" for="origin_postal">Origin Postal Code</label>
-                <input
-                    type="text"
-                    class="@error('origin_postal') is-invalid @enderror"
-                    id="origin_postal" name="origin_postal"
-                    placeholder="Enter origin postal code" required>
-            </div>
-
-            <!-- Destination Details -->
-            <div class="input-group">
-                <label class="quotation-label" for="destination_country">Destination
-                    Country</label>
-                <input
-                    type="text"
-                    class="@error('destination_country') is-invalid @enderror"
-                    id="destination_country" name="destination_country"
-                    placeholder="Enter destination country" required>
-            </div>
-            <div class="input-group">
-                <label class="quotation-label" for="destination_postal">Destination Postal
-                    Code</label>
-                <input
-                    type="text"
-                    class="@error('destination_postal') is-invalid @enderror"
-                    id="destination_postal" name="destination_postal"
-                    placeholder="Enter destination postal code" required>
-            </div>
+<form
+    id="freight-quote-form-air"
+    class="form active" method="GET"
+    action="{{ route('dhl.quote-formation') }}"
+    style="display: none;"
+    autocomplete="off"
+>
+    @csrf
+    <div class="form-grid">
+        <!-- Origin Details -->
+        <div class="input-group">
+            <label class="quotation-label" for="origin_country">Origin Country Code</label>
+            <input
+                type="text"
+                class="@error('origin_country') is-invalid @enderror"
+                id="origin_country" name="originCountryCode"
+                placeholder="Enter origin country code (e.g., US, GB, DE)" required>
         </div>
-        <button type="submit" id="quote-submit" class="submit-button">QUOTE</button>
-    </form>
+        <div class="input-group">
+            <label class="quotation-label" for="origin_postal">Origin City</label>
+            <input
+                type="text"
+                class="@error('origin_postal') is-invalid @enderror"
+                id="origin_postal" name="originCityName"
+                placeholder="Enter origin city name" required>
+        </div>
+
+        <!-- Destination Details -->
+        <div class="input-group">
+            <label class="quotation-label" for="destination_country">Destination Country Code</label>
+            <input
+                type="text"
+                class="@error('destination_country') is-invalid @enderror"
+                id="destination_country" name="destinationCountryCode"
+                placeholder="Enter destination country code (e.g., US, GB, DE)" required>
+        </div>
+        <div class="input-group">
+            <label class="quotation-label" for="destination_postal">Destination City</label>
+            <input
+                type="text"
+                class="@error('destination_postal') is-invalid @enderror"
+                id="destination_postal" name="destinationCityName"
+                placeholder="Enter destination city name" required>
+        </div>
+    </div>
+    <button type="submit" id="quote-submit" class="submit-button">QUOTE</button>
+</form>
 @endif
 <script>
     function setOriginAndRoute() {

@@ -28,10 +28,14 @@ class UpdateQuotationStatus extends Command
      */
     public function handle()
     {
-        $updatedRows = Quotation::whereIn('status', [QuotationStatus::ACTIVE, QuotationStatus::PENDING_PAYMENT])
+        Quotation::whereIn('status', [QuotationStatus::ACTIVE, QuotationStatus::PENDING_PAYMENT])
             ->where('created_at', '<=', Carbon::now()->subDays(14))
-            ->update(['status' => QuotationStatus::EXPIRED]);
+            ->chunkById(100, function ($quotations) {
+                foreach ($quotations as $quotation) {
+                    $quotation->update(['status' => QuotationStatus::EXPIRED]);
+                }
+            });
 
-        $this->info("Updated $updatedRows quotations to expired status.");
+        $this->info("Updated quotations to expired status.");
     }
 }

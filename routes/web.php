@@ -35,14 +35,14 @@ Route::post('/get_quote_step1', [SiteController::class, 'getQuoteStepOne'])->nam
 Route::get('/get_quote_step2', [SiteController::class, 'getQuoteStepTwo'])->name('get_quote_step2');
 Route::post('/form-quote-final-step', [SiteController::class, 'formQuoteFinalStep'])->name('frontend.quote_final_step');
 
-Route::post('/dhl/quote', [DHLExpressController::class, 'getQuote'])->name('dhl.quote');
-Route::post('/dhl/quote-formation', [DHLExpressController::class, 'getQuoteFormation'])->name('dhl.quote-formation');
+Route::get('/dhl/quote-formation', [DHLExpressController::class, 'getQuoteFormation'])->name('dhl.quote-formation');
 Route::get('/dhl/tracking/{tracking_number}', function($tracking_number) {
     return view('dhl.tracking', compact('tracking_number'));
 })->name('dhl.tracking');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dhl/shipment', [DHLShipmentController::class, 'createShipment'])->name('dhl.shipment');
+    Route::get('/dhl/quote', [DHLExpressController::class, 'getQuote'])->name('dhl.quote');
+    Route::post('/dhl/shipment', [DHLShipmentController::class, 'createShipment'])->name('dhl.shipment');
 
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/read/{id}', [NotificationController::class, 'markAsRead']);

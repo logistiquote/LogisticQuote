@@ -13,123 +13,46 @@ class DHLExpressService
     protected Client $client;
     protected string $apiUrl;
     protected string $apiKey;
-    protected string $accountNumber;
+    protected string $apiSecret;
+    protected string $exportAccountNumber;
+    protected string $importAccountNumber;
 
     public function __construct()
     {
         $this->client = new Client();
         $this->apiUrl = env('DHL_API_URL');
         $this->apiKey = env('DHL_API_KEY');
-        $this->accountNumber = env('DHL_ACCOUNT_NUMBER');
+        $this->apiSecret = env('DHL_CLIENT_SECRET');
+        $this->importAccountNumber = env('DHL_IMPORT_ACCOUNT_NUMBER');
+        $this->exportAccountNumber = env('DHL_EXPORT_ACCOUNT_NUMBER');
     }
 
     public function getQuote($origin, $destination, $weight, $dimensions, $plannedShippingDateAndTime)
     {
-
-        if (app()->environment('local')) {
-            return $this->mockDHLResponse();
-        }
-
+        $accountNumber =  $origin['origin_country'] === 'IL' ? $this->exportAccountNumber : $this->importAccountNumber;
         try {
             Log::info("Requesting DHL quote", compact('origin', 'destination', 'weight', 'dimensions'));
 
-            $response = $this->client->request('POST', "{$this->apiUrl}/rates", [
+            $response = $this->client->request('GET', "{$this->apiUrl}/rates", [
                 'headers' => [
-                    'DHL-API-Key' => $this->apiKey,
-                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Basic ' . base64_encode("$this->apiKey:$this->apiSecret"),
                     'Accept' => 'application/json',
                 ],
-                'json' => [
-                    "customerDetails" => [
-                        "shipperDetails" => [
-                            "postalCode" => $origin['postal_code'],
-                            "cityName" => $origin['city'],
-                            "countryCode" => $origin['country'],
-                            "provinceCode" => $origin['province'] ?? null,
-                            "addressLine1" => $origin['address_line1'] ?? "N/A",
-                            "addressLine2" => $origin['address_line2'] ?? "",
-                            "addressLine3" => $origin['address_line3'] ?? "",
-                            "countyName" => $origin['county'] ?? "N/A"
-                        ],
-                        "receiverDetails" => [
-                            "postalCode" => $destination['postal_code'],
-                            "cityName" => $destination['city'],
-                            "countryCode" => $destination['country'],
-                            "provinceCode" => $destination['province'] ?? null,
-                            "addressLine1" => $destination['address_line1'] ?? "N/A",
-                            "addressLine2" => $destination['address_line2'] ?? "",
-                            "addressLine3" => $destination['address_line3'] ?? "",
-                            "countyName" => $destination['county'] ?? "N/A"
-                        ]
-                    ],
-                    "accounts" => [
-                        [
-                            "typeCode" => "shipper",
-                            "number" => $this->accountNumber
-                        ]
-                    ],
-                    "productCode" => "P",
-                    "localProductCode" => "P",
-                    "valueAddedServices" => [
-                        [
-                            "serviceCode" => "II",
-                            "localServiceCode" => "II",
-                            "value" => 100,
-                            "currency" => "GBP",
-                            "method" => "cash"
-                        ]
-                    ],
-                    "productsAndServices" => [
-                        [
-                            "productCode" => "P",
-                            "localProductCode" => "P",
-                            "valueAddedServices" => [
-                                [
-                                    "serviceCode" => "II",
-                                    "localServiceCode" => "II",
-                                    "value" => 100,
-                                    "currency" => "GBP",
-                                    "method" => "cash"
-                                ]
-                            ]
-                        ]
-                    ],
-                    "payerCountryCode" => $origin['country'],
-                    "plannedShippingDateAndTime" => $plannedShippingDateAndTime . "T12:00:00GMT+00:00",
-                    "unitOfMeasurement" => "metric",
-                    "isCustomsDeclarable" => false,
-                    "monetaryAmount" => [
-                        [
-                            "typeCode" => "declaredValue",
-                            "value" => 100,
-                            "currency" => "CZK"
-                        ]
-                    ],
-                    "requestAllValueAddedServices" => false,
-                    "estimatedDeliveryDate" => [
-                        "isRequested" => false,
-                        "typeCode" => "QDDC"
-                    ],
-                    "getAdditionalInformation" => [
-                        [
-                            "typeCode" => "allValueAddedServices",
-                            "isRequested" => true
-                        ]
-                    ],
-                    "returnStandardProductsOnly" => false,
-                    "nextBusinessDay" => false,
-                    "productTypeCode" => "all",
-                    "packages" => [
-                        [
-                            "typeCode" => "3BX",
-                            "weight" => $weight,
-                            "dimensions" => [
-                                "length" => $dimensions['length'],
-                                "width" => $dimensions['width'],
-                                "height" => $dimensions['height']
-                            ]
-                        ]
-                    ]
+                'query' => [
+                    'accountNumber' => $accountNumber,
+                    'originCountryCode' => $origin['origin_country'],
+                    'originCityName' => $origin['origin_city'],
+                    'originPostalCode' => $origin['origin_postal_code'],
+                    'destinationCountryCode' => $destination['destination_country'],
+                    'destinationCityName' => $destination['destination_city'],
+                    'destinationPostalCode' => $destination['destination_postal_code'],
+                    'weight' => (int)$weight,
+                    'length' => (int)$dimensions['length'],
+                    'width' => (int)$dimensions['width'],
+                    'height' => (int)$dimensions['height'],
+                    'plannedShippingDate' => $plannedShippingDateAndTime,
+                    'isCustomsDeclarable' => 'true',
+                    'unitOfMeasurement' => 'metric'
                 ]
             ]);
 
@@ -141,8 +64,10 @@ class DHLExpressService
             return $rates;
 
         } catch (RequestException $e) {
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 'No response';
+            $body = $e->getResponse() ? json_decode($e->getResponse()->getBody()->getContents()) : 'No response';
             Log::error("DHL API Request Failed: " . $e->getMessage());
-            throw new DHLApiException("Failed to retrieve DHL rates. Please try again later.", 502);
+            throw new DHLApiException($body->detail, $statusCode);
         }
     }
 

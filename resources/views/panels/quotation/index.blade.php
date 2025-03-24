@@ -54,11 +54,11 @@
                             <td>
                                 @if($quotation->status == 'active')
                                     <span class="badge badge-success">{{ $quotation->status }}</span>
-                                @elseif($quotation->status == 'withdrawn')
-                                    <span class="badge badge-danger">{{ $quotation->status }}</span>
+                                @elseif($quotation->status == \App\Enums\QuotationStatus::PENDING_PAYMENT->value)
+                                    <span class="badge badge-secondary">{{ $quotation->status }}</span>
                                 @elseif($quotation->status == 'completed')
                                     <span class="badge badge-primary">{{ $quotation->status }}</span>
-                                @elseif($quotation->status == 'done')
+                                @elseif($quotation->status == \App\Enums\QuotationStatus::EXPIRED->value)
                                     <span class="badge badge-warning">{{ $quotation->status }}</span>
                                 @endif
                             </td>

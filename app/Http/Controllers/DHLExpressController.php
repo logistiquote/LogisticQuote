@@ -15,35 +15,31 @@ class DHLExpressController extends Controller
 
     public function getQuote(GetDHLQuoteRequest $request)
     {
-        $validated = $request->validated();
-        session([
-            'air_quote_data' => $validated
-        ]);
+        $airQuoteData = session('air_quote_data', []);
 
-        session()->save();
+        $mergedRequest = $request->merge($airQuoteData);
+
+        $validated = $mergedRequest->validated();
+
+        $dimension = [
+            'length' => $validated['length'],
+            'width' => $validated['width'],
+            'height' => $validated['height'],
+            'weight' => $validated['weight'],
+        ];
         try {
             $quote = $this->dhlExpressService->getQuote(
             // Origin details
                 [
-                    'country' => $validated['origin_country'],
-                    'postal_code' => $validated['origin_postal'],
-                    'city' => $validated['origin_city'],
-                    'province' => $validated['origin_province'] ?? null,
-                    'address_line1' => $validated['origin_address_line1'],
-                    'address_line2' => $validated['origin_address_line2'] ?? null,
-                    'address_line3' => $validated['origin_address_line3'] ?? null,
-                    'county' => $validated['origin_county'] ?? null,
+                    'origin_country' => $validated['origin_country'],
+                    'origin_city' => $validated['origin_city'],
+                    'origin_postal_code' => $validated['origin_postal_code'],
                 ],
                 // Destination details
                 [
-                    'country' => $validated['destination_country'],
-                    'postal_code' => $validated['destination_postal'],
-                    'city' => $validated['destination_city'],
-                    'province' => $validated['destination_province'] ?? null,
-                    'address_line1' => $validated['destination_address_line1'],
-                    'address_line2' => $validated['destination_address_line2'] ?? null,
-                    'address_line3' => $validated['destination_address_line3'] ?? null,
-                    'county' => $validated['destination_county'] ?? null,
+                    'destination_country' => $validated['destination_country'],
+                    'destination_city' => $validated['destination_city'],
+                    'destination_postal_code' => $validated['destination_postal_code'],
                 ],
                 // Package details
                 $validated['weight'],
@@ -55,7 +51,12 @@ class DHLExpressController extends Controller
                 $validated['planned_shipping_date']
             );
 
-            return view('dhl.quote', compact('quote'));
+            $updatedData = array_merge($validated, $quote);
+
+            session(['air_quote_data' => $updatedData]);
+            session()->save();
+
+            return view('dhl.quote', compact('quote', 'dimension'));
 
         } catch (DHLApiException $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
@@ -66,10 +67,10 @@ class DHLExpressController extends Controller
     public function getQuoteFormation(Request $request)
     {
         $DHLQuoteData = [
-                'origin_country' => $request->origin_country,
-                'origin_postal' => $request->origin_postal,
-                'destination_country' => $request->destination_country,
-                'destination_postal' => $request->destination_postal,
+                'origin_country' => $request->originCountryCode,
+                'origin_city' => $request->originCityName,
+                'destination_country' => $request->destinationCountryCode,
+                'destination_city' => $request->destinationCityName,
         ];
 
         return view('dhl.quote-formation', compact('DHLQuoteData'));

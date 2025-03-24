@@ -11,10 +11,10 @@
     <meta name="Author" content="LogistiQuote">
     <meta property="og:site_name" content="LogistiQuote">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="design/images/favicon/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="design/images/favicon/favicon.png" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="design/images/favicon/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="design/images/favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="design/images/favicon/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="design/images/favicon/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="design/images/favicon/favicon.png">
 
     <meta name="application-name" content="LogistiQuote.com" />
     <meta name="msapplication-TileColor" content="#da532c">

@@ -20,9 +20,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            $sessionData = session('quote_data');
+            $waterQuoteSessionData = session('quote_data');
 
-            if (!empty($sessionData) && isset($sessionData['incoterms'])) {
+            if (!empty($waterQuoteSessionData) && isset($waterQuoteSessionData['incoterms'])) {
                 return redirect(route('store_pending_form'));
             }
 

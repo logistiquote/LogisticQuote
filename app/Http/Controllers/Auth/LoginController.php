@@ -51,7 +51,9 @@ class LoginController extends Controller
         }
 
         if (!empty($airSessionData)) {
-            return redirect(route('dhl.shipment'))->with('service_type',$request->get('service_type'));
+            return redirect()->route('dhl.quote')->with([
+                'air_quote_data' => $airSessionData
+            ]);
         }
     }
 

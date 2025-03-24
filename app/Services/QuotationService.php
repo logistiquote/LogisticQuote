@@ -69,10 +69,16 @@ class QuotationService
         }
 
         if (isset($data['calculate_by']) && $data['type'] === 'lcl') {
+            if (!$quotation->route->rate) {
+                throw new Exception('No route rates found for this quotation.');
+            }
             $pallets = $this->addPallets($quotation, $data);
+            $totalPrice = $this->getGoodsTotalPrice($pallets);
+
         }
 
-        $quotation->total_price = $totalPrice;
+        $destinationCharges = $quotation->type === 'lcl' ? $quotation->route?->rate?->destination_charges : 0;
+        $quotation->total_price = $totalPrice + $quotation->insurance_price + $destinationCharges;
         $quotation->save();
 
         return $quotation;

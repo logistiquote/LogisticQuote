@@ -4,13 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDHLShipmentRequest;
 use App\Services\DHLShipmentService;
-use App\Models\Quotation;
 use App\Models\Shipment;
-use App\Enums\DHLServiceType;
-use App\Exceptions\DHLApiException;
 use App\Services\QuotationService;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DHLShipmentController extends Controller
@@ -22,6 +18,7 @@ class DHLShipmentController extends Controller
     public function createShipment(CreateDHLShipmentRequest $request)
     {
         $validated = $request->validated();
+
         DB::beginTransaction();
 
         try {
@@ -36,25 +33,41 @@ class DHLShipmentController extends Controller
                 'ready_to_load_date' => $shipmentDetails['planned_shipping_date'],
             ]);
 
-            $serviceType = DHLServiceType::from($validated['service_type']);
+            $shipmentDetails = array_merge($shipmentDetails, $validated);
 
-            $shipmentDetails['service_type'] = $validated['service_type'];
+            $shipmentResponse = $this->dhlShipmentService->createShipment($shipmentDetails);
 
-//            $shipmentResponse = $this->dhlShipmentService->createShipment($shipmentDetails);
-            $shipmentResponse = [
-                'shipmentID' => 'shipmentID-test',
-                'trackingNumber' => 'trackingNumber-test'
-            ];
+            if (isset($shipmentResponse['trackingUrl'], $shipmentResponse['shipmentTrackingNumber'])) {
 
-            if (isset($shipmentResponse['shipmentID'], $shipmentResponse['trackingNumber'])) {
+                $matchedProduct = collect($shipmentDetails['products'])->first(function ($product) use ($shipmentDetails) {
+                    return str_contains($product['productCode'], $shipmentDetails['service']);
+                });
+
+                $eurPrice = null;
+
+                if ($matchedProduct) {
+                    $eurPriceEntry = collect($matchedProduct['totalPrice'])->firstWhere('priceCurrency', 'EUR');
+                    if ($eurPriceEntry) {
+                        $eurPrice = $eurPriceEntry['price'];
+                    }
+                }
+                unset($shipmentDetails['invoice_pdf']);
+                unset($shipmentDetails['exchangeRates']);
+                unset($shipmentDetails['products']);
+
                 $shipment = Shipment::create([
                     'quotation_id' => $quotation->id,
                     'carrier' => 'DHL',
-                    'service_type' => $serviceType->value,
-                    'tracking_number' => $shipmentResponse['trackingNumber'],
+                    'service_type' => $shipmentDetails['service'],
+                    'tracking_number' => $shipmentResponse['shipmentTrackingNumber'],
+                    'tracking_url' => $shipmentResponse['trackingUrl'],
                     'label_url' => $shipmentResponse['label'] ?? null,
-                    'shipment_id' => $shipmentResponse['shipmentID'],
                     'shipment_data' => $shipmentDetails,
+                ]);
+
+                $quotation->update([
+                    'total_price' => $eurPrice,
+                    'value_of_goods' => $shipmentDetails['declared_value']
                 ]);
 
                 session()->forget([
@@ -63,8 +76,6 @@ class DHLShipmentController extends Controller
 
                 DB::commit();
 
-//                return redirect()->route('dhl.tracking', ['tracking_number' => $shipment->tracking_number])
-//                    ->with('success', 'Shipment created successfully.');
                 return redirect()->route('quotation.index')->with('success', 'Quotation created successfully!');
             }
 
@@ -72,7 +83,6 @@ class DHLShipmentController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            dd($e->getMessage());
             return redirect()->route('dhl.quote')->withErrors(['error' => $e->getMessage()]);
         }
     }
