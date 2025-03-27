@@ -3,11 +3,14 @@
 namespace App\Services;
 
 use App\Enums\QuotationStatus;
+use App\Mail\QuotationCreated;
+use App\Mail\QuotationResponse;
 use App\Models\Quotation;
 use App\Models\RouteRate;
 use App\Repositories\QuotationRepository;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class QuotationService
@@ -45,6 +48,15 @@ class QuotationService
         $destinationCharges = $quotation->type === 'lcl' ? $quotation->route?->rate?->destination_charges : 0;
         $quotation->total_price = $totalPrice + $quotation->insurance_price + $destinationCharges;
         $quotation->save();
+
+
+        if (env('MAIL_ENABLED', false)) {
+            if ($quotation->containers && $quotation->containers->contains('price_per_container', 0)) {
+                Mail::to($quotation->user->email)->send(new QuotationResponse($quotation));
+            }else{
+                Mail::to([$quotation->user->email,'mshlafman@gmail.com'])->send(new QuotationCreated($quotation));
+            }
+        }
 
         return $quotation;
     }

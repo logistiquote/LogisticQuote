@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\WaterContainerType;
 use App\Http\Requests\QuotationRequest;
-use App\Mail\QuotationCreated;
-use App\Mail\QuotationResponse;
+
 use App\Models\Quotation;
 use App\Services\QuotationService;
 use App\Services\RouteService;
@@ -13,7 +11,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class QuotationController extends Controller
 {
@@ -235,12 +232,6 @@ class QuotationController extends Controller
             DB::commit();
 
             session()->forget('quote_data');
-
-
-            if (env('MAIL_ENABLED', false)) {
-                Mail::to('mshlafman@gmail.com')->send(new QuotationCreated($quotation));
-                Mail::to($quotation->user->email)->send(new QuotationResponse($quotation));
-            }
 
             $data['page_title'] = 'Dashboard | LogistiQuote';
             $data['page_name'] = 'dashboard';

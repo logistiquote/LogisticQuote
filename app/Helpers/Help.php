@@ -1,35 +1,24 @@
 <?php
 
-use App\Models\Quotation;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
 
-function send_notify_user_mail($user_id, $partner_id, $quotation_id)
+function getExchangeRateEURtoUSD(): float
 {
-    $user = User::findOrFail($user_id)->toArray();
-    $partner = User::findOrFail($partner_id)->toArray();
-    $to_name = $user['name'];
-    $to_email = $user['email'];
-    // $to_email = 'malickateeq@gmail.com';
-    $quotation = Quotation::findOrFail($quotation_id)->toArray();
+    return cache()->remember('eur_to_usd_rate', now()->addHours(6), function () {
+        $response = Http::get('https://api.exchangerate.host/latest', [
+            'base' => 'EUR',
+            'symbols' => 'USD',
+        ]);
 
-
-    $data = array(
-                "partner" => $partner,
-            // "company_name" => "LogistiQuote",
-            // "email"=> "test@sdf.com",
-            // "additional_email" => "asd@ad.com",
-            // "phone" => "12345678",
-            // "body" => "Blah blah blah!"
-        );
-
-    Mail::send('emails.notify_user', $data, function($message) use ($to_name, $to_email, $quotation)
-    {
-        $message->to($to_email, $to_name)
-        ->subject('Quotation#: '.$quotation['quotation_id'].' completion.');
-        $message->from(
-            env("MAIL_FROM_ADDRESS", "cs@logistiquote.com"),   // Mail from email address
-            'Quotation#'.$quotation['quotation_id'].'\'s completed | LogistiQuote'   // Title, Subject
-        );
+        return $response->json('rates.USD', 1);
     });
+}
+
+function convertEurToUsdWith1PercentFee(float $eur): float
+{
+    $rate = getExchangeRateEURtoUSD();
+    $usd = $eur * $rate;
+    $usdWithFee = $usd * 1.01; // Add 1% after conversion
+
+    return round($usdWithFee, 2);
 }

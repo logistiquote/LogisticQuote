@@ -140,11 +140,12 @@ class DHLShipmentService
         } catch (RequestException $e) {
             Log::error("DHL Shipment Failed: " . $e->getMessage());
 
-            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 'No response';
-            $body = $e->getResponse() ? json_decode($e->getResponse()->getBody()->getContents()) : 'No response';
+            $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : 500;
+            $body = $e->getResponse()
+                ? json_decode($e->getResponse()->getBody()->getContents())
+                : 'Failed to create DHL shipment. Please try again later.';
 
-            dd($body);
-            throw new DHLApiException("Failed to create DHL shipment. Please try again later.", $statusCode);
+            throw new DHLApiException($body, $statusCode);
         }
     }
 }

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDHLShipmentRequest;
+use App\Mail\ShipmentLabelMail;
 use App\Services\DHLShipmentService;
 use App\Models\Shipment;
 use App\Services\QuotationService;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class DHLShipmentController extends Controller
 {
@@ -27,13 +30,16 @@ class DHLShipmentController extends Controller
             if (!$shipmentDetails) {
                 return redirect()->route('dhl.quote')->withErrors(['error' => 'No shipment details found. Please request a quote first.']);
             }
+
+            $shipmentDetails = array_merge($shipmentDetails, $validated);
+
             $quotation = $this->quotationService->createQuotation([
                 'type' => 'DHL',
                 'transportation_type' => 'air',
+                'value_of_goods' => $shipmentDetails['declared_value'],
                 'ready_to_load_date' => $shipmentDetails['planned_shipping_date'],
             ]);
 
-            $shipmentDetails = array_merge($shipmentDetails, $validated);
 
             $shipmentResponse = $this->dhlShipmentService->createShipment($shipmentDetails);
 
@@ -50,6 +56,15 @@ class DHLShipmentController extends Controller
                     if ($eurPriceEntry) {
                         $eurPrice = $eurPriceEntry['price'];
                     }
+                    $usdFinal = convertEurToUsdWith1PercentFee($eurPrice);
+
+                    $product['productName'] = $matchedProduct['productName'];
+                    $product['productCode'] = $matchedProduct['productCode'];
+                    $product['eurPriceEntry'] = $eurPriceEntry;
+                    $product['usdPrice'] = $usdFinal;
+                    $product['pricingDate'] = $matchedProduct['pricingDate'];
+
+                    $shipmentDetails['product'] = $product;
                 }
                 unset($shipmentDetails['invoice_pdf']);
                 unset($shipmentDetails['exchangeRates']);
@@ -61,13 +76,11 @@ class DHLShipmentController extends Controller
                     'service_type' => $shipmentDetails['service'],
                     'tracking_number' => $shipmentResponse['shipmentTrackingNumber'],
                     'tracking_url' => $shipmentResponse['trackingUrl'],
-                    'label_url' => $shipmentResponse['label'] ?? null,
                     'shipment_data' => $shipmentDetails,
                 ]);
 
                 $quotation->update([
-                    'total_price' => $eurPrice,
-                    'value_of_goods' => $shipmentDetails['declared_value']
+                    'total_price' => $quotation->total_price + $usdFinal * 1.1,
                 ]);
 
                 session()->forget([
@@ -75,6 +88,15 @@ class DHLShipmentController extends Controller
                 ]);
 
                 DB::commit();
+
+                if (env('MAIL_ENABLED', false)) {
+                    $document = collect($shipmentResponse['documents'])->firstWhere('typeCode', 'label');
+
+                    $fileContent = base64_decode($document['content']);
+                    $fileName = 'shipment-label.pdf';
+
+                    Mail::to($quotation->user->email)->send(new ShipmentLabelMail($fileContent, $fileName, $quotation->user->name, $shipmentResponse['shipmentTrackingNumber']));
+                }
 
                 return redirect()->route('quotation.index')->with('success', 'Quotation created successfully!');
             }
